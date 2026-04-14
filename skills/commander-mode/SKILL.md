@@ -15,12 +15,24 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 2. Prefer repo-local instructions before generic defaults:
    - Read `AGENTS.md` when it exists.
    - Read commander appointment docs when present, especially `commander/core/任命.md`.
-   - If the repo has a compact recovery command, run that before opening large state docs.
-   - For the Agent workspace specifically, the compact command is `.\.venv\Scripts\python.exe -m commander.transport.scripts.commander_task_catalog --summary --limit 3`.
+   - If the repo has a compact current-state file, read it before opening large state docs.
+   - For the Agent workspace learning track, prefer `docs/当前学习状态.md` and `docs/AI求职学习验收记录.md`; do not call the archived `commander.transport` runtime.
 3. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
    - `python C:\Users\26877\.codex\skills\commander-mode\scripts\portable_harness.py --cwd . status`
 4. If no repo-local commander docs exist, use the generic commander workflow below and build context from README, issue/task docs, git status, tests, and user-provided goals.
 5. Do not hardcode `D:\Develop\Python-Project\Agent`; that path is only one possible workspace.
+
+## Default Stance
+
+1. Commander mode starts in orientation mode, not implementation mode.
+2. When the user only says "use commander mode", "continue", "current task", or asks where the project is, first answer:
+   - current phase or objective
+   - active work item
+   - latest validation evidence
+   - next smallest safe action
+3. Do not edit business code merely because a next action exists.
+4. Switch into implementation only when the user explicitly asks you to implement, fix, write, update, commit, or otherwise perform a concrete change.
+5. Maintaining lightweight state docs, acceptance records, handoff notes, or governance docs is allowed when the user asks commander mode to keep long-running work recoverable.
 
 ## Layering
 
@@ -96,7 +108,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 ## Role Boundaries
 
 1. Commander mode is not automatically development mode.
-2. Do not edit business code directly when repo rules say the commander should delegate implementation.
+2. Do not edit business code directly when repo rules say the commander should delegate implementation, and do not assume "commander mode" by itself is permission to write code.
 3. Commander docs, task memory, recovery anchors, and governance docs may be maintained by the commander when needed.
 4. If the user explicitly asks you to implement locally, follow higher-priority system/tool rules, protect unrelated user changes, and verify.
 5. Do not let project-specific runtime experiments redefine the universal purpose of this skill: helping the user drive AI coding work.
