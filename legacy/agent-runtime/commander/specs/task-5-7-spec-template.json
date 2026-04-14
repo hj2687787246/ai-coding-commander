@@ -1,0 +1,138 @@
+{
+  "schema_version": "commander-spec-artifact-v1",
+  "spec_id": "task-5-7-spec-template",
+  "title": "Spec-Kit / SDD artifact layer",
+  "status": "active",
+  "owner": "commander",
+  "summary": "Repo-native Spec-Kit layer that turns planning intent into machine-readable spec artifacts and task refs.",
+  "source_task_id": "task-5-7-spec-template",
+  "source_phase_id": "phase-5-7-spec-kit-sdd",
+  "source_objective_id": "objective-5-6-langgraph-runtime",
+  "constitution": {
+    "summary": "Spec artifacts must stay commander-owned, repo-native, and directly linked to planning/tasking.",
+    "principles": [
+      "Keep the spec as the truth source for scope and acceptance.",
+      "Do not copy the commander planning skeleton into a parallel memory system.",
+      "Route spec references through packet and context bundles instead of freeform chat."
+    ],
+    "guardrails": [
+      "Do not replace commander docs as the truth source.",
+      "Do not invent a second plans/memory/reports/debt stack.",
+      "Do not let worker execution bypass packet and phase contracts."
+    ]
+  },
+  "specification": {
+    "summary": "Define the minimum machine-readable contract for spec-driven planning and tasking.",
+    "requirements": [
+      "Expose constitution, specification, planning, tasking, and implementation_state as structured sections.",
+      "Record acceptance, non_goals, invariants, and truth_sources explicitly.",
+      "Make spec refs attachable to objective/phase/goal packets."
+    ],
+    "interfaces": [
+      "Commander phase and objective plans can carry spec_refs.",
+      "Commander dispatch can route spec refs into packet.json, worker_brief.md, and context_bundle.json.",
+      "Workers can inspect the spec artifact without searching the whole repo."
+    ],
+    "constraints": [
+      "Spec refs must remain repo-native and path-addressable.",
+      "The artifact must stay schema-valid and machine-readable.",
+      "Spec references must not become a new parallel planning hierarchy."
+    ]
+  },
+  "planning": {
+    "summary": "Bridge the current objective/phase/goal queue to a spec-first artifact model.",
+    "milestones": [
+      {
+        "milestone_id": "m1",
+        "title": "Spec schema and kit script",
+        "status": "done",
+        "goal": "Create the repo-native spec contract and validation helpers.",
+        "order": 1
+      },
+      {
+        "milestone_id": "m2",
+        "title": "Packet and phase wiring",
+        "status": "in_progress",
+        "goal": "Carry spec_refs through phase goals into dispatch packets and routing bundles.",
+        "order": 2
+      },
+      {
+        "milestone_id": "m3",
+        "title": "Status and summary visibility",
+        "status": "planned",
+        "goal": "Surface spec refs in phase/objective summaries for commander inspection.",
+        "order": 3
+      }
+    ]
+  },
+  "tasking": {
+    "summary": "Specify how a worker should use spec artifacts during a dispatched task.",
+    "dispatch_rules": [
+      "Read packet.json first, then the routed spec refs, then worker_brief.md, then context_bundle.json.",
+      "Use spec refs to narrow the implementation scope before editing code.",
+      "Treat the spec as a contract, not as optional inspiration."
+    ],
+    "task_contracts": [
+      "Each packet may carry one or more spec_refs.",
+      "Each goal may inherit or override spec_refs at the packet level.",
+      "The dispatch layer must keep spec refs visible to the worker and to the commander."
+    ],
+    "packet_requirements": [
+      "Packet schema must accept spec_refs as structured references.",
+      "Dispatch must keep spec refs in the packet and context bundle.",
+      "Worker brief must show the spec refs explicitly."
+    ]
+  },
+  "implementation_state": {
+    "summary": "The spec artifact layer exists and is being wired into the planning and dispatch path.",
+    "stage": "packet_and_routing",
+    "status": "in_progress",
+    "evidence": [
+      "Spec artifact schema exists in commander/transport/schemas.",
+      "Spec kit helper exists in commander/transport/scripts.",
+      "A sample spec artifact lives in commander/specs/task-5-7-spec-template.json."
+    ],
+    "blockers": [
+      "Need the packet and phase schemas to carry spec_refs end to end.",
+      "Need summaries and routing bundles to expose the spec refs."
+    ],
+    "notes": [
+      "Use this artifact as the concrete contract for the current implementation slice."
+    ]
+  },
+  "acceptance": [
+    "Spec artifact validates against commander_spec_artifact.schema.json.",
+    "Phase goal packets can carry spec_refs without breaking phase plan validation.",
+    "Dispatch propagates spec refs into worker brief and context bundle.",
+    "Objective and phase summaries expose the spec refs to commander inspection."
+  ],
+  "non_goals": [
+    "Do not create a parallel plans/memory/reports/debt hierarchy.",
+    "Do not move commander truth sources out of commander docs.",
+    "Do not auto-edit live specs without commander approval."
+  ],
+  "invariants": [
+    "Spec refs are commander-owned and repo-native.",
+    "Spec refs travel with task packets, not with chat memory.",
+    "Every spec artifact remains machine-readable and schema-valid."
+  ],
+  "truth_sources": [
+    "commander/core/任命.md",
+    "commander/outer/指挥官LangGraph运行时项目化方案.md",
+    "commander/transport/prompts/execution_window_task_template.md",
+    "commander/transport/prompts/execution_window_report_template.md",
+    "commander/specs/README.md"
+  ],
+  "tags": [
+    "spec-kit",
+    "sdd",
+    "langgraph-runtime",
+    "planning",
+    "tasking"
+  ],
+  "notes": [
+    "This artifact is the seed contract for the current spec-template slice."
+  ],
+  "created_at": "2026-04-13T00:00:00Z",
+  "updated_at": "2026-04-13T00:00:00Z"
+}

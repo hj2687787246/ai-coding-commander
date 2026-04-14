@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Commander Task Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "status",
+    "summary",
+    "changed_files",
+    "verification",
+    "commit",
+    "risks",
+    "recommended_next_step",
+    "needs_commander_decision",
+    "result_grade",
+    "next_action_owner",
+    "continuation_mode"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "done",
+        "blocked",
+        "need_split"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "result"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "command": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "skipped"
+            ]
+          },
+          "details": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commit": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "hash": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "recommended_next_step": {
+      "type": "string",
+      "minLength": 1
+    },
+    "needs_commander_decision": {
+      "type": "boolean"
+    },
+    "result_grade": {
+      "type": "string",
+      "enum": [
+        "closed",
+        "partial",
+        "blocked"
+      ]
+    },
+    "next_action_owner": {
+      "type": "string",
+      "enum": [
+        "commander",
+        "user",
+        "worker"
+      ]
+    },
+    "continuation_mode": {
+      "type": "string",
+      "enum": [
+        "close",
+        "followup",
+        "split",
+        "wait_user"
+      ]
+    },
+    "decision_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "split_suggestion": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "goal",
+        "reason"
+      ],
+      "properties": {
+        "suggested_task_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "needs_user_decision": {
+      "type": "boolean"
+    },
+    "user_decision_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ready_for_user_delivery": {
+      "type": "boolean"
+    },
+    "harness_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "is_dispatch_draft": {
+          "type": "boolean"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "task_id",
+    "source_report_path",
+    "source_summary",
+    "observed_pattern",
+    "recommended_layer",
+    "recommended_target",
+    "evidence",
+    "rationale",
+    "validation_requirements",
+    "approval_required",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "commander-harness-v1"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_report_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_pattern": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommended_layer": {
+      "type": "string",
+      "enum": [
+        "doc",
+        "script",
+        "skill",
+        "none"
+      ]
+    },
+    "recommended_target": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "rationale": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "validation_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "approved",
+        "rejected",
+        "applied",
+        "archived",
+        "implemented"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewed_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reviewed_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "review_notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "applied_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "applied_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "applied_summary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "applied_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "archived_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "archive_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "timestamp",
+          "action",
+          "status",
+          "actor",
+          "notes",
+          "artifacts"
+        ],
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

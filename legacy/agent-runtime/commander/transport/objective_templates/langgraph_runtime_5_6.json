@@ -1,0 +1,506 @@
+{
+  "objective_id": "objective-5-6-langgraph-runtime",
+  "objective_key": "langgraph-runtime",
+  "objective_title": "LangGraph Commander Runtime Projectization",
+  "objective_theme": "Host runtime, SDD, Hermes memory, and provider governance",
+  "objective": "Turn the commander system into a LangGraph-driven AI application with a visible host runtime, objective and phase backlog, controlled worker providers, SDD tasking, feedback loops, and resumable execution.",
+  "phases": [
+    {
+      "phase_id": "phase-5-6-host-runtime-integration",
+      "phase_key": "langgraph-runtime",
+      "theme_key": "langgraph-runtime",
+      "phase_title": "Host Runtime Integration",
+      "phase_theme": "Make the host daemon consume live objective and worker backlog instead of relying on chat turns.",
+      "objective": "Materialize the current commander mainline into daemon-consumable runtime work, then continue into real worker-provider launch and wait/resume integration.",
+      "goals": [
+        {
+          "goal_id": "goal-5-6-visible-host-smoke",
+          "theme_key": "langgraph-runtime",
+          "title": "Visible host daemon smoke",
+          "objective": "Run a deterministic local-script smoke through the worker provider path so the daemon can show live objective, phase, goal, dispatch, ingest, close, and archive behavior.",
+          "task_id": "task-5-6-visible-host-smoke",
+          "worker_provider_id": "local-script",
+          "packet_template": {
+            "must_read": [
+              "commander/graph/README.md",
+              "commander/transport/scripts/commander_host_daemon.py",
+              "commander/transport/scripts/commander_host_control.py"
+            ],
+            "bounds": [
+              "Do not modify business code.",
+              "Use this goal only as a deterministic runtime smoke.",
+              "Do not touch user-local config files."
+            ],
+            "validation": [
+              ".\\.venv\\Scripts\\python.exe -m commander.transport.scripts.commander_host_control daemon-status --log-limit 3"
+            ],
+            "forbidden_paths": [
+              "config/rag.yml",
+              "config/auth.local.yml",
+              "config/auth.yml.codex-real-integration.bak",
+              "web/tsconfig.node.tsbuildinfo"
+            ],
+            "worker_profile": "local-runtime-smoke",
+            "preferred_worker_profile": null,
+            "tool_profile": "local_script_readonly",
+            "allowed_tools": [
+              "shell_command"
+            ],
+            "reuse_allowed": true,
+            "dispatch_kind": "fresh",
+            "source_task_id": null,
+            "parent_task_id": null,
+            "task_owner": "commander-daemon",
+            "closure_policy": "close_when_validated",
+            "report_contract": {
+              "allowed_statuses": [
+                "done",
+                "blocked",
+                "need_split"
+              ],
+              "required_fields": [
+                "task_id",
+                "status",
+                "summary",
+                "changed_files",
+                "verification",
+                "commit",
+                "risks",
+                "recommended_next_step",
+                "needs_commander_decision",
+                "result_grade",
+                "next_action_owner",
+                "continuation_mode"
+              ]
+            },
+            "notes": [
+              "This goal is intentionally side-effect-light and should complete inline."
+            ],
+            "context_tags": [
+              "host-daemon",
+              "visible-smoke",
+              "local-script"
+            ],
+            "provider_input": {
+              "command": [
+                ".\\.venv\\Scripts\\python.exe",
+                "-m",
+                "commander.transport.scripts.commander_host_control",
+                "daemon-status",
+                "--log-limit",
+                "3"
+              ],
+              "cwd": ".",
+              "success_summary": "Host daemon control-plane smoke completed through local-script provider.",
+              "failure_summary": "Host daemon control-plane smoke failed through local-script provider.",
+              "recommended_next_step": "Continue the current host runtime phase by dispatching the provider launch integration goal.",
+              "changed_files": [],
+              "risks": []
+            }
+          },
+          "notes": [
+            "First goal proves the backlog is wired into the runtime before asking an external worker to implement more code."
+          ]
+        },
+        {
+          "goal_id": "goal-5-6-provider-launch-adapter",
+          "theme_key": "langgraph-runtime",
+          "title": "Provider launch adapter",
+          "objective": "Implement the next real host-runtime slice: provider auto-launch or launch-bundle execution path for Codex-compatible worker sessions, while preserving the rule that commander and worker do not edit the same files concurrently.",
+          "task_id": "task-5-6-provider-launch-adapter",
+          "worker_provider_id": "codex",
+          "packet_template": {
+            "must_read": [
+              "commander/graph/README.md",
+              "commander/outer/agent_workbench.md",
+              "commander/transport/scripts/commander_host_daemon.py",
+              "commander/graph/adapters/worker_providers/external_window.py",
+              "commander/graph/adapters/worker_providers/codex.py"
+            ],
+            "bounds": [
+              "Work only inside commander host/runtime/provider control-plane files unless the packet explicitly narrows further.",
+              "Do not edit business RAG, web, or config behavior.",
+              "Do not bypass packet/report contracts.",
+              "Do not make commander and worker share the same write set concurrently."
+            ],
+            "validation": [
+              ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_commander_host_daemon.py tests/test_commander_host_runtime.py tests/test_commander_graph.py",
+              ".\\.venv\\Scripts\\python.exe -m ruff check commander/graph commander/transport/scripts tests/test_commander_host_daemon.py tests/test_commander_host_runtime.py tests/test_commander_graph.py"
+            ],
+            "forbidden_paths": [
+              "config/rag.yml",
+              "config/auth.local.yml",
+              "config/auth.yml.codex-real-integration.bak",
+              "web/tsconfig.node.tsbuildinfo"
+            ],
+            "worker_profile": "code-worker",
+            "preferred_worker_profile": "codex-worker",
+            "tool_profile": "control_plane_safe_write",
+            "allowed_tools": [
+              "shell_command",
+              "apply_patch"
+            ],
+            "reuse_allowed": true,
+            "dispatch_kind": "fresh",
+            "source_task_id": "task-5-6-visible-host-smoke",
+            "parent_task_id": null,
+            "task_owner": "commander-daemon",
+            "closure_policy": "close_when_validated",
+            "report_contract": {
+              "allowed_statuses": [
+                "done",
+                "blocked",
+                "need_split"
+              ],
+              "required_fields": [
+                "task_id",
+                "status",
+                "summary",
+                "changed_files",
+                "verification",
+                "commit",
+                "risks",
+                "recommended_next_step",
+                "needs_commander_decision",
+                "result_grade",
+                "next_action_owner",
+                "continuation_mode"
+              ]
+            },
+            "notes": [
+              "If auto-launch is not safe in the current Codex host, implement the smallest provider abstraction that makes the limitation explicit and testable."
+            ],
+            "context_tags": [
+              "host-daemon",
+              "worker-provider",
+              "launch-adapter"
+            ],
+            "provider_input": null
+          },
+          "notes": [
+            "This is the first non-local worker goal; host daemon should wait for its worker_report."
+          ]
+        },
+        {
+          "goal_id": "goal-5-6-wait-resume-hardening",
+          "theme_key": "langgraph-runtime",
+          "title": "Wait and resume hardening",
+          "objective": "Harden host wait/resume behavior so external worker timeout, resume request, report discovery, and session closure remain visible and resumable.",
+          "task_id": "task-5-6-wait-resume-hardening",
+          "worker_provider_id": "codex",
+          "packet_template": {
+            "must_read": [
+              "commander/graph/README.md",
+              "commander/transport/scripts/commander_host_runtime.py",
+              "commander/graph/runners/run_until_handoff.py",
+              "commander/graph/runners/run_until_objective_handoff.py"
+            ],
+            "bounds": [
+              "Only change host wait/resume and tests around commander runtime.",
+              "Keep report ingest schema compatibility.",
+              "Do not introduce non-deterministic sleeps into tests."
+            ],
+            "validation": [
+              ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_commander_host_runtime.py tests/test_commander_graph.py tests/test_commander_host_daemon.py"
+            ],
+            "forbidden_paths": [
+              "config/rag.yml",
+              "config/auth.local.yml",
+              "config/auth.yml.codex-real-integration.bak",
+              "web/tsconfig.node.tsbuildinfo"
+            ],
+            "worker_profile": "code-worker",
+            "preferred_worker_profile": "codex-worker",
+            "tool_profile": "control_plane_safe_write",
+            "allowed_tools": [
+              "shell_command",
+              "apply_patch"
+            ],
+            "reuse_allowed": true,
+            "dispatch_kind": "fresh",
+            "source_task_id": "task-5-6-provider-launch-adapter",
+            "parent_task_id": null,
+            "task_owner": "commander-daemon",
+            "closure_policy": "close_when_validated",
+            "report_contract": {
+              "allowed_statuses": [
+                "done",
+                "blocked",
+                "need_split"
+              ],
+              "required_fields": [
+                "task_id",
+                "status",
+                "summary",
+                "changed_files",
+                "verification",
+                "commit",
+                "risks",
+                "recommended_next_step",
+                "needs_commander_decision",
+                "result_grade",
+                "next_action_owner",
+                "continuation_mode"
+              ]
+            },
+            "notes": [
+              "Prefer observable state transitions over prose-only recovery instructions."
+            ],
+            "context_tags": [
+              "host-daemon",
+              "resume",
+              "wait"
+            ],
+            "provider_input": null
+          }
+        }
+      ]
+    },
+    {
+      "phase_id": "phase-5-7-spec-kit-sdd",
+      "phase_key": "langgraph-runtime",
+      "theme_key": "langgraph-runtime",
+      "phase_title": "Spec Kit and SDD Layer",
+      "phase_theme": "Turn large commander goals into constitution, specification, planning, tasking, and implementation artifacts.",
+      "objective": "Add a spec-driven tasking layer so high-level user ideas become bounded, rewritable, appendable, and executable phase plans rather than ad-hoc chat promises.",
+      "goals": [
+        {
+          "goal_id": "goal-5-7-spec-template",
+          "theme_key": "langgraph-runtime",
+          "title": "Spec template and lifecycle",
+          "objective": "Define and validate the spec-kit artifact contract for constitution, specification, planning, tasking, and implementation state.",
+          "task_id": "task-5-7-spec-template",
+          "worker_provider_id": "codex",
+          "packet_template": {
+            "must_read": [
+              "commander/outer/指挥官LangGraph运行时项目化方案.md",
+              "commander/graph/README.md"
+            ],
+            "bounds": [
+              "Keep spec artifacts inside commander-owned paths.",
+              "Do not replace existing commander docs; connect to them as truth sources.",
+              "Do not introduce unvalidated free-form task execution."
+            ],
+            "validation": [
+              ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_commander_objective_plan.py tests/test_commander_phase_plan.py"
+            ],
+            "forbidden_paths": [
+              "config/rag.yml",
+              "config/auth.local.yml",
+              "config/auth.yml.codex-real-integration.bak",
+              "web/tsconfig.node.tsbuildinfo"
+            ],
+            "worker_profile": "code-worker",
+            "preferred_worker_profile": "codex-worker",
+            "tool_profile": "control_plane_safe_write",
+            "allowed_tools": [
+              "shell_command",
+              "apply_patch"
+            ],
+            "reuse_allowed": true,
+            "dispatch_kind": "fresh",
+            "source_task_id": "task-5-6-wait-resume-hardening",
+            "parent_task_id": null,
+            "task_owner": "commander-daemon",
+            "closure_policy": "close_when_validated",
+            "report_contract": {
+              "allowed_statuses": [
+                "done",
+                "blocked",
+                "need_split"
+              ],
+              "required_fields": [
+                "task_id",
+                "status",
+                "summary",
+                "changed_files",
+                "verification",
+                "commit",
+                "risks",
+                "recommended_next_step",
+                "needs_commander_decision",
+                "result_grade",
+                "next_action_owner",
+                "continuation_mode"
+              ]
+            },
+            "notes": [
+              "This phase comes from the Spec-Kit / SDD screenshots; implement as controlled artifacts, not a parallel docs universe."
+            ],
+            "context_tags": [
+              "spec-kit",
+              "sdd",
+              "tasking"
+            ],
+            "provider_input": null
+          }
+        }
+      ]
+    },
+    {
+      "phase_id": "phase-5-8-hermes-memory-feedback",
+      "phase_key": "langgraph-runtime",
+      "theme_key": "langgraph-runtime",
+      "phase_title": "Hermes Memory and Feedback Loop",
+      "phase_theme": "Integrate three-layer memory, controlled learning loop, and skill candidate upgrade flow.",
+      "objective": "Add observable memory and learning-review infrastructure so repeated problems become retrievable facts, improvement candidates, or gated skill upgrades.",
+      "goals": [
+        {
+          "goal_id": "goal-5-8-memory-index",
+          "theme_key": "langgraph-runtime",
+          "title": "Three-layer memory index",
+          "objective": "Design and implement the first searchable commander memory index across session/runtime state, persistent commander docs, and procedural scripts/skills.",
+          "task_id": "task-5-8-memory-index",
+          "worker_provider_id": "codex",
+          "packet_template": {
+            "must_read": [
+              "commander/outer/复用问题沉淀与Skill升级协议.md",
+              "commander/state/问题索引.md",
+              "commander/graph/README.md"
+            ],
+            "bounds": [
+              "Do not write raw secrets into memory.",
+              "Do not promote live skills without review.",
+              "Keep repo facts in repo docs and local skills as process shells only."
+            ],
+            "validation": [
+              ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_commander_harness.py tests/test_commander_context_router.py"
+            ],
+            "forbidden_paths": [
+              "config/rag.yml",
+              "config/auth.local.yml",
+              "config/auth.yml.codex-real-integration.bak",
+              "web/tsconfig.node.tsbuildinfo"
+            ],
+            "worker_profile": "code-worker",
+            "preferred_worker_profile": "codex-worker",
+            "tool_profile": "control_plane_safe_write",
+            "allowed_tools": [
+              "shell_command",
+              "apply_patch"
+            ],
+            "reuse_allowed": true,
+            "dispatch_kind": "fresh",
+            "source_task_id": "task-5-7-spec-template",
+            "parent_task_id": null,
+            "task_owner": "commander-daemon",
+            "closure_policy": "close_when_validated",
+            "report_contract": {
+              "allowed_statuses": [
+                "done",
+                "blocked",
+                "need_split"
+              ],
+              "required_fields": [
+                "task_id",
+                "status",
+                "summary",
+                "changed_files",
+                "verification",
+                "commit",
+                "risks",
+                "recommended_next_step",
+                "needs_commander_decision",
+                "result_grade",
+                "next_action_owner",
+                "continuation_mode"
+              ]
+            },
+            "notes": [
+              "Treat the screenshots as methodology inputs; verify repo paths before writing."
+            ],
+            "context_tags": [
+              "hermes",
+              "memory",
+              "skill-candidate"
+            ],
+            "provider_input": null
+          }
+        }
+      ]
+    },
+    {
+      "phase_id": "phase-5-9-provider-tool-governance",
+      "phase_key": "langgraph-runtime",
+      "theme_key": "langgraph-runtime",
+      "phase_title": "Provider and Tool Governance",
+      "phase_theme": "Make tool profiles, provider registry, and worker lifecycle visible and enforceable.",
+      "objective": "Turn provider and tool governance into explicit runtime contracts so Codex, Claude Code, Qwen, Doubao, and local-script can be swapped without rewriting the commander system.",
+      "goals": [
+        {
+          "goal_id": "goal-5-9-provider-registry",
+          "theme_key": "langgraph-runtime",
+          "title": "Provider registry and tool profiles",
+          "objective": "Implement the next provider registry/tool-profile layer so allowed_tools, forbidden_paths, worker capabilities, and lifecycle rules are inspectable before dispatch.",
+          "task_id": "task-5-9-provider-registry",
+          "worker_provider_id": "codex",
+          "packet_template": {
+            "must_read": [
+              "commander/graph/README.md",
+              "commander/graph/adapters/worker_providers/base.py",
+              "commander/graph/adapters/worker_providers/__init__.py"
+            ],
+            "bounds": [
+              "Keep provider abstraction model-agnostic.",
+              "Do not hard-code Codex as the system identity.",
+              "Do not allow provider capabilities to override forbidden paths."
+            ],
+            "validation": [
+              ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_commander_worker_providers.py tests/test_commander_graph.py",
+              ".\\.venv\\Scripts\\python.exe -m ruff check commander/graph/adapters/worker_providers tests/test_commander_worker_providers.py"
+            ],
+            "forbidden_paths": [
+              "config/rag.yml",
+              "config/auth.local.yml",
+              "config/auth.yml.codex-real-integration.bak",
+              "web/tsconfig.node.tsbuildinfo"
+            ],
+            "worker_profile": "code-worker",
+            "preferred_worker_profile": "codex-worker",
+            "tool_profile": "control_plane_safe_write",
+            "allowed_tools": [
+              "shell_command",
+              "apply_patch"
+            ],
+            "reuse_allowed": true,
+            "dispatch_kind": "fresh",
+            "source_task_id": "task-5-8-memory-index",
+            "parent_task_id": null,
+            "task_owner": "commander-daemon",
+            "closure_policy": "close_when_validated",
+            "report_contract": {
+              "allowed_statuses": [
+                "done",
+                "blocked",
+                "need_split"
+              ],
+              "required_fields": [
+                "task_id",
+                "status",
+                "summary",
+                "changed_files",
+                "verification",
+                "commit",
+                "risks",
+                "recommended_next_step",
+                "needs_commander_decision",
+                "result_grade",
+                "next_action_owner",
+                "continuation_mode"
+              ]
+            },
+            "notes": [
+              "This is the governance counterpart to worker launch; it should make unsafe dispatch harder, not just better documented."
+            ],
+            "context_tags": [
+              "provider-registry",
+              "tool-profile",
+              "governance"
+            ],
+            "provider_input": null
+          }
+        }
+      ]
+    }
+  ]
+}

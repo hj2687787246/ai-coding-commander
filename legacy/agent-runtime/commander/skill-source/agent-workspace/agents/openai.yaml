@@ -1,0 +1,3 @@
+display_name: Agent Workspace
+short_description: Project adapter for the Agent repository.
+default_prompt: Use the Agent workspace project skill to recover repo status, select the right workflow mode, and apply project-specific commander harness rules.

@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Commander Memory Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "query",
+    "runtime_root",
+    "searched_layers",
+    "searched_sources",
+    "index",
+    "skill_source_registry",
+    "result_count",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtime_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "searched_layers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "session_runtime",
+          "persistent_commander_docs",
+          "procedural_memory"
+        ]
+      }
+    },
+    "searched_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "index": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "layer_count",
+        "entry_count",
+        "layers"
+      ],
+      "properties": {
+        "layer_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "entry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "layer",
+              "entry_count",
+              "result_count",
+              "source_count",
+              "sources",
+              "source_kinds"
+            ],
+            "properties": {
+              "layer": {
+                "type": "string",
+                "enum": [
+                  "session_runtime",
+                  "persistent_commander_docs",
+                  "procedural_memory"
+                ]
+              },
+              "entry_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "result_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "source_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "source_kinds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "skill_source_registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "entry_count",
+        "source_precedence",
+        "load_policy",
+        "effective_sources",
+        "entries"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_precedence": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "load_policy": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "boolean",
+              "number",
+              "null"
+            ]
+          }
+        },
+        "effective_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "boolean",
+                "integer",
+                "null"
+              ]
+            }
+          }
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "boolean",
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "result_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rank",
+          "layer",
+          "source",
+          "source_kind",
+          "path",
+          "title",
+          "score",
+          "matched_lines",
+          "excerpt"
+        ],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "layer": {
+            "type": "string",
+            "enum": [
+              "session_runtime",
+              "persistent_commander_docs",
+              "procedural_memory"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "matched_lines": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "excerpt": {
+            "type": "string"
+          },
+          "registry_metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "boolean",
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

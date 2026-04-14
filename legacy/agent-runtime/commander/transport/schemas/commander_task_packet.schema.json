@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Commander Task Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "title",
+    "goal",
+    "must_read",
+    "bounds",
+    "validation",
+    "forbidden_paths",
+    "worker_profile",
+    "tool_profile",
+    "allowed_tools",
+    "reuse_allowed",
+    "dispatch_kind",
+    "source_task_id",
+    "parent_task_id",
+    "task_owner",
+    "closure_policy",
+    "report_contract",
+    "status"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "must_read": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "bounds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "validation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "owned_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "worker_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preferred_worker_profile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "tool_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_tools": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "reuse_allowed": {
+      "type": "boolean"
+    },
+    "dispatch_kind": {
+      "type": "string",
+      "enum": [
+        "fresh",
+        "followup",
+        "split",
+        "reopen",
+        "reconcile"
+      ]
+    },
+    "source_task_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parent_task_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "closure_policy": {
+      "type": "string",
+      "enum": [
+        "close_when_validated",
+        "require_commander_review",
+        "return_for_user_delivery"
+      ]
+    },
+    "report_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_statuses",
+        "required_fields"
+      ],
+      "properties": {
+        "allowed_statuses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "done",
+              "blocked",
+              "need_split"
+            ]
+          },
+          "minItems": 1
+        },
+        "required_fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "dispatched"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "context_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "spec_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "spec_id",
+          "path"
+        ],
+        "properties": {
+          "spec_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "section": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "provider_input": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

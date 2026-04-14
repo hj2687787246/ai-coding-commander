@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Commander Context Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "provider_id",
+    "selected_tags",
+    "read_policy",
+    "entries",
+    "generated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "selected_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "read_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "default_behavior",
+        "compact_resume_first",
+        "open_checkpoint_only_when_needed",
+        "recommended_sequence"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "default_behavior": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compact_resume_first": {
+          "type": "boolean"
+        },
+        "open_checkpoint_only_when_needed": {
+          "type": "boolean"
+        },
+        "recommended_sequence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "round_budget_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "router_open_now_estimated_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "router_deferred_estimated_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "router_full_expand_estimated_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "router_budget_enforced": {
+          "type": "boolean"
+        },
+        "router_budget_overflow": {
+          "type": "boolean"
+        },
+        "deferred_by_budget_context_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "title",
+          "category",
+          "reason",
+          "disclosure_mode",
+          "summary_lines",
+          "when_to_open",
+          "paths",
+          "deferred_paths"
+        ],
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "disclosure_mode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary_lines": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "when_to_open": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "deferred_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "normal",
+              "low"
+            ]
+          },
+          "budget_behavior": {
+            "type": "string",
+            "enum": [
+              "pinned_open",
+              "defer_if_needed"
+            ]
+          },
+          "estimated_open_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "estimated_deferred_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "budget_action": {
+            "type": "string",
+            "enum": [
+              "pinned_open",
+              "kept_open",
+              "deferred_by_budget"
+            ]
+          },
+          "budget_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

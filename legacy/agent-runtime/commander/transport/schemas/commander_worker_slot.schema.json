@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Commander Worker Slot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "worker_id",
+    "worker_profile",
+    "tool_profile",
+    "allowed_tools",
+    "state",
+    "current_task_id",
+    "acquire_count",
+    "reuse_count",
+    "lease_duration_seconds",
+    "lease_expires_at",
+    "heartbeat_at",
+    "created_at",
+    "updated_at",
+    "last_used_at",
+    "last_released_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "worker_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "worker_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preferred_worker_profile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "tool_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_tools": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "warm_idle",
+        "busy",
+        "completed_waiting_close",
+        "closed"
+      ]
+    },
+    "current_task_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "acquire_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reuse_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lease_duration_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lease_expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "heartbeat_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_used_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_released_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    }
+  }
+}
