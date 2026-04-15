@@ -14,6 +14,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 1. Start from the current working directory unless the user gives another workspace path.
 2. Prefer repo-local instructions before generic defaults:
    - Read `AGENTS.md` when it exists.
+   - Read `.codex/AGENT.md` when it exists; this is the preferred home for project-specific Codex rules.
    - Read commander appointment docs when present, especially `commander/core/任命.md`.
    - If the repo has a compact current-state file, read it before opening large state docs.
    - For the Agent workspace learning track, prefer `docs/当前学习状态.md` and `docs/AI求职学习验收记录.md`; do not call the archived `commander.transport` runtime.
@@ -53,6 +54,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 2. When the current repository has a project skill, use that skill and its `references/` for project-specific workflow, domain constraints, and detailed policies.
 3. Write durable facts to the narrowest stable store:
    - Startup routing and hard constraints: `AGENTS.md`.
+   - Project-specific Codex workflow, learning track, and coding conventions: `.codex/AGENT.md` and `.codex/docs/`.
    - Project conventions and detailed workflow: project skill `references/` or a dedicated memory.
    - Current task evidence: repo task cards, timelines, issue trackers, or status files.
    - Machine-readable contracts: specs, schemas, packets, or tracker fields.
@@ -68,6 +70,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - Dirty worktree without validation evidence must continue.
    - Dirty worktree with validation evidence may stop only after reporting the remaining dirty files and evidence.
 5. For command examples and limits, read `references/portable-harness.md`.
+6. For the recommended per-project Codex workspace layout, read `references/project-codex-layout.md`.
 
 ## Spec, Plan, And Work Modes
 
