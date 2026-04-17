@@ -2,6 +2,16 @@
 
 通用 AI coding 指挥官 skill 的独立承接仓库。
 
+## 当前主线
+
+当前活跃实现只认：
+
+1. `skills/commander-mode/`
+2. `skills/commander-mode/scripts/portable_harness.py`
+3. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
+
+`legacy/agent-runtime/` 仅作归档参考，不参与当前实现，不作为当前安装源、恢复入口或扩展目标。
+
 目标：
 
 1. 提供跨仓库可用的 `commander-mode` skill。
