@@ -96,6 +96,20 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - `.codex/docs/周总结.md`
 4. The default bootstrap is task-based, not learning-based. Learning is only one possible task mode inside a project.
 
+## Task Governance
+
+1. Treat the current project's task card as the primary task truth source on disk.
+2. The standard project task model should express:
+   - task mode
+   - task shape: `single / epic / batch`
+   - execution intensity: `compact / full`
+   - validation status
+   - validation evidence
+3. Do not promote a task to complete merely because code was written, agents were dispatched, or commands were run.
+4. **没有验证证据，不得标记任务完成。**
+5. On long-running work, **磁盘上的当前任务真相源优先于聊天记忆**.
+6. Batch work is an optional extension for homogeneous, row-level tasks. It does not replace the main `.codex/docs/当前任务.md` protocol, and it must not introduce `.codex-tasks/` as a second primary task root.
+
 ### 首次接入项目的建议话术
 
 当检测到当前仓库是未初始化项目时，优先使用类似下面的短话术，而不是直接把别的项目状态带进来：
