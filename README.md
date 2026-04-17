@@ -25,7 +25,7 @@
 3. 项目正文文档
 4. MCP 资源理解边界
 
-这几层清晰分开，而不是继续把项目学习计划、AI 协作规则和业务文档混在同一层里。
+这几层清晰分开，而不是继续把项目任务文档、AI 协作规则和业务文档混在同一层里。
 
 ## 安装
 
@@ -99,7 +99,7 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\portable_harness.py --cwd . stop-gate
 ```
 
-这个仓库只承载通用 skill。项目自己的学习路线、任务记录和业务代码应该留在各自项目仓库。
+这个仓库只承载通用 skill。项目自己的任务记录和业务代码应该留在各自项目仓库。
 
 如果你想给新项目套用统一结构，直接看：
 
@@ -114,7 +114,7 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 3. 等用户确认后再创建
 4. 创建完成后，用 `当前任务.md` 进入当前任务模式
 
-默认骨架是**任务导向**的，不是学习导向的。学习模式只是项目里的一种任务模式，不是 commander 系统的默认模板。
+默认骨架是**通用任务骨架**。系统只关心当前任务是什么，不预设任何特定场景。
 
 ### Bootstrap 新项目
 

@@ -28,7 +28,7 @@ It provides:
 2. 存在 `.codex/docs/当前状态.md`
 3. 仓库根 `AGENTS.md` 明确把 `.codex/AGENT.md` 作为入口之一
 
-这层探测只负责判断“当前项目有没有自己的 commander 协议”，不负责决定任务模式，也不默认把学习模式当成系统模式。
+这层探测只负责判断“当前项目有没有自己的 commander 协议”，不负责决定当前任务类型。
 
 ## Commands
 

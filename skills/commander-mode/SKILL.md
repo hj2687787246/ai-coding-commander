@@ -20,7 +20,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - 已初始化项目：存在 `.codex/AGENT.md`，或存在 `.codex/docs/当前状态.md`，或仓库根 `AGENTS.md` 明确指向 `.codex/AGENT.md`。
    - 未初始化项目：当前仓库还没有最小 commander 协议骨架。
 4. 对已初始化项目：
-   - 恢复当前项目自己的 `.codex` 状态，不假设学习模式是默认模式。
+   - 恢复当前项目自己的 `.codex` 状态，不预设任何特定任务类型。
    - 读取当前任务与恢复入口，而不是回到别的项目的状态。
 5. 对未初始化项目：
    - 说明当前项目尚未接入 commander 协议。
