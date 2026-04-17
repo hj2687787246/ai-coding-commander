@@ -39,3 +39,14 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 如果你想给新项目套用统一结构，直接看：
 
 - `skills/commander-mode/references/project-codex-layout.md`
+
+## 初始化新项目的 `.codex` 协议
+
+当 `commander-mode` 进入一个还没有 `.codex` 协议的仓库时，正确流程应该是：
+
+1. 先识别当前项目为未初始化项目
+2. 提议创建标准 `.codex` 骨架
+3. 等用户确认后再创建
+4. 创建完成后，用 `当前任务.md` 进入当前任务模式
+
+默认骨架是**任务导向**的，不是学习导向的。学习模式只是项目里的一种任务模式，不是 commander 系统的默认模板。

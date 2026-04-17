@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -142,6 +143,30 @@ def detect_commander_assets(repo_root: Path) -> dict[str, Any]:
     }
 
 
+def detect_commander_protocol(repo_root: Path) -> dict[str, Any]:
+    markers: list[str] = []
+
+    if (repo_root / ".codex" / "AGENT.md").exists():
+        markers.append(".codex/AGENT.md")
+    if (repo_root / ".codex" / "docs" / "当前状态.md").exists():
+        markers.append(".codex/docs/当前状态.md")
+
+    agents_file = repo_root / "AGENTS.md"
+    if agents_file.exists():
+        try:
+            agents_text = agents_file.read_text(encoding="utf-8")
+        except OSError:
+            agents_text = ""
+        if ".codex/AGENT.md" in agents_text and (repo_root / ".codex" / "AGENT.md").exists():
+            markers.append("AGENTS.md -> .codex/AGENT.md")
+
+    deduped = list(dict.fromkeys(markers))
+    return {
+        "initialized": bool(deduped),
+        "markers": deduped,
+    }
+
+
 def build_status(cwd: Path) -> dict[str, Any]:
     repo_root = resolve_git_root(cwd)
     if repo_root is None:
@@ -150,6 +175,10 @@ def build_status(cwd: Path) -> dict[str, Any]:
             "cwd": str(cwd),
             "is_git_repo": False,
             "harness_level": "none",
+            "commander_protocol": {
+                "initialized": False,
+                "markers": [],
+            },
             "next_actions": ["Open a git workspace or initialize repo-local task tracking before relying on harness checks."],
         }
 
@@ -170,6 +199,7 @@ def build_status(cwd: Path) -> dict[str, Any]:
         "instruction_files": instruction_files,
         "project_markers": markers,
         "validation_commands": validation_commands,
+        "commander_protocol": detect_commander_protocol(repo_root),
         "commander_assets": commander_assets,
         "worktree": {
             "dirty": bool(changes),
@@ -227,6 +257,8 @@ def build_stop_gate(cwd: Path, *, validations: list[str], allow_dirty: bool) -> 
 
 
 def main(argv: list[str] | None = None) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description="Run portable commander harness checks.")
     parser.add_argument("--cwd", default=".", help="Workspace path to inspect.")
     subparsers = parser.add_subparsers(dest="command", required=True)

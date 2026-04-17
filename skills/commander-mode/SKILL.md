@@ -15,13 +15,22 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 2. Prefer repo-local instructions before generic defaults:
    - Read `AGENTS.md` when it exists.
    - Read `.codex/AGENT.md` when it exists; this is the preferred home for project-specific Codex rules.
-   - Read commander appointment docs when present, especially `commander/core/任命.md`.
-   - If the repo has a compact current-state file, read it before opening large state docs.
-   - For the Agent workspace learning track, prefer `docs/当前学习状态.md` and `docs/AI求职学习验收记录.md`; do not call the archived `commander.transport` runtime.
-3. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
-   - `python C:\Users\26877\.codex\skills\commander-mode\scripts\portable_harness.py --cwd . status`
-4. If no repo-local commander docs exist, use the generic commander workflow below and build context from README, issue/task docs, git status, tests, and user-provided goals.
-5. Do not hardcode `D:\Develop\Python-Project\Agent`; that path is only one possible workspace.
+   - If the repo exposes `.codex/docs/恢复入口.md`, follow it first.
+3. Decide whether the current project is initialized:
+   - 已初始化项目：存在 `.codex/AGENT.md`，或存在 `.codex/docs/当前状态.md`，或仓库根 `AGENTS.md` 明确指向 `.codex/AGENT.md`。
+   - 未初始化项目：当前仓库还没有最小 commander 协议骨架。
+4. 对已初始化项目：
+   - 恢复当前项目自己的 `.codex` 状态，不假设学习模式是默认模式。
+   - 读取当前任务与恢复入口，而不是回到别的项目的状态。
+5. 对未初始化项目：
+   - 说明当前项目尚未接入 commander 协议。
+   - 提议创建标准 `.codex` 骨架。
+   - 在用户确认前不要写文件。
+6. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
+   - Installed global copy: `python C:\Users\26877\.codex\skills\commander-mode\scripts\portable_harness.py --cwd . status`
+   - When developing this repository itself, prefer the repo-local script copy under the current workspace, not the installed global path.
+7. If no repo-local commander docs exist, use the generic commander workflow below and build context from README, issue/task docs, git status, tests, and user-provided goals.
+8. Do not hardcode `D:\Develop\Python-Project\Agent`; that path is only one possible workspace.
 
 ## Default Stance
 
@@ -63,7 +72,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 ## Portable Harness
 
 1. Use `scripts/portable_harness.py` to give every git repository a minimum harness layer without copying this repo's `commander/` runtime.
-2. Run `status` to detect repo root, instruction files, project markers, suggested validation commands, worktree changes, and whether a repo-native commander stop gate exists.
+2. Run `status` to detect repo root, instruction files, project markers, suggested validation commands, worktree changes, whether a repo-native commander stop gate exists, and whether the current project already exposes a `.codex` commander protocol.
 3. Run `stop-gate` before declaring completion when the current repository does not expose a stronger repo-native stop gate.
 4. Treat the portable stop gate as the minimum discipline:
    - Clean worktree can stop.
@@ -71,6 +80,30 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - Dirty worktree with validation evidence may stop only after reporting the remaining dirty files and evidence.
 5. For command examples and limits, read `references/portable-harness.md`.
 6. For the recommended per-project Codex workspace layout, read `references/project-codex-layout.md`.
+
+## Project Bootstrap
+
+1. `commander-mode` does not assume every repository is already initialized.
+2. When a repository is uninitialized, the correct behavior is to propose bootstrapping a standard `.codex` workspace for the current repository.
+3. The standard bootstrap should create a task-oriented project workspace:
+   - `.codex/AGENT.md`
+   - `.codex/docs/当前状态.md`
+   - `.codex/docs/当前任务.md`
+   - `.codex/docs/恢复入口.md`
+   - `.codex/docs/验收记录.md`
+   - `.codex/docs/归档索引.md`
+   - `.codex/docs/协作偏好.md`
+   - `.codex/docs/周总结.md`
+4. The default bootstrap is task-based, not learning-based. Learning is only one possible task mode inside a project.
+
+### 首次接入项目的建议话术
+
+当检测到当前仓库是未初始化项目时，优先使用类似下面的短话术，而不是直接把别的项目状态带进来：
+
+> 当前项目还没有 commander 协议骨架，所以我不会直接套用别的项目状态。  
+> 如果你确认，我可以先为这个项目创建标准 `.codex` 骨架，再从这个项目自己的当前任务开始沉淀。
+
+如果用户确认，再进入 bootstrap 流程；如果用户不确认，就继续按轻量 commander 方式工作，但不要伪装成已初始化项目。
 
 ## Spec, Plan, And Work Modes
 
