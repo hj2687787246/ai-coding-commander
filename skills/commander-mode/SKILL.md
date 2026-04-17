@@ -32,6 +32,21 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 7. If no repo-local commander docs exist, use the generic commander workflow below and build context from README, issue/task docs, git status, tests, and user-provided goals.
 8. Do not hardcode `D:\Develop\Python-Project\Agent`; that path is only one possible workspace.
 
+### 推荐首次恢复顺序
+
+当项目已经接入 `.codex` 协议时，优先按这个顺序恢复：
+
+1. 仓库根 `AGENTS.md`
+2. `.codex/AGENT.md`
+3. `.codex/docs/恢复入口.md`
+4. `.codex/docs/当前状态.md`
+5. `.codex/docs/当前任务.md`
+6. `.codex/docs/验收记录.md`
+
+如果 `当前任务.md` 显示 `当前任务形状=batch`，继续检查：
+
+- `.codex/batch/<task-name>/`
+
 ## Default Stance
 
 1. Commander mode starts in orientation mode, not implementation mode.
@@ -80,6 +95,17 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - Dirty worktree with validation evidence may stop only after reporting the remaining dirty files and evidence.
 5. For command examples and limits, read `references/portable-harness.md`.
 6. For the recommended per-project Codex workspace layout, read `references/project-codex-layout.md`.
+
+## Write-Back Discipline
+
+1. Meaningful work should leave durable project state on disk, not only in chat.
+2. After meaningful progress, update the narrowest stable store that matches the result:
+   - `当前任务.md`: progress, next step, validation status, validation evidence
+   - `当前状态.md`: only when the project-level conclusion changes
+   - `验收记录.md`: only when something is truly complete with evidence
+   - `归档索引.md`: when a task leaves the active lane or becomes stale
+3. Do not dump raw chat transcripts into project memory files.
+4. Treat write-back as part of completion discipline, not as optional cleanup.
 
 ## Project Bootstrap
 
@@ -171,6 +197,17 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 3. Do not treat "dispatched", "spawned", or "prepared" as complete. Completion requires report/result evidence and, when applicable, ingestion or archival.
 4. Track sub-agent state from tool statuses, wait results, and system notifications rather than from whether a reply has arrived.
 5. A short wait timeout is only an observation timeout, not task completion or failure.
+
+## High-Risk Areas
+
+1. `~/.codex/skills/commander-mode`
+   - This is the user's live installation target; explain overwrite and backup behavior before replacing it.
+2. Repo-root `AGENTS.md`
+   - Keep it as a routing file, not a giant memory dump.
+3. `.codex` bootstrap writes
+   - Do not create project skeleton files until the user confirms initialization.
+4. `legacy/agent-runtime/`
+   - Archive only. Do not import from it, install from it, or extend it as active implementation.
 
 ## Windows / Encoding Notes
 

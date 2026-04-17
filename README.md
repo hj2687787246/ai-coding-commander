@@ -123,6 +123,21 @@ pwsh -NoLogo -File .\install\install-commander.ps1 -Force
 - 正式分发入口只有 `skills/commander-mode/`
 - `legacy/agent-runtime/` 只是归档，不参与安装和当前使用
 
+### 首次恢复顺序
+
+进入一个项目后，推荐优先按这个顺序恢复：
+
+1. 仓库根 `AGENTS.md`
+2. 项目 `.codex/AGENT.md`
+3. `.codex/docs/恢复入口.md`
+4. `.codex/docs/当前状态.md`
+5. `.codex/docs/当前任务.md`
+6. `.codex/docs/验收记录.md`
+
+如果 `当前任务.md` 明确写了 `当前任务形状=batch`，继续检查：
+
+- `.codex/batch/<task-name>/`
+
 ### portable harness
 
 ```powershell
@@ -159,3 +174,34 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 2. 提议创建标准 `.codex` 骨架
 3. 等用户确认后再执行 bootstrap
 4. 用 `当前任务.md` 进入当前任务模式
+
+## 写回纪律
+
+有意义的工作完成后，不要只停留在聊天里，至少应按需回写：
+
+1. `当前任务.md`
+   - 当前进度
+   - 下一步
+   - 验证状态
+   - 验证证据
+2. `当前状态.md`
+   - 当前项目整体结论发生变化时更新
+3. `验收记录.md`
+   - 只有正式完成并有验证证据时才写入
+4. `归档索引.md`
+   - 当前任务降级、过期或退出主线时更新
+
+不要把长聊天记录直接当成持久状态；磁盘上的项目文档才是恢复真相源。
+
+## 高风险区
+
+以下区域需要显式谨慎处理：
+
+1. `~/.codex/skills/commander-mode`
+   - 这是用户本地正式安装入口，覆盖前要先说明和备份策略。
+2. 项目根 `AGENTS.md`
+   - 它是仓库门牌文件，不应该被写成大而全的长期记忆仓库。
+3. `.codex/` bootstrap 写入
+   - 首次接入项目时，只能在用户确认后创建骨架。
+4. `legacy/agent-runtime/`
+   - 这是归档参考，不应再被当作当前实现、安装源或扩展目标。
