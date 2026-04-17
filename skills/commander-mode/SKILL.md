@@ -17,7 +17,12 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - Read `.codex/AGENT.md` when it exists; this is the preferred home for project-specific Codex rules.
    - Read commander appointment docs when present, especially `commander/core/任命.md`.
    - If the repo has a compact current-state file, read it before opening large state docs.
-   - For the Agent workspace learning track, prefer `docs/当前学习状态.md` and `docs/AI求职学习验收记录.md`; do not call the archived `commander.transport` runtime.
+   - For the Agent workspace learning track, prefer:
+     1. `.codex/docs/当前状态.md`
+     2. `.codex/docs/学习进度卡.md`
+     3. `.codex/docs/学习时间线.md`
+     4. `.codex/AGENT.md`
+   - Do not call the archived `commander.transport` runtime for the Agent workspace.
 3. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
    - `python C:\Users\26877\.codex\skills\commander-mode\scripts\portable_harness.py --cwd . status`
 4. If no repo-local commander docs exist, use the generic commander workflow below and build context from README, issue/task docs, git status, tests, and user-provided goals.
@@ -128,7 +133,7 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 ## Windows / Encoding Notes
 
 1. In PowerShell, terminal display and file contents are separate layers; validate file contents with UTF-8 reads when Chinese text matters.
-2. Avoid relying on `&&` chaining in Windows PowerShell.
+2. Avoid relying on `&&` chaining in `pwsh` / PowerShell 7 when you need predictable cross-environment behavior.
 3. When generating Chinese content through terminal scripts, avoid raw Chinese string literals in inline scripts; prefer `apply_patch` or validated UTF-8 file writes.
 4. When filenames contain Chinese, enumerate paths first and then operate on exact paths.
 
