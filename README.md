@@ -151,6 +151,14 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 
 - `skills/commander-mode/references/project-codex-layout.md`
 
+### 同步长任务状态
+
+当任务持续时间较长时，可以在关键节点把当前任务状态同步回 `.codex/docs/当前任务.md`：
+
+```powershell
+python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\sync_current_task.py --repo . --event validate --validation-status "已验证" --validation-evidence "python -m pytest passed"
+```
+
 ## 初始化新项目的 `.codex` 协议
 
 当 `commander-mode` 进入一个还没有 `.codex` 协议的仓库时，正确流程应该是：

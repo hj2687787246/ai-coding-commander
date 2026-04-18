@@ -106,6 +106,16 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
    - `归档索引.md`: when a task leaves the active lane or becomes stale
 3. Do not dump raw chat transcripts into project memory files.
 4. Treat write-back as part of completion discipline, not as optional cleanup.
+5. For long-running work, recommend synchronizing `.codex/docs/当前任务.md` at key checkpoints:
+   - task start
+   - phase transition
+   - validation complete
+   - pre-close / stop-gate
+6. Example:
+
+```powershell
+python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_current_task.py --repo . --event start --progress "进行中：开始执行当前任务" --next-step "实现最小代码改动"
+```
 
 ## Project Bootstrap
 
