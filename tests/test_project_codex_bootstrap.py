@@ -129,13 +129,14 @@ def test_commander_skill_explains_repo_local_vs_installed_harness_paths() -> Non
     assert "C:\\Users\\26877\\.codex\\skills\\commander-mode\\scripts\\portable_harness.py" in skill
 
 
-def test_commander_skill_includes_first_run_prompt_for_uninitialized_projects() -> None:
+def test_commander_skill_does_not_force_bootstrap_for_uninitialized_projects() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     skill = (repo_root / "skills" / "commander-mode" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "首次接入项目" in skill
-    assert "当前项目还没有 commander 协议骨架" in skill
-    assert "如果你确认，我可以先为这个项目创建标准 `.codex` 骨架" in skill
+    assert "未初始化项目" in skill
+    assert "没有 `.codex`" in skill
+    assert "仍然正常工作" in skill
+    assert "不强制创建完整 `.codex` 模板" in skill
 
 
 def test_commander_skill_absorbs_taskmaster_task_governance_language() -> None:
