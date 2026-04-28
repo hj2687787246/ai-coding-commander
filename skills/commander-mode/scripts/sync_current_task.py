@@ -12,6 +12,7 @@ from pathlib import Path
 FIELD_PREFIXES = {
     "progress": "当前进度：",
     "blocker": "当前卡点：",
+    "focus_files": "正在关注的文件：",
     "validation_status": "验证状态：",
     "validation_evidence": "验证证据：",
     "next_step": "下一步：",
@@ -21,13 +22,14 @@ FIELD_PREFIXES = {
 FIELD_LABELS = {
     "progress": "当前进度",
     "blocker": "当前卡点",
+    "focus_files": "正在关注的文件",
     "validation_status": "验证状态",
     "validation_evidence": "验证证据",
     "next_step": "下一步",
     "last_validation": "最近验证",
 }
 
-VALID_EVENTS = {"start", "phase", "validate", "preclose"}
+VALID_EVENTS = {"start", "phase", "validate", "preclose", "checkpoint"}
 
 
 @dataclass(frozen=True)
@@ -61,6 +63,7 @@ def sync_current_task(
     event: str,
     progress: str | None = None,
     blocker: str | None = None,
+    focus_files: str | None = None,
     validation_status: str | None = None,
     validation_evidence: str | None = None,
     next_step: str | None = None,
@@ -76,6 +79,7 @@ def sync_current_task(
     updates = {
         "progress": progress,
         "blocker": blocker,
+        "focus_files": focus_files,
         "validation_status": validation_status,
         "validation_evidence": validation_evidence,
         "next_step": next_step,
@@ -99,6 +103,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--event", required=True, choices=sorted(VALID_EVENTS))
     parser.add_argument("--progress")
     parser.add_argument("--blocker")
+    parser.add_argument("--focus-files")
     parser.add_argument("--validation-status")
     parser.add_argument("--validation-evidence")
     parser.add_argument("--next-step")
@@ -121,6 +126,7 @@ def main(argv: list[str] | None = None) -> int:
             event=args.event,
             progress=args.progress,
             blocker=args.blocker,
+            focus_files=args.focus_files,
             validation_status=args.validation_status,
             validation_evidence=args.validation_evidence,
             next_step=args.next_step,
