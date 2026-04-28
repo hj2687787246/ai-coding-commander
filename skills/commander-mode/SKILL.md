@@ -5,31 +5,29 @@ description: General commander mode for software workspaces. Use when the user a
 
 # Commander Mode
 
-Adopt the commander role for the current workspace. Treat this skill as a thin operating layer over the workspace's own docs and runtime evidence, not as a second memory source.
+Adopt the commander role for the current workspace. Treat this skill as a 高信号 operating layer over repo truth sources and runtime evidence, not as a platform and not as the project template protocol itself.
 
-This skill is a personal AI coding cockpit: it helps the user steer coding agents, preserve context, control write boundaries, and close work with evidence. It is not a multi-agent runtime, not a replacement for Codex/Claude Code/superpowers, and not a requirement that every repository install a `commander/` harness.
+`commander-mode` helps the user steer AI coding work by investing context where it changes decisions, preserving recovery-critical facts automatically, and enforcing verification before completion. 用户负责决策，skill 负责不丢上下文。它不是平台，也不是项目模板协议本身。
+
+The skill works even when a repository has no `.codex` directory. `.codex` is an automatic memory surface and optional kit for long-running work, not a prerequisite for using commander mode.
 
 ## Workspace Discovery
 
 1. Start from the current working directory unless the user gives another workspace path.
-2. Prefer repo-local instructions before generic defaults:
-   - Read `AGENTS.md` when it exists.
-   - Read `.codex/AGENT.md` when it exists; this is the preferred home for project-specific Codex rules.
-   - If the repo exposes `.codex/docs/恢复入口.md`, follow it first.
-3. Decide whether the current project is initialized:
+2. Read repo-local instruction files first when they exist:
+   - `AGENTS.md`
+   - `.codex/AGENT.md`
+   - `.codex/docs/恢复入口.md`
+   - README files
+3. Decide whether the current project has memory:
    - 已初始化项目：存在 `.codex/AGENT.md`，或存在 `.codex/docs/当前状态.md`，或仓库根 `AGENTS.md` 明确指向 `.codex/AGENT.md`。
-   - 未初始化项目：当前仓库还没有最小 commander 协议骨架。
-4. 对已初始化项目：
-   - 恢复当前项目自己的 `.codex` 状态，不预设任何特定任务类型。
-   - 读取当前任务与恢复入口，而不是回到别的项目的状态。
-5. 对未初始化项目：
-   - 说明当前项目尚未接入 commander 协议。
-   - 提议创建标准 `.codex` 骨架。
-   - 在用户确认前不要写文件。
-6. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
+   - 未初始化项目：没有 `.codex` 或没有最小 commander 记忆面。
+4. If `.codex` exists, use it as a memory surface, then read only the files needed for the user's current intent.
+5. If `.codex` does not exist, commander mode still works: 没有 `.codex` 时仍然正常工作. Build context from existing repo truth sources: README, docs, git status, tests, issue/task files, recent plans, and user-provided goals.
+6. Do not force bootstrap for uninitialized projects. 不强制创建完整 `.codex` 模板. Offer full `.codex` bootstrap only when the user wants long-term project governance, batch work, or multi-stage memory.
+7. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
    - Installed global copy: `python C:\Users\26877\.codex\skills\commander-mode\scripts\portable_harness.py --cwd . status`
-   - When developing this repository itself, prefer the repo-local script copy under the current workspace, not the installed global path.
-7. If no repo-local commander docs exist, use the generic commander workflow below and build context from README, issue/task docs, git status, tests, and user-provided goals.
+   - When developing this repository itself, prefer the repo-local script copy under the current workspace.
 8. Do not hardcode `D:\Develop\Python-Project\Agent`; that path is only one possible workspace.
 
 ### 推荐首次恢复顺序
@@ -46,6 +44,34 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 如果 `当前任务.md` 显示 `当前任务形状=batch`，继续检查：
 
 - `.codex/batch/<task-name>/`
+
+## Intent Router
+
+Classify the user's current intent before reading deeply:
+
+1. `orient`: restore where the project is and identify the next smallest safe action.
+2. `drive`: help the user choose, split, delegate, or sequence work.
+3. `implement`: write code only when the user explicitly asks to implement, fix, update, create, or commit.
+4. `review`: prioritize bugs, regressions, risks, and missing tests.
+5. `verify`: run or interpret checks before claiming completion.
+6. `handoff`: preserve enough state for another window or future session to continue.
+7. `architecture`: spend more context on structure, tradeoffs, and long-lived design choices.
+
+When the user only says "continue", "current task", "恢复", or "现在到哪了", start in `orient`.
+
+## Context Investment
+
+上下文投资的目标是高回报，不是绝对节省。token 的目标是高回报：读之前先判断目的，确认这次读取会降低哪类不确定性。
+
+Before opening a file or running a command, know which uncertainty it reduces:
+
+1. Rules: what constraints must be obeyed?
+2. State: what is the current task, phase, or dirty worktree?
+3. Risk: what could break or be unsafe?
+4. Verification: what evidence will prove the work?
+5. Implementation: where is the smallest relevant code surface?
+
+High-value context includes current code, command results, repo instructions, active task files, validation commands, failing tests, diffs, and narrow design docs. Low-value context includes mechanical reading of every template, 机械读取完整模板和全部历史, copying chat history into memory files, and generating long plans without execution value.
 
 ## Default Stance
 
@@ -96,41 +122,46 @@ This skill is a personal AI coding cockpit: it helps the user steer coding agent
 5. For command examples and limits, read `references/portable-harness.md`.
 6. For the recommended per-project Codex workspace layout, read `references/project-codex-layout.md`.
 
-## Write-Back Discipline
+## Automatic Write-Back And Checkpoints
 
-1. Meaningful work should leave durable project state on disk, not only in chat.
-2. After meaningful progress, update the narrowest stable store that matches the result:
-   - `当前任务.md`: progress, next step, validation status, validation evidence
-   - `当前状态.md`: only when the project-level conclusion changes
-   - `验收记录.md`: only when something is truly complete with evidence
-   - `归档索引.md`: when a task leaves the active lane or becomes stale
-3. Do not dump raw chat transcripts into project memory files.
-4. Treat write-back as part of completion discipline, not as optional cleanup.
-5. For long-running work, recommend synchronizing `.codex/docs/当前任务.md` at key checkpoints:
-   - task start
-   - phase transition
-   - validation complete
-   - pre-close / stop-gate
-6. Example:
+自动写回 is automatic but value-gated. It 不依赖用户说“沉淀一下”. At the end of every meaningful action batch, ask whether this turn produced a 恢复价值节点.
+
+Write the smallest stable increment when any of these changes:
+
+1. Current task, goal, scope, or mode.
+2. Key decision that changes future work.
+3. Blocker, failure, or resolved blocker.
+4. Completed recoverable sub-step.
+5. Validation evidence or validation failure.
+6. Pending wait for a long command, user decision, or sub-agent result.
+7. Stable user collaboration preference.
+
+Do not write 聊天原文, temporary guesses, long process narration, low-value intermediate output, or 模型内部推理.
+
+For long tasks, use 覆盖式检查点 instead of append-only logs. 默认检查点不超过 8 行 and should cover: current goal, phase, recently completed work, blocker, 正在关注的文件, next step, validation status, and latest validation.
+
+Before a likely interruption or wait, 继续下一段工作前写回 the checkpoint.
+
+Example:
 
 ```powershell
-python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_current_task.py --repo . --event start --progress "进行中：开始执行当前任务" --next-step "实现最小代码改动"
+python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_current_task.py --repo . --event checkpoint --progress "进行中：开始执行当前任务" --next-step "实现最小代码改动"
 ```
 
-## Project Bootstrap
+## Optional Memory Kit
 
-1. `commander-mode` does not assume every repository is already initialized.
-2. When a repository is uninitialized, the correct behavior is to propose bootstrapping a standard `.codex` workspace for the current repository.
-3. The standard bootstrap should create a task-oriented project workspace:
-   - `.codex/AGENT.md`
-   - `.codex/docs/当前状态.md`
-   - `.codex/docs/当前任务.md`
-   - `.codex/docs/恢复入口.md`
-   - `.codex/docs/验收记录.md`
-   - `.codex/docs/归档索引.md`
-   - `.codex/docs/协作偏好.md`
-   - `.codex/docs/周总结.md`
-4. The default bootstrap is task-based, not learning-based. Learning is only one possible task mode inside a project.
+`.codex` is an automatic memory surface, not a prerequisite.
+
+Use existing project memory when present. If no memory surface exists, continue using the repository's own truth sources.
+
+When a recovery value node appears, choose the narrowest write-back surface:
+
+1. Existing repo-native task file, issue tracker, plan, or status doc.
+2. Existing `.codex/docs/当前任务.md` or equivalent `.codex` memory file.
+3. A minimal single-file recovery anchor when long-running work needs continuity.
+4. Full `.codex` bootstrap only when the user wants durable multi-stage project governance.
+
+Do not force or imply full bootstrap for ordinary one-off work. 完整 `.codex` 模板 is optional for durable governance, not a requirement.
 
 ## Task Governance
 
@@ -146,14 +177,14 @@ python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_current_task.py 
 5. On long-running work, **磁盘上的当前任务真相源优先于聊天记忆**.
 6. Batch work is an optional extension for homogeneous, row-level tasks. It does not replace the main `.codex/docs/当前任务.md` protocol, and it must not introduce `.codex-tasks/` as a second primary task root.
 
-### 首次接入项目的建议话术
+### 未初始化项目的建议话术
 
-当检测到当前仓库是未初始化项目时，优先使用类似下面的短话术，而不是直接把别的项目状态带进来：
+当检测到当前仓库没有 `.codex` 时，优先使用类似下面的短话术，而不是直接把别的项目状态带进来，也不要强推完整模板：
 
-> 当前项目还没有 commander 协议骨架，所以我不会直接套用别的项目状态。  
-> 如果你确认，我可以先为这个项目创建标准 `.codex` 骨架，再从这个项目自己的当前任务开始沉淀。
+> 当前仓库没有 `.codex` 记忆面，但 commander 仍然正常工作。  
+> 我会先从这个仓库已有的 README、docs、git 状态、测试和用户目标恢复；如果任务变成长任务，我会自动写最小恢复锚点，不强制创建完整 `.codex` 模板。
 
-如果用户确认，再进入 bootstrap 流程；如果用户不确认，就继续按轻量 commander 方式工作，但不要伪装成已初始化项目。
+只有当用户明确要长期治理、批量任务或多阶段项目记忆时，才进入完整 bootstrap 流程。
 
 ## Spec, Plan, And Work Modes
 

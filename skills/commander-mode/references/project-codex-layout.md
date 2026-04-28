@@ -4,6 +4,8 @@
 
 **一个项目里，哪些规则应该放全局 skill，哪些应该放项目内 `.codex`，哪些应该留在项目正文里。**
 
+从 High-Signal Commander v2 开始，`.codex` 是自动记忆面和可选增强包，不是使用 `commander-mode` 的前提。普通仓库可以先依赖已有 README、docs、git、测试和任务文件；只有当工作需要跨窗口、跨阶段或长期恢复时，才启用完整 `.codex` 布局。
+
 ## 1. 四层结构
 
 推荐把 AI coding 相关内容分成四层：

@@ -6,6 +6,8 @@ Use this reference when a repository does not have its own commander runtime but
 
 The portable harness is an on-demand script bundled with `commander-mode`. It is not a daemon and does not require copying `commander/` into the target repository.
 
+The harness is a sensor for `commander-mode`, not the product center. Use it to quickly discover repo state, validation hints, dirty worktree status, and existing memory surfaces before deciding how much context to invest.
+
 It provides:
 
 1. Workspace discovery from any git repository.

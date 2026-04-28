@@ -1,6 +1,8 @@
 ﻿# AI Coding Commander
 
-通用 AI coding 指挥官 skill 的独立承接仓库。
+高信号 AI coding 指挥 skill 的独立承接仓库。
+
+这个仓库交付的是 `commander-mode` skill，不是平台，也不是必须套用的项目模板。它的职责是在任意代码仓库里帮助 Codex 选择有价值的上下文、恢复当前工作、自动沉淀关键检查点，并在收口前保护验证纪律。
 
 ## 当前主线
 
@@ -9,6 +11,7 @@
 1. `skills/commander-mode/`
 2. `skills/commander-mode/scripts/portable_harness.py`
 3. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
+4. `skills/commander-mode/scripts/sync_current_task.py`
 
 `legacy/agent-runtime/` 仅作归档参考，不参与当前实现，不作为当前安装源、恢复入口或扩展目标。
 
@@ -18,9 +21,21 @@
 2. 提供最小 portable harness：状态扫描和 stop gate。
 3. 不依赖 `D:\Develop\Python-Project\Agent` 仓库里的 `commander/` runtime。
 
+## High-Signal 使用原则
+
+`commander-mode` 默认自动运行以下循环：
+
+1. 判断用户意图。
+2. 选择最有价值的上下文。
+3. 给出当前判断和下一步最小动作。
+4. 执行用户授权范围内的工作。
+5. 在出现恢复价值节点时自动写回最小检查点。
+
+`.codex` 是自动记忆面和可选增强包。没有 `.codex` 的仓库仍然可以直接使用 commander；完整 `.codex` 模板只用于需要长期治理、批量任务或多阶段项目记忆的场景。
+
 ## 能力成熟度
 
-当前这套 commander 已经不是单纯提示词，而是一套**轻量工程治理协议**。
+当前这套 commander 已经不是单纯提示词，而是一套**高信号工程协作 skill**，并保留轻量工程治理协议作为可选记忆面。
 
 目前大致位于：
 
@@ -159,14 +174,11 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\sync_current_task.py --repo . --event validate --validation-status "已验证" --validation-evidence "python -m pytest passed"
 ```
 
-## 初始化新项目的 `.codex` 协议
+## 可选启用项目 `.codex` 记忆面
 
-当 `commander-mode` 进入一个还没有 `.codex` 协议的仓库时，正确流程应该是：
+当 `commander-mode` 进入一个还没有 `.codex` 的仓库时，不要求先初始化模板。它会先从仓库已有的 README、docs、git 状态、测试、任务文件和用户目标恢复上下文。
 
-1. 先识别当前项目为未初始化项目
-2. 提议创建标准 `.codex` 骨架
-3. 等用户确认后再创建
-4. 创建完成后，用 `当前任务.md` 进入当前任务模式
+只有当工作变成长任务、跨窗口任务、批量任务或多阶段项目治理时，才启用完整 `.codex` 记忆面。
 
 默认骨架是**通用任务骨架**。系统只关心当前任务是什么，不预设任何特定场景。
 
@@ -176,12 +188,11 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\bootstrap_codex_workspace.py --repo .
 ```
 
-当 `commander-mode` 识别到当前仓库还没有 `.codex` 协议时，正确行为应该是：
+如果明确要为当前仓库启用完整 `.codex` 记忆面，流程是：
 
-1. 先识别为未初始化项目
-2. 提议创建标准 `.codex` 骨架
-3. 等用户确认后再执行 bootstrap
-4. 用 `当前任务.md` 进入当前任务模式
+1. 确认这是长期治理、批量任务或多阶段项目记忆需求
+2. 执行标准 `.codex` bootstrap
+3. 用 `当前任务.md` 进入当前任务模式
 
 ## 写回纪律
 
