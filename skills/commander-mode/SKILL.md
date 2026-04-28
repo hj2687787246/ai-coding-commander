@@ -73,6 +73,58 @@ Before opening a file or running a command, know which uncertainty it reduces:
 
 High-value context includes current code, command results, repo instructions, active task files, validation commands, failing tests, diffs, and narrow design docs. Low-value context includes mechanical reading of every template, 机械读取完整模板和全部历史, copying chat history into memory files, and generating long plans without execution value.
 
+## Preference Memory Protocol
+
+Preference memory turns stable user habits into executable memory cards. Do not treat `.codex/docs/协作偏好.md` as a long essay to skim once; treat it as a card library that must be activated and checked.
+
+When a repository exposes preference memory:
+
+1. Read `.codex/docs/协作偏好.md` when the user asks to continue, recover, plan, implement, review, verify, or hand off work.
+2. Classify the current intent using the Intent Router.
+3. Select 3-7 relevant cards as 本轮适用偏好 based on card `triggers`, current risk, and user wording.
+4. Execute with those cards active. Do not repeat the full preference file to the user unless asked.
+5. Before completion, run the Preference Gate.
+
+Preference cards should use this Markdown shape:
+
+````markdown
+### pref-short-id
+
+```yaml
+type: preference
+status: stable
+scope: project
+triggers:
+  - planning
+rule: 偏好规则。
+do:
+  - 必须动作
+dont:
+  - 禁止动作
+evidence:
+  - 记录为什么这是长期偏好
+```
+````
+
+### Preference Gate
+
+Before reporting completion or switching phases, check:
+
+1. Which 本轮适用偏好 were activated?
+2. Did any action violate an activated preference?
+3. Did the user express a new stable preference or 候选偏好?
+4. Did 用户纠正方向 in a way that should be written back?
+5. Does the task state need a checkpoint?
+6. Does verified completion need an acceptance record?
+
+If a new preference should be stored, use the narrowest durable surface. Prefer repo-native preference files, then `.codex/docs/协作偏好.md`. Use `sync_preference_memory.py` when available:
+
+```powershell
+python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_preference_memory.py --repo . --id pref-token-roi --status stable --scope project --trigger planning --rule "token 使用目标是高价值，不是单纯低消耗。" --do "读取能改变决策的真相源" --dont "机械读取所有模板" --evidence "用户明确纠正 token 目标"
+```
+
+Write stable preferences only when the user explicitly states a long-term preference, repeats the same correction, or confirms a candidate. For one-off choices, temporary task scope, or uncertain inference, write nothing or record a 候选偏好.
+
 ## Default Stance
 
 1. Commander mode starts in orientation mode, not implementation mode.

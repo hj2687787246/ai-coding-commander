@@ -63,3 +63,42 @@ def test_readme_presents_skill_first_positioning() -> None:
     assert "不是平台" in readme
     assert ".codex" in readme
     assert "可选" in readme
+
+
+def test_readme_documents_preference_memory_protocol() -> None:
+    readme = read_text("README.md")
+
+    assert "Preference Memory" in readme
+    assert "sync_preference_memory.py" in readme
+    assert "偏好" in readme
+    assert "Preference Gate" in readme
+
+
+def test_readme_does_not_use_stale_repository_path_examples() -> None:
+    readme = read_text("README.md")
+
+    assert r"D:\Develop\Python-Project\ai-coding-commander" not in readme
+
+
+def test_commander_skill_defines_preference_memory_protocol() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "Preference Memory Protocol" in skill
+    assert "本轮适用偏好" in skill
+    assert "Preference Gate" in skill
+    assert "候选偏好" in skill
+    assert "用户纠正方向" in skill
+
+
+def test_preference_template_uses_structured_memory_cards() -> None:
+    template = read_text(
+        "skills/commander-mode/references/templates/project-codex-standard/.codex/docs/协作偏好.md"
+    )
+
+    assert "Stable Preferences" in template
+    assert "Candidate Preferences" in template
+    assert "type: preference" in template
+    assert "triggers:" in template
+    assert "do:" in template
+    assert "dont:" in template
+    assert "evidence:" in template

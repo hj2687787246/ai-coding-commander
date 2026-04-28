@@ -1,4 +1,4 @@
-﻿# AI Coding Commander
+# AI Coding Commander
 
 高信号 AI coding 指挥 skill 的独立承接仓库。
 
@@ -12,6 +12,7 @@
 2. `skills/commander-mode/scripts/portable_harness.py`
 3. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
 4. `skills/commander-mode/scripts/sync_current_task.py`
+5. `skills/commander-mode/scripts/sync_preference_memory.py`
 
 `legacy/agent-runtime/` 仅作归档参考，不参与当前实现，不作为当前安装源、恢复入口或扩展目标。
 
@@ -32,6 +33,23 @@
 5. 在出现恢复价值节点时自动写回最小检查点。
 
 `.codex` 是自动记忆面和可选增强包。没有 `.codex` 的仓库仍然可以直接使用 commander；完整 `.codex` 模板只用于需要长期治理、批量任务或多阶段项目记忆的场景。
+
+### Preference Memory
+
+Preference Memory 是 high-signal commander 的用户习惯记忆层。它把长期稳定偏好写成结构化偏好卡，而不是只写成长篇说明。
+
+`commander-mode` 每轮应自动选择本轮适用偏好，并在收口前执行 Preference Gate：
+
+1. 本轮激活了哪些偏好。
+2. 有没有违反已激活偏好。
+3. 用户纠正方向后，是否应写入候选偏好或稳定偏好。
+4. 是否需要同步当前任务检查点或验收记录。
+
+偏好写回可以使用：
+
+```powershell
+python .\skills\commander-mode\scripts\sync_preference_memory.py --repo . --id pref-token-roi --status stable --scope project --trigger planning --rule "token 使用目标是高价值，不是单纯低消耗。"
+```
 
 ## 能力成熟度
 
@@ -100,7 +118,8 @@
 如果你希望本地 skills 始终直接指向仓库源码，可以用 junction：
 
 ```powershell
-pwsh -NoLogo -Command "cmd /c mklink /J \"$env:USERPROFILE\\.codex\\skills\\commander-mode\" \"D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\""
+$repo = "D:\Develop\Projects\ai-coding-commander"
+cmd /c mklink /J "$env:USERPROFILE\.codex\skills\commander-mode" "$repo\skills\commander-mode"
 ```
 
 ### 普通用户
@@ -156,8 +175,8 @@ pwsh -NoLogo -File .\install\install-commander.ps1 -Force
 ### portable harness
 
 ```powershell
-python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\portable_harness.py --cwd . status
-python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\portable_harness.py --cwd . stop-gate
+python .\skills\commander-mode\scripts\portable_harness.py --cwd . status
+python .\skills\commander-mode\scripts\portable_harness.py --cwd . stop-gate
 ```
 
 这个仓库只承载通用 skill。项目自己的任务记录和业务代码应该留在各自项目仓库。
@@ -171,7 +190,7 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 当任务持续时间较长时，可以在关键节点把当前任务状态同步回 `.codex/docs/当前任务.md`：
 
 ```powershell
-python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\sync_current_task.py --repo . --event validate --validation-status "已验证" --validation-evidence "python -m pytest passed"
+python .\skills\commander-mode\scripts\sync_current_task.py --repo . --event validate --validation-status "已验证" --validation-evidence "python -m pytest passed"
 ```
 
 ## 可选启用项目 `.codex` 记忆面
@@ -185,7 +204,7 @@ python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scrip
 ### Bootstrap 新项目
 
 ```powershell
-python D:\Develop\Python-Project\ai-coding-commander\skills\commander-mode\scripts\bootstrap_codex_workspace.py --repo .
+python .\skills\commander-mode\scripts\bootstrap_codex_workspace.py --repo .
 ```
 
 如果明确要为当前仓库启用完整 `.codex` 记忆面，流程是：
