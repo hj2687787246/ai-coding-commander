@@ -90,6 +90,43 @@ def test_commander_skill_defines_preference_memory_protocol() -> None:
     assert "用户纠正方向" in skill
 
 
+def test_commander_skill_defines_standard_activation_contract() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "Standard Activation Contract" in skill
+    assert "MUST" in skill
+    assert "Entry Hook" in skill
+    assert "Heartbeat Hook" in skill
+    assert "Preference Write-Back Hook" in skill
+    assert "Preclose Hook" in skill
+    assert "Recovery Hook" in skill
+
+
+def test_standard_contract_requires_automatic_preference_activation() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "before planning, implementing, reviewing, verifying, or handing off" in skill
+    assert "read `.codex/docs/协作偏好.md`" in skill
+    assert "select 3-7 relevant cards" in skill
+    assert "without waiting for the user to ask for memory write-back" in skill
+
+
+def test_standard_contract_requires_checkpoint_before_wait_or_interruption() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "before any long-running command, wait, interruption risk, or phase switch" in skill
+    assert "sync_current_task.py --event checkpoint" in skill
+    assert "current goal, phase, progress, blocker, focus files, next step, validation status" in skill
+
+
+def test_readme_presents_standard_activation_contract() -> None:
+    readme = read_text("README.md")
+
+    assert "Standard Activation Contract" in readme
+    assert "Entry / Heartbeat / Preference Write-Back / Preclose / Recovery" in readme
+    assert "不是建议清单" in readme
+
+
 def test_preference_template_uses_structured_memory_cards() -> None:
     template = read_text(
         "skills/commander-mode/references/templates/project-codex-standard/.codex/docs/协作偏好.md"

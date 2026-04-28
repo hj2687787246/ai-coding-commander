@@ -34,6 +34,16 @@
 
 `.codex` 是自动记忆面和可选增强包。没有 `.codex` 的仓库仍然可以直接使用 commander；完整 `.codex` 模板只用于需要长期治理、批量任务或多阶段项目记忆的场景。
 
+### Standard Activation Contract
+
+`commander-mode` 的自动执行不是建议清单，而是标准运行契约。skill 一旦触发，就按 Entry / Heartbeat / Preference Write-Back / Preclose / Recovery 五个 hook 执行：
+
+1. Entry：进入任务前恢复规则、状态和本轮适用偏好。
+2. Heartbeat：长命令、等待、中断风险或阶段切换前写 checkpoint。
+3. Preference Write-Back：用户明确或反复表达长期习惯时写入偏好卡。
+4. Preclose：完成、提交、切换阶段或交接前执行 Preference Gate 和验证 gate。
+5. Recovery：中断或继续时先读磁盘真相源，再恢复下一步。
+
 ### Preference Memory
 
 Preference Memory 是 high-signal commander 的用户习惯记忆层。它把长期稳定偏好写成结构化偏好卡，而不是只写成长篇说明。

@@ -1,6 +1,6 @@
 ---
 name: commander-mode
-description: General commander mode for software workspaces. Use when the user appoints you as 指挥官/commander, asks for architecture/status recovery, milestone planning, multi-window or sub-agent coordination, result intake, long-context handoff, stop-gate decisions, or repo memory maintenance. First discover the current workspace's commander/onboarding docs instead of assuming a fixed repository path.
+description: General commander mode for software workspaces. Use when the user appoints you as 指挥官/commander, asks for architecture/status recovery, milestone planning, multi-window or sub-agent coordination, result intake, long-context handoff, stop-gate decisions, repo memory maintenance, preference memory activation, or automatic checkpoints. First discover the current workspace's commander/onboarding docs instead of assuming a fixed repository path.
 ---
 
 # Commander Mode
@@ -72,6 +72,35 @@ Before opening a file or running a command, know which uncertainty it reduces:
 5. Implementation: where is the smallest relevant code surface?
 
 High-value context includes current code, command results, repo instructions, active task files, validation commands, failing tests, diffs, and narrow design docs. Low-value context includes mechanical reading of every template, 机械读取完整模板和全部历史, copying chat history into memory files, and generating long plans without execution value.
+
+## Standard Activation Contract
+
+This is the mandatory runtime contract for commander mode. It is not an optional reminder list. When this skill is active, execute these hooks as standard behavior.
+
+1. Entry Hook MUST run before planning, implementing, reviewing, verifying, or handing off:
+   - classify the user's intent with the Intent Router;
+   - read repo-local rules and current task truth sources needed for that intent;
+   - when the repository exposes preference memory, read `.codex/docs/协作偏好.md`;
+   - select 3-7 relevant cards as 本轮适用偏好;
+   - continue without waiting for the user to ask for memory write-back.
+2. Heartbeat Hook MUST run before any long-running command, wait, interruption risk, or phase switch:
+   - update the narrowest task truth source;
+   - prefer `sync_current_task.py --event checkpoint` when `.codex/docs/当前任务.md` exists;
+   - keep the checkpoint compact: current goal, phase, progress, blocker, focus files, next step, validation status.
+3. Preference Write-Back Hook MUST run when the user states or confirms a durable collaboration habit:
+   - write stable preferences only for explicit or repeated long-term habits;
+   - write candidate preferences for plausible but unconfirmed habits;
+   - prefer `sync_preference_memory.py` when available.
+4. Preclose Hook MUST run before reporting completion, committing, switching phases, or handing off:
+   - run the Preference Gate;
+   - update current task and acceptance records when their state changed;
+   - bind completion claims to fresh validation evidence.
+5. Recovery Hook MUST run after interruption, resume, or "continue":
+   - read disk truth sources before relying on chat memory;
+   - restore current task, validation state, and activated preferences;
+   - continue from the recorded next step when it is still valid.
+
+If a repository has no `.codex` memory surface, use repo-native task files, issues, plans, or status docs. If no durable surface exists, report the limitation and keep working from the available truth sources; do not force a full template bootstrap.
 
 ## Preference Memory Protocol
 
