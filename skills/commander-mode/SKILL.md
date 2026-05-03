@@ -83,19 +83,30 @@ This is the mandatory runtime contract for commander mode. It is not an optional
    - when the repository exposes preference memory, read `.codex/docs/协作偏好.md`;
    - select 3-7 relevant cards as 本轮适用偏好;
    - continue without waiting for the user to ask for memory write-back.
-2. Heartbeat Hook MUST run before any long-running command, wait, interruption risk, or phase switch:
+2. Knowledge Context Hook MUST run before architecture, implementation, review, or verification when the task involves new features, unfamiliar code paths, framework/SDK integration, Agent/RAG/MCP/tool-calling/evaluation work, high-change APIs, or the user asks to avoid reinventing existing solutions:
+   - first try the local engineering knowledge MCP when available, especially `ai_kb.search_kb_tool` and `ai_kb.read_card_tool`;
+   - use targeted queries and metadata filters instead of broad browsing, for example `agent tool calling`, `rag hybrid retrieval`, `MCP resource`, or the current framework/API name;
+   - if the MCP tool is not visible in the current session but the local AI-KB CLI exists, fall back to the repository CLI search command instead of relying on chat memory;
+   - when a local AI-KB repo/config is available and the task depends on retrieved engineering knowledge, prefer checking `ops health` or recent run evidence before trusting the index; if health is not available, use retrieved results as clues and say the runtime gate was not verified;
+   - if local AI-KB search has no useful hit, widen to web research only for the current uncertainty; do not browse broadly to collect context for its own sake;
+   - treat `status`, `confidence`, `freshness`, `source_type`, `updated_at`, `superseded_by`, `contradicted_by`, and `refresh_candidates` as governance signals, not decorative metadata;
+   - do not use `candidate`, `check-before-implementation`, superseded, contradicted, or high-change API results as final authority without current source verification;
+   - when web research solves the problem and is actually used, write it back as a candidate knowledge card or research candidate, add crawler keywords or a source-index entry, then validate and re-search so the next run can find it locally;
+   - include the source path or URL, adopted point, project-specific adjustment, and non-copy reason when using retrieved material;
+   - skip this hook for trivial single-file fixes, pure wording edits, or when the user has already provided complete current source material.
+3. Heartbeat Hook MUST run before any long-running command, wait, interruption risk, or phase switch:
    - update the narrowest task truth source;
    - prefer `sync_current_task.py --event checkpoint` when `.codex/docs/当前任务.md` exists;
    - keep the checkpoint compact: current goal, phase, progress, blocker, focus files, next step, validation status.
-3. Preference Write-Back Hook MUST run when the user states or confirms a durable collaboration habit:
+4. Preference Write-Back Hook MUST run when the user states or confirms a durable collaboration habit:
    - write stable preferences only for explicit or repeated long-term habits;
    - write candidate preferences for plausible but unconfirmed habits;
    - prefer `sync_preference_memory.py` when available.
-4. Preclose Hook MUST run before reporting completion, committing, switching phases, or handing off:
+5. Preclose Hook MUST run before reporting completion, committing, switching phases, or handing off:
    - run the Preference Gate;
    - update current task and acceptance records when their state changed;
    - bind completion claims to fresh validation evidence.
-5. Recovery Hook MUST run after interruption, resume, or "continue":
+6. Recovery Hook MUST run after interruption, resume, or "continue":
    - read disk truth sources before relying on chat memory;
    - restore current task, validation state, and activated preferences;
    - continue from the recorded next step when it is still valid.
@@ -190,6 +201,24 @@ Write stable preferences only when the user explicitly states a long-term prefer
    - Current task evidence: repo task cards, timelines, issue trackers, or status files.
    - Machine-readable contracts: specs, schemas, packets, or tracker fields.
 4. Do not move chat transcripts, stale current-state claims, or large design histories into startup files.
+
+## Local Knowledge Runtime Contract
+
+When a workspace is connected to the local engineering knowledge base, treat it as a governed runtime, not a loose pile of notes:
+
+1. Use the narrowest available interface: MCP tools first, then the AI-KB CLI, then repository docs.
+2. For non-trivial architecture, implementation, review, verification, Agent/RAG/MCP/tool-calling/evaluation, or high-change API work, check runtime health or recent run evidence when available:
+   - `ops status` is for human orientation.
+   - `ops health` is the machine gate.
+   - `ops freshness-audit` explains stale, superseded, contradicted, and refresh-candidate knowledge.
+3. Search progressively: start with targeted queries and filters, read only the cards/pages that change the decision, then widen if recall is clearly insufficient.
+4. Use knowledge according to governance:
+   - `approved` can guide decisions when it is not stale, superseded, contradicted, or marked `check-before-implementation`.
+   - `candidate` is a lead, not a conclusion.
+   - `check-before-implementation` means verify the current source before coding or final advice.
+   - `refresh_candidates` are work queues for follow-up source refresh; they do not by themselves mean the system is unhealthy.
+5. Report knowledge use compactly: source path or URL, adopted point, project adjustment, and why it was not copied blindly.
+6. Close the external research loop: when web research filled a local AI-KB gap and passed project verification, persist adopted sources as `candidate`, add crawler keywords or source-index entries, run cards/wiki validation when available, and re-search those keywords before claiming the loop is closed.
 
 ## Portable Harness
 

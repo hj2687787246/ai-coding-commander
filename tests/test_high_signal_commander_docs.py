@@ -111,6 +111,17 @@ def test_standard_contract_requires_automatic_preference_activation() -> None:
     assert "without waiting for the user to ask for memory write-back" in skill
 
 
+def test_knowledge_context_hook_closes_external_research_writeback_loop() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "local AI-KB search has no useful hit" in skill
+    assert "web research" in skill
+    assert "candidate knowledge card" in skill
+    assert "crawler keywords" in skill
+    assert "source-index" in skill
+    assert "re-search" in skill
+
+
 def test_standard_contract_requires_checkpoint_before_wait_or_interruption() -> None:
     skill = read_text("skills/commander-mode/SKILL.md")
 
