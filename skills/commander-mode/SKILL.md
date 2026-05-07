@@ -107,7 +107,9 @@ Do not collapse unclear work into a "minimal executable plan" just because it is
 
 Commander owns project state, intent routing, memory, checkpoints, and completion gates. Specialized skills own execution discipline.
 
-Route like this:
+Before choosing a specialized skill, inspect the active skill list available in the current session. Prefer a locally available skill whose description directly matches the user's current intent. Use the table below as default routing, not as the complete universe of possible skills.
+
+Route common software-workspace work like this:
 
 | Situation | Use |
 | --- | --- |
@@ -122,6 +124,16 @@ Route like this:
 | Receiving review feedback | `superpowers:receiving-code-review` |
 | Requesting review after meaningful implementation | `superpowers:requesting-code-review` |
 | Claiming work is complete, fixed, or passing | `superpowers:verification-before-completion` |
+
+For non-core software orchestration work, route by active skill descriptions. Common categories:
+
+| Situation | Prefer active skills such as |
+| --- | --- |
+| Documents, slides, PDFs, or spreadsheets | `docx`, `pptx`, `pdf`, `xlsx`, `doc-coauthoring` |
+| Static visual design or themed artifacts | `canvas-design`, `theme-factory`, `imagegen` |
+| Frontend testing, UI QA, style drift, or layout debugging | `webapp-testing`, `manual-frontend-qa`, `ui-style-consistency`, `frontend-debugging` |
+| Databases, caches, MCP, or agent runtimes | `mysql-connect`, `redis-read`, `mcp-builder`, `developing-agents` |
+| Windows encoding, Git worktrees, branch finishing, or atomic commits | `ps-utf8-io`, `superpowers:using-git-worktrees`, `superpowers:finishing-a-development-branch`, `atomic-git-commits` |
 
 When a specialized skill applies, load it and follow it. Commander should not duplicate its detailed workflow.
 
