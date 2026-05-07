@@ -1,0 +1,4 @@
+interface:
+  display_name: "复用沉淀升级器"
+  short_description: "重复问题在文档、脚本、skill 之间分流的轻量决策壳"
+  default_prompt: "Use $commander-reuse-upgrader to route a recurring workspace problem into project markdown, automation, or a lightweight skill after reading the active workspace truth sources first."

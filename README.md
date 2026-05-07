@@ -2,25 +2,27 @@
 
 高信号 AI coding 指挥 skill 的独立承接仓库。
 
-这个仓库交付的是 `commander-mode` skill，不是平台，也不是必须套用的项目模板。它的职责是在任意代码仓库里帮助 Codex 选择有价值的上下文、恢复当前工作、自动沉淀关键检查点，并在收口前保护验证纪律。
+这个仓库交付的是 `commander-mode` 和 `commander-reuse-upgrader` 两个 skill，不是平台，也不是必须套用的项目模板。`commander-mode` 负责在任意代码仓库里选择有价值的上下文、恢复当前工作、自动沉淀关键检查点，并在收口前保护验证纪律；`commander-reuse-upgrader` 负责把重复问题分流到项目文档、自动化脚本/检查器或轻量 skill。
 
 ## 当前主线
 
 当前活跃实现只认：
 
 1. `skills/commander-mode/`
-2. `skills/commander-mode/scripts/portable_harness.py`
-3. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
-4. `skills/commander-mode/scripts/sync_current_task.py`
-5. `skills/commander-mode/scripts/sync_preference_memory.py`
+2. `skills/commander-reuse-upgrader/`
+3. `skills/commander-mode/scripts/portable_harness.py`
+4. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
+5. `skills/commander-mode/scripts/sync_current_task.py`
+6. `skills/commander-mode/scripts/sync_preference_memory.py`
 
 `legacy/agent-runtime/` 仅作归档参考，不参与当前实现，不作为当前安装源、恢复入口或扩展目标。
 
 目标：
 
 1. 提供跨仓库可用的 `commander-mode` skill。
-2. 提供最小 portable harness：状态扫描和 stop gate。
-3. 不依赖 `D:\Develop\Python-Project\Agent` 仓库里的 `commander/` runtime。
+2. 提供跨仓库可用的 `commander-reuse-upgrader` skill，负责复用沉淀分流。
+3. 提供最小 portable harness：状态扫描和 stop gate。
+4. 不依赖旧 Agent 仓库里的 `commander/` runtime。
 
 ## High-Signal 使用原则
 
@@ -118,10 +120,12 @@ python .\skills\commander-mode\scripts\sync_preference_memory.py --repo . --id p
 把仓库里的正式分发目录：
 
 - `skills/commander-mode/`
+- `skills/commander-reuse-upgrader/`
 
 复制到本地：
 
 - `~/.codex/skills/commander-mode`
+- `~/.codex/skills/commander-reuse-upgrader`
 
 #### 方式 B：junction
 
@@ -130,6 +134,7 @@ python .\skills\commander-mode\scripts\sync_preference_memory.py --repo . --id p
 ```powershell
 $repo = "D:\Develop\Projects\ai-coding-commander"
 cmd /c mklink /J "$env:USERPROFILE\.codex\skills\commander-mode" "$repo\skills\commander-mode"
+cmd /c mklink /J "$env:USERPROFILE\.codex\skills\commander-reuse-upgrader" "$repo\skills\commander-reuse-upgrader"
 ```
 
 ### 普通用户
@@ -137,7 +142,7 @@ cmd /c mklink /J "$env:USERPROFILE\.codex\skills\commander-mode" "$repo\skills\c
 适合：
 
 - 不想理解仓库结构
-- 只想把 commander-mode 装进本地 Codex skills
+- 只想把 commander skills 装进本地 Codex skills
 
 默认推荐使用安装脚本，安装脚本会采用**复制目录**的方式，而不是默认创建 junction：
 
@@ -158,13 +163,13 @@ pwsh -NoLogo -File .\install\install-commander.ps1 -Force
 
 - `-BackupExisting`：先备份旧目录，再安装新版本
 - `-Force`：直接覆盖现有安装
-- 普通用户路径只安装 `skills/commander-mode/`，不会安装 `legacy/agent-runtime`
+- 普通用户路径只安装 `skills/commander-mode/` 和 `skills/commander-reuse-upgrader/`，不会安装 `legacy/agent-runtime`
 
 ## 首次使用
 
 安装完成后，先记住：
 
-- 正式分发入口只有 `skills/commander-mode/`
+- 正式分发入口只有 `skills/commander-mode/` 和 `skills/commander-reuse-upgrader/`
 - `legacy/agent-runtime/` 只是归档，不参与安装和当前使用
 
 ### 首次恢复顺序

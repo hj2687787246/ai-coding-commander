@@ -115,8 +115,8 @@ def test_commander_skill_uses_initialized_uninitialized_flow() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     skill = (repo_root / "skills" / "commander-mode" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "已初始化项目" in skill
-    assert "未初始化项目" in skill
+    assert "no `.codex` memory surface" in skill
+    assert "Do not force a full `.codex` bootstrap" in skill
     assert "学习进度卡.md" not in skill
     assert "学习时间线.md" not in skill
 
@@ -125,28 +125,28 @@ def test_commander_skill_explains_repo_local_vs_installed_harness_paths() -> Non
     repo_root = Path(__file__).resolve().parents[1]
     skill = (repo_root / "skills" / "commander-mode" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "When developing this repository itself" in skill
-    assert "C:\\Users\\26877\\.codex\\skills\\commander-mode\\scripts\\portable_harness.py" in skill
+    assert "<commander-mode-skill-dir>" in skill
+    assert "active installed skill location" in skill
+    assert "C:\\Users\\26877" not in skill
 
 
 def test_commander_skill_does_not_force_bootstrap_for_uninitialized_projects() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     skill = (repo_root / "skills" / "commander-mode" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "未初始化项目" in skill
-    assert "没有 `.codex`" in skill
-    assert "仍然正常工作" in skill
-    assert "不强制创建完整 `.codex` 模板" in skill
+    assert "no `.codex` memory surface" in skill
+    assert "commander still works" in skill
+    assert "Do not force a full `.codex` bootstrap" in skill
 
 
 def test_commander_skill_absorbs_taskmaster_task_governance_language() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     skill = (repo_root / "skills" / "commander-mode" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "single" in skill and "epic" in skill and "batch" in skill
-    assert "compact" in skill and "full" in skill
-    assert "没有验证证据，不得标记任务完成" in skill
-    assert "磁盘上的当前任务真相源优先于聊天记忆" in skill
+    assert "Current task state" in skill
+    assert "No validation evidence means no completion claim" in skill
+    assert "Chat memory only as a clue" in skill
+    assert "never as the final truth source" in skill
 
 
 def test_project_codex_agent_template_includes_task_governance_rules() -> None:

@@ -1,6 +1,8 @@
 import subprocess
-import sys
+import shutil
 from pathlib import Path
+
+import pytest
 
 
 def repo_root() -> Path:
@@ -12,9 +14,12 @@ def install_script() -> Path:
 
 
 def run_install(target_home: Path, *extra: str) -> subprocess.CompletedProcess[str]:
+    pwsh = shutil.which("pwsh")
+    if pwsh is None:
+        pytest.skip("pwsh is not available on PATH")
     return subprocess.run(
         [
-            "pwsh",
+            pwsh,
             "-NoLogo",
             "-File",
             str(install_script()),
@@ -34,7 +39,9 @@ def test_install_script_copies_commander_mode_into_codex_home(tmp_path: Path) ->
 
     assert result.returncode == 0
     installed_skill = tmp_path / "skills" / "commander-mode" / "SKILL.md"
+    installed_reuse_skill = tmp_path / "skills" / "commander-reuse-upgrader" / "SKILL.md"
     assert installed_skill.exists()
+    assert installed_reuse_skill.exists()
     assert "installed" in result.stdout
 
 
@@ -68,8 +75,11 @@ def test_install_script_uses_copy_install_not_junction(tmp_path: Path) -> None:
 
     assert result.returncode == 0
     target = tmp_path / "skills" / "commander-mode"
+    reuse_target = tmp_path / "skills" / "commander-reuse-upgrader"
     assert target.exists()
+    assert reuse_target.exists()
     assert not target.is_symlink()
+    assert not reuse_target.is_symlink()
 
 
 def test_readme_documents_developer_and_regular_user_install_paths() -> None:
@@ -79,4 +89,5 @@ def test_readme_documents_developer_and_regular_user_install_paths() -> None:
     assert "开发者" in readme
     assert "普通用户" in readme
     assert "skills/commander-mode/" in readme
+    assert "skills/commander-reuse-upgrader/" in readme
     assert "legacy/agent-runtime" in readme

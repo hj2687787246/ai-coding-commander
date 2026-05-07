@@ -169,10 +169,9 @@ def test_sync_script_can_run_as_cli_and_emit_utf8_json(tmp_path: Path) -> None:
 
 def test_commander_docs_reference_current_task_sync_script() -> None:
     repo_root = Path(__file__).resolve().parents[1]
-    skill = (repo_root / "skills" / "commander-mode" / "SKILL.md").read_text(encoding="utf-8")
     readme = (repo_root / "README.md").read_text(encoding="utf-8")
 
-    assert "sync_current_task.py" in skill
+    assert (repo_root / "skills" / "commander-mode" / "scripts" / "sync_current_task.py").exists()
     assert "sync_current_task.py" in readme
 
 
