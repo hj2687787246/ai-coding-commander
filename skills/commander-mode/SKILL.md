@@ -28,7 +28,7 @@ Do not use commander mode as the primary tool for tiny one-off explanations, iso
 
 ## Entry Output Contract
 
-When commander mode activates, first establish this compact state before planning or implementation:
+When commander mode activates, emit a visible Commander Snapshot before planning or implementation. Do not treat this as private internal reasoning.
 
 ```text
 当前模式：
@@ -39,6 +39,8 @@ When commander mode activates, first establish this compact state before plannin
 下一步最小动作：
 验收方式：
 ```
+
+For `orient`, `clarify`, `spec`, `plan`, and `handoff`, the snapshot must appear before the next action. For `implement`, `review`, and `verify`, a one-line snapshot is enough when the contract is already clear, but missing contract items or validation evidence must still be named before proceeding.
 
 If the repository exposes `.codex/docs/协作偏好.md` or another preference memory surface, select 3-7 relevant preference cards as 本轮适用偏好. Do not summarize the whole file unless the user asks.
 
@@ -97,6 +99,8 @@ If missing information can materially change the result, stop and clarify before
 
 If the user asks for speed, state assumptions explicitly and mark them as assumptions, not confirmed requirements.
 
+Assumption mode is allowed only for reversible, low-risk work. Do not use speed as a reason to skip clarification for architecture decisions, broad refactors, public APIs, persistent memory or rule changes, commits, destructive actions, or work with unclear final acceptance.
+
 Do not collapse unclear work into a "minimal executable plan" just because it is easy to start.
 
 ## Skill Routing
@@ -107,6 +111,9 @@ Route like this:
 
 | Situation | Use |
 | --- | --- |
+| A loaded skill failed to change agent behavior | `identify-skill-failure` |
+| A skill is too long, repetitive, or handbook-like | `compress-skill` |
+| A skill has reference-heavy sections that should move out of the main file | `modulize-skill` |
 | Requirements are unclear or acceptance is missing | `clarify-requirements` or `superpowers:brainstorming` |
 | A multi-step implementation plan is needed | `superpowers:writing-plans` |
 | Editing or creating a skill | `superpowers:writing-skills` |
@@ -153,6 +160,8 @@ Before reporting completion, committing, switching phase, or handing off:
 5. Update task state, acceptance records, or handoff notes when their durable state changed.
 
 No validation evidence means no completion claim.
+
+For documentation, skill, or governance changes, acceptable validation evidence includes targeted text checks, duplicate-rule scans, frontmatter checks, `git diff --check`, path/privacy scans, line or word count checks, and a stated pressure scenario the edit is meant to prevent.
 
 Do not treat "planned", "prepared", "dispatched", "spawned", "merged mentally", or "looks good" as done.
 
