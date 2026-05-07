@@ -109,6 +109,8 @@ Commander owns project state, intent routing, memory, checkpoints, and completio
 
 Before choosing a specialized skill, inspect the active skill list available in the current session. Prefer a locally available skill whose description directly matches the user's current intent. Use the table below as default routing, not as the complete universe of possible skills.
 
+When an expected skill does not trigger, treat it as a discovery failure, not user error: check whether the skill is active or needs restart/install, whether its description matches the user's wording including Chinese synonyms, whether a broader skill is shadowing it, and whether to fix commander routing or the skill description.
+
 Route common software-workspace work like this:
 
 | Situation | Use |
