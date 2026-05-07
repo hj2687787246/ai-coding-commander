@@ -11,6 +11,20 @@ Turn a solved execution failure into the next attempt's default path. The goal i
 
 This skill does not decide the final durable layer. Use `commander-reuse-upgrader` for that decision. This skill owns immediate reuse of the learned working method; `commander-reuse-upgrader` owns whether the method becomes project markdown, a script/checker, a trigger-matrix row, or a skill edit.
 
+## Preflight Check
+
+Before running a command that resembles a previous failure, check the registry when it exists:
+
+```powershell
+python <execution-failure-guard-skill-dir>\scripts\known_failures.py --repo . check --command "<planned command>"
+```
+
+If the check returns `matched: true`, do not run the known-bad command. Use the returned `use_instead` unless the record is out of scope or you are intentionally validating that the failure is gone.
+
+The check command exits `0` for both match and no-match. Read the JSON `matched` field; do not infer match status from the exit code.
+
+The registry lives at `.codex/known-failures.json`. If it does not exist, continue normally; after a reusable failure is solved, create or update it with the same script.
+
 ## Learned Fix Gate
 
 After any command/tool execution fails and a working replacement is found:
@@ -28,11 +42,13 @@ Do not persist every typo or transient outage. Persist a known-bad method when a
 
 Record it in this shape:
 
-```text
-Known-bad: <command/tool shape that failed>
-Fails because: <portable reason, not just this run's output>
-Use instead: <verified working method>
-Scope: <repo/session/platform/tool boundary where this applies>
+```json
+{
+  "known_bad": "<command/tool shape that failed>",
+  "fails_because": "<portable reason, not just this run's output>",
+  "use_instead": "<verified working method>",
+  "scope": "<repo/session/platform/tool boundary where this applies>"
+}
 ```
 
 If the known-bad method is dangerous, destructive, or repeatedly tempting, prefer an automated guard such as a script, test, checker, or setup command through `commander-reuse-upgrader`.

@@ -22,7 +22,7 @@
 
 1. 提供跨仓库可用的 `commander-mode` skill。
 2. 提供跨仓库可用的 `commander-reuse-upgrader` skill，负责复用沉淀分流。
-3. 提供跨仓库可用的 `execution-failure-guard` skill，负责执行失败后的可用方法复用和升级沉淀。
+3. 提供跨仓库可用的 `execution-failure-guard` skill，负责执行失败后的可用方法复用和升级沉淀，并提供 `.codex/known-failures.json` 检查器。
 4. 提供最小 portable harness：状态扫描和 stop gate。
 5. 不依赖旧 Agent 仓库里的 `commander/` runtime。
 
@@ -215,6 +215,20 @@ python .\skills\commander-mode\scripts\portable_harness.py --cwd . stop-gate
 
 ```powershell
 python .\skills\commander-mode\scripts\sync_current_task.py --repo . --event validate --validation-status "已验证" --validation-evidence "python -m pytest passed"
+```
+
+### 执行失败检查器
+
+当一次命令、工具、测试、构建或环境调用失败并找到可用替代方法后，可以把 known-bad 与 use-instead 写入 `.codex/known-failures.json`：
+
+```powershell
+python .\skills\execution-failure-guard\scripts\known_failures.py --repo . add --id pwsh-path --match "pwsh -NoLogo" --known-bad "pwsh -NoLogo -Command ..." --fails-because "pwsh may be missing from the current tool process PATH" --use-instead "$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User'); pwsh -NoLogo -Command ..." --scope "Windows tool process"
+```
+
+执行相似命令前先检查：
+
+```powershell
+python .\skills\execution-failure-guard\scripts\known_failures.py --repo . check --command "pwsh -NoLogo -Command Get-Date"
 ```
 
 ## 可选启用项目 `.codex` 记忆面

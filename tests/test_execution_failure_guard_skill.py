@@ -22,6 +22,11 @@ def test_execution_failure_guard_is_discoverable_and_generic() -> None:
 def test_execution_failure_guard_requires_learned_fix_reuse() -> None:
     skill = read_skill("skills/execution-failure-guard/SKILL.md")
 
+    assert "Preflight Check" in skill
+    assert "known_failures.py --repo . check" in skill
+    assert ".codex/known-failures.json" in skill
+    assert "do not run the known-bad command" in skill
+    assert "Read the JSON `matched` field" in skill
     assert "Learned Fix Gate" in skill
     assert "Capture the known-bad method" in skill
     assert "Capture the working method as a reusable command shape" in skill
@@ -35,11 +40,17 @@ def test_execution_failure_guard_records_known_bad_methods_when_retriable() -> N
 
     assert "Known-Bad Method Gate" in skill
     assert "when a reasonable future agent might choose it again" in skill
-    assert "Known-bad:" in skill
-    assert "Fails because:" in skill
-    assert "Use instead:" in skill
-    assert "Scope:" in skill
+    assert '"known_bad"' in skill
+    assert '"fails_because"' in skill
+    assert '"use_instead"' in skill
+    assert '"scope"' in skill
     assert "Saving only the working method" in skill
+
+
+def test_execution_failure_guard_bundles_known_failures_script() -> None:
+    script = repo_root() / "skills" / "execution-failure-guard" / "scripts" / "known_failures.py"
+
+    assert script.exists()
 
 
 def test_execution_failure_guard_defers_durable_layer_to_reuse_upgrader() -> None:
@@ -64,4 +75,14 @@ def test_commander_routes_repeated_execution_failures() -> None:
 
     assert "execution-failure-guard" in commander
     assert "working replacement was found" in commander
+    assert ".codex/known-failures.json" in commander
+    assert "known_failures.py" in commander
     assert "then `commander-reuse-upgrader`" in commander
+
+
+def test_readme_documents_known_failures_checker() -> None:
+    readme = read_skill("README.md")
+
+    assert ".codex/known-failures.json" in readme
+    assert "known_failures.py --repo . add" in readme
+    assert "known_failures.py --repo . check" in readme
