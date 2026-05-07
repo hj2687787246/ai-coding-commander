@@ -120,3 +120,5 @@ def test_trigger_matrix_covers_debugging_current_commander_skill_wording() -> No
     ]
 
     assert debug_rows
+    assert "Discovery Failure Gate" in debug_rows[0]["why"]
+    assert "loaded violations use identify-skill-failure" in debug_rows[0]["why"]
