@@ -94,6 +94,10 @@ python .\skills\commander-mode\scripts\sync_preference_memory.py --repo . --id p
 
 - `docs/commander-capability-roadmap.md`
 
+skill 触发回归矩阵见：
+
+- `docs/skill-trigger-matrix.md`
+
 另外，这个仓库也提供一套推荐的**项目内 `.codex` 工作区布局**，用于把：
 
 1. 全局可复用 skill
