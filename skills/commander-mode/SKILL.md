@@ -26,9 +26,10 @@ The skill works even when a repository has no `.codex` directory. `.codex` is an
 5. If `.codex` does not exist, commander mode still works: 没有 `.codex` 时仍然正常工作. Build context from existing repo truth sources: README, docs, git status, tests, issue/task files, recent plans, and user-provided goals.
 6. Do not force bootstrap for uninitialized projects. 不强制创建完整 `.codex` 模板. Offer full `.codex` bootstrap only when the user wants long-term project governance, batch work, or multi-stage memory.
 7. If no repo-local commander docs exist, run the portable harness status script before falling back to freeform exploration:
-   - Installed global copy: `python C:\Users\26877\.codex\skills\commander-mode\scripts\portable_harness.py --cwd . status`
+   - Installed global copy: `python <commander-mode-skill-dir>\scripts\portable_harness.py --cwd . status`
+   - Resolve `<commander-mode-skill-dir>` from the active installed skill location; do not copy a user-specific example path.
    - When developing this repository itself, prefer the repo-local script copy under the current workspace.
-8. Do not hardcode `D:\Develop\Python-Project\Agent`; that path is only one possible workspace.
+8. Do not hardcode any Agent workspace path; discover the active workspace from the current directory, user input, or repo-local instruction files.
 
 ### 推荐首次恢复顺序
 
@@ -101,6 +102,7 @@ This is the mandatory runtime contract for commander mode. It is not an optional
 4. Preference Write-Back Hook MUST run when the user states or confirms a durable collaboration habit:
    - write stable preferences only for explicit or repeated long-term habits;
    - write candidate preferences for plausible but unconfirmed habits;
+   - before writing, check the target file and higher-priority rule files for same-meaning rules; merge, rewrite, or reference existing rules instead of adding duplicates;
    - prefer `sync_preference_memory.py` when available.
 5. Preclose Hook MUST run before reporting completion, committing, switching phases, or handing off:
    - run the Preference Gate;
@@ -154,13 +156,14 @@ Before reporting completion or switching phases, check:
 2. Did any action violate an activated preference?
 3. Did the user express a new stable preference or 候选偏好?
 4. Did 用户纠正方向 in a way that should be written back?
-5. Does the task state need a checkpoint?
-6. Does verified completion need an acceptance record?
+5. Would any preference write-back duplicate existing rules, land in the wrong layer, or make the rule surface heavier than needed?
+6. Does the task state need a checkpoint?
+7. Does verified completion need an acceptance record?
 
-If a new preference should be stored, use the narrowest durable surface. Prefer repo-native preference files, then `.codex/docs/协作偏好.md`. Use `sync_preference_memory.py` when available:
+If a new preference should be stored, use the narrowest durable surface. Prefer repo-native preference files, then `.codex/docs/协作偏好.md`. First inspect the target surface and higher-priority rule files; if a same-meaning rule already exists, update or cite that rule instead of appending a new one. Use `sync_preference_memory.py` when available:
 
 ```powershell
-python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_preference_memory.py --repo . --id pref-token-roi --status stable --scope project --trigger planning --rule "token 使用目标是高价值，不是单纯低消耗。" --do "读取能改变决策的真相源" --dont "机械读取所有模板" --evidence "用户明确纠正 token 目标"
+python <commander-mode-skill-dir>\scripts\sync_preference_memory.py --repo . --id pref-token-roi --status stable --scope project --trigger planning --rule "token 使用目标是高价值，不是单纯低消耗。" --do "读取能改变决策的真相源" --dont "机械读取所有模板" --evidence "用户明确纠正 token 目标"
 ```
 
 Write stable preferences only when the user explicitly states a long-term preference, repeats the same correction, or confirms a candidate. For one-off choices, temporary task scope, or uncertain inference, write nothing or record a 候选偏好.
@@ -255,7 +258,7 @@ Before a likely interruption or wait, 继续下一段工作前写回 the checkpo
 Example:
 
 ```powershell
-python C:\Users\26877\.codex\skills\commander-mode\scripts\sync_current_task.py --repo . --event checkpoint --progress "进行中：开始执行当前任务" --next-step "实现最小代码改动"
+python <commander-mode-skill-dir>\scripts\sync_current_task.py --repo . --event checkpoint --progress "进行中：开始执行当前任务" --next-step "实现最小代码改动"
 ```
 
 ## Optional Memory Kit
