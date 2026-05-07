@@ -137,3 +137,13 @@ def test_trigger_matrix_covers_repeated_execution_failures() -> None:
     assert any("next attempt's default path" in row["why"] for row in failure_rows)
     assert any("before running a command" in row["why"] for row in failure_rows)
     assert any("reuse-upgrader" in row["why"] for row in failure_rows)
+
+
+def test_trigger_matrix_covers_persistent_commander_activation() -> None:
+    rows = parse_matrix_rows()
+
+    persistent_rows = [row for row in rows if row["id"] == "commander-persistent-active"]
+
+    assert persistent_rows
+    assert persistent_rows[0]["skill"] == "commander-mode"
+    assert ".codex/commander-active.json" in persistent_rows[0]["why"]

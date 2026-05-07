@@ -15,6 +15,7 @@
 5. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
 6. `skills/commander-mode/scripts/sync_current_task.py`
 7. `skills/commander-mode/scripts/sync_preference_memory.py`
+8. `skills/commander-mode/scripts/commander_activation.py`
 
 `legacy/agent-runtime/` 仅作归档参考，不参与当前实现，不作为当前安装源、恢复入口或扩展目标。
 
@@ -47,6 +48,20 @@
 3. Preference Write-Back：用户明确或反复表达长期习惯时写入偏好卡。
 4. Preclose：完成、提交、切换阶段或交接前执行 Preference Gate 和验证 gate。
 5. Recovery：中断或继续时先读磁盘真相源，再恢复下一步。
+
+### Persistent Activation
+
+如果用户手动启用过 `commander-mode`，可以把这个事实写入项目本地标记，让压缩或新窗口恢复时不再依赖聊天记忆：
+
+```powershell
+python .\skills\commander-mode\scripts\commander_activation.py --repo . activate --source commander-mode
+```
+
+标记位置是 `.codex/commander-active.json`。它是本机运行态锚点，建议放进 `.gitignore`，不要当作验收记录提交。当它存在且 `active=true` 时，后续恢复应先进入 commander-mode，读取磁盘真相源并输出 Commander Snapshot。关闭时使用：
+
+```powershell
+python .\skills\commander-mode\scripts\commander_activation.py --repo . deactivate --source commander-mode
+```
 
 ### Preference Memory
 

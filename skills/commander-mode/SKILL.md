@@ -13,6 +13,28 @@ Commander mode is the operating layer for long-running AI coding work. It restor
 
 Commander mode is not a project platform, not a replacement for specialized skills, and not automatic permission to edit business code.
 
+## Persistent Activation
+
+When commander mode is manually activated for a repo, make that activation durable by writing a project-local marker:
+
+```powershell
+python <commander-mode-skill-dir>\scripts\commander_activation.py --repo . activate --source commander-mode
+```
+
+The marker lives at `.codex/commander-active.json`. It is local runtime state, so keep it out of commits. It means: future recovery in this repo should treat commander mode as active even if the chat was compacted or a new window starts. It does not grant permission to edit unrelated code, skip requirement gates, or bypass validation.
+
+On recovery, before relying on chat memory, check the marker:
+
+```powershell
+python <commander-mode-skill-dir>\scripts\commander_activation.py --repo . status
+```
+
+If `active` is `true`, continue under commander mode and emit the Commander Snapshot. Only deactivate when the user asks, the repo no longer needs commander governance, or a completed handoff explicitly closes the commander loop:
+
+```powershell
+python <commander-mode-skill-dir>\scripts\commander_activation.py --repo . deactivate --source commander-mode
+```
+
 ## Use Only For
 
 Use commander mode when the current turn involves at least one of these:
@@ -57,6 +79,8 @@ Read only the truth sources needed for the current intent, in this priority orde
 5. Chat memory only as a clue, never as the final truth source.
 
 If the workspace has no `.codex` memory surface, commander still works from README, docs, git status, tests, issue files, and the user's current goal. Do not force a full `.codex` bootstrap unless the user wants durable multi-stage governance.
+
+If `.codex/commander-active.json` exists and `active` is `true`, treat this as a durable recovery signal. Read it alongside the repo truth sources, then continue commander mode even when the current chat summary does not mention commander.
 
 If no repo-local commander docs exist, use the portable harness only as a fallback:
 

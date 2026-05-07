@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "id": "git-status-ignored-mode-dot",
+      "match": "--ignored=.matching",
+      "match_type": "substring",
+      "known_bad": "git status --short --branch --ignored=.matching",
+      "fails_because": "git status --ignored accepts modes like matching, no, traditional; '.matching' is invalid.",
+      "use_instead": "git status --short --branch --ignored=matching",
+      "scope": "git status ignored-file inspection",
+      "last_verified": "2026-05-07"
+    },
+    {
+      "id": "argparse-value-starts-with-dash",
+      "match": "--match\\s+[\"']?--",
+      "match_type": "regex",
+      "known_bad": "known_failures.py add --match --flag=value ...",
+      "fails_because": "argparse treats a following token that starts with -- as another option, so --match receives no value.",
+      "use_instead": "known_failures.py add --match=--flag=value ...",
+      "scope": "Python argparse CLI calls where an option value starts with --",
+      "last_verified": "2026-05-07"
+    }
+  ]
+}

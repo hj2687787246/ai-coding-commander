@@ -17,6 +17,7 @@ Use it when:
 | --- | --- | --- | --- |
 | commander-continue | `继续，当前任务到哪了？` | `commander-mode` | Project state recovery and next safe action. |
 | commander-handoff | `帮我把这个长任务交接给下一个窗口` | `commander-mode` | Handoff and recovery context. |
+| commander-persistent-active | `我手动启用一次指挥官后，压缩和新窗口也要继续生效` | `commander-mode` | Persistent activation should write and recover `.codex/commander-active.json`. |
 | reuse-sediment | `这个问题以后还会遇到，自动沉淀一下` | `commander-reuse-upgrader` | Repeated problem should be routed to reuse layer. |
 | reuse-layer | `这个应该写进文档、脚本，还是做成 skill？` | `commander-reuse-upgrader` | Explicit markdown/script/skill decision. |
 | reuse-agent-failure | `agent 又犯同一个错了，别再靠聊天记忆` | `commander-reuse-upgrader` | Repeated agent failure needs durable reuse. |

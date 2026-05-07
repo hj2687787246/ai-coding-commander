@@ -8,6 +8,7 @@
 
 ## 恢复顺序
 
+0. `.codex/commander-active.json`（若存在且 `active=true`，本仓库按 commander 已启用恢复）
 1. `.codex/docs/恢复入口.md`
 2. `.codex/docs/当前状态.md`
 3. `.codex/docs/当前任务.md`

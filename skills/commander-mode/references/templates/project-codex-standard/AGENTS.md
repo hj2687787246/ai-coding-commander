@@ -11,6 +11,11 @@
 1. `.codex/AGENT.md`
 2. `README.md`
 
+## Commander 持久启用
+
+- 如果 `.codex/commander-active.json` 存在且 `active=true`，恢复、继续、压缩后重开或进入长任务时先使用 `commander-mode`。
+- 这个标记只代表 commander 治理处于启用态，不代表可以跳过需求、计划、验证或用户授权边界。
+
 ## 仓库边界
 
 - 根目录 `AGENTS.md` 只保留仓库身份、第一跳入口和高风险边界。
