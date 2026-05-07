@@ -31,6 +31,14 @@ These skills are broadly useful for maintaining the commander skill system and r
 | `generalize` | The user gives examples with "for example", "such as", "etc.", or similar wording. | Useful for avoiding literal-only interpretation of examples. |
 | `atomic-git-commits` | Preparing commits or reviewing a branch where unrelated changes may be bundled. | Useful for preserving clean history around skill and governance changes. |
 
+Recommended minimal installation:
+
+```powershell
+python "$CODEX_HOME\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo Arcadi4/skills --path identify-skill-failure compress-skill modulize-skill generalize atomic-git-commits
+```
+
+If `python` is not on PATH, run the same command with the Python executable bundled with Codex or another known working Python.
+
 ## Scenario-Triggered Toolbox
 
 These skills are useful, but should not become default commander behavior.
@@ -43,6 +51,12 @@ These skills are useful, but should not become default commander behavior.
 | `manual-frontend-qa` | The user asks for manual UI verification or automated browser testing is not worth setting up. | Requires direct user-facing QA communication. |
 | `ui-style-consistency` | Auditing duplicated UI primitives, design-system drift, or hand-rolled component variants. | Use for design-system reviews, not every frontend edit. |
 | `opencode-cli-debugging` | Debugging OpenCode CLI integrations, plugins, provider wiring, or session-level behavior. | OpenCode-specific; do not route from general Codex tasks. |
+
+Install all standard Arcadi4 skills only when you want the whole optional toolbox available locally:
+
+```powershell
+python "$CODEX_HOME\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo Arcadi4/skills --path atomic-git-commits compress-skill developing-agents frontend-debugging generalize identify-skill-failure manual-frontend-qa modulize-skill opencode-cli-debugging ui-style-consistency writing-adrs
+```
 
 ## Not Installed
 

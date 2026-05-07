@@ -127,6 +127,8 @@ When a specialized skill applies, load it and follow it. Commander should not du
 
 If a routed skill is not available in the active skill list, do not pretend it was loaded and do not stop the task by default. State that the skill is unavailable, then follow the closest local method or the compact rule implied by the route. Treat third-party maintenance skills as optional helpers unless the user explicitly requires them.
 
+For optional third-party maintenance skill installation guidance, read `docs/external-skills.md` only when setup or portability is the current uncertainty.
+
 ## Memory And Preference Gate
 
 Memory write-back is automatic but value-gated.
