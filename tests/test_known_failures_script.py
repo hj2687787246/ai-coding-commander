@@ -111,3 +111,65 @@ def test_known_failures_cli_returns_use_instead_on_match(tmp_path: Path) -> None
     payload = json.loads(check_result.stdout)
     assert payload["matched"] is True
     assert payload["use_instead"] == "rg -n 'a|b' path"
+
+
+def test_known_failures_rejects_invalid_regex_at_add_time(tmp_path: Path) -> None:
+    script = repo_root() / "skills" / "execution-failure-guard" / "scripts" / "known_failures.py"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--repo",
+            str(tmp_path),
+            "add",
+            "--id",
+            "bad-regex",
+            "--match",
+            "[",
+            "--match-type",
+            "regex",
+            "--known-bad",
+            "tool [",
+            "--fails-because",
+            "invalid regex",
+            "--use-instead",
+            "tool '['",
+            "--scope",
+            "test",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+
+    assert result.returncode == 1
+    payload = json.loads(result.stdout)
+    assert payload["ok"] is False
+    assert "Invalid regex" in payload["error"]
+
+
+def test_known_failures_check_does_not_crash_on_legacy_invalid_regex(tmp_path: Path) -> None:
+    known_failures = load_module()
+    registry = {
+        "version": 1,
+        "records": [
+            {
+                "id": "legacy-bad-regex",
+                "match": "[",
+                "match_type": "regex",
+                "known_bad": "tool [",
+                "fails_because": "legacy malformed record",
+                "use_instead": "tool '['",
+                "scope": "test",
+            }
+        ],
+    }
+    target = tmp_path / ".codex" / "known-failures.json"
+    target.parent.mkdir()
+    target.write_text(json.dumps(registry), encoding="utf-8")
+
+    result = known_failures.check_command(tmp_path, "tool [")
+
+    assert result.matched is False

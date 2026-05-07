@@ -128,7 +128,8 @@ Route common software-workspace work like this:
 | Receiving review feedback | `superpowers:receiving-code-review` |
 | Requesting review after meaningful implementation | `superpowers:requesting-code-review` |
 | Claiming work is complete, fixed, or passing | `superpowers:verification-before-completion` |
-| A command, tool call, install, test, build, git operation, shell command, or environment lookup failed and a working replacement was found | `execution-failure-guard`; check `.codex/known-failures.json` with `known_failures.py` before repeating similar operations; if durable reuse is needed, then `commander-reuse-upgrader` |
+| Before running a command that may match `.codex/known-failures.json` | `execution-failure-guard`; check with `known_failures.py` and use `use_instead` on match |
+| A command, tool call, install, test, build, git operation, shell command, or environment lookup failed and a working replacement was found | `execution-failure-guard`; if durable reuse is needed, then `commander-reuse-upgrader` |
 
 For non-core software orchestration work, route by active skill descriptions. Common categories: document/data skills (`docx`, `pptx`, `pdf`, `xlsx`, `doc-coauthoring`), visual/theme skills (`canvas-design`, `theme-factory`, `imagegen`), frontend QA/debugging skills (`webapp-testing`, `manual-frontend-qa`, `ui-style-consistency`, `frontend-debugging`), integration/runtime skills (`mysql-connect`, `redis-read`, `mcp-builder`, `developing-agents`), and environment/git skills (`ps-utf8-io`, `superpowers:using-git-worktrees`, `superpowers:finishing-a-development-branch`, `atomic-git-commits`).
 

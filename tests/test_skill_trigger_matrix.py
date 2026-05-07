@@ -133,5 +133,7 @@ def test_trigger_matrix_covers_repeated_execution_failures() -> None:
 
     assert failure_rows
     assert any("失败" in row["wording"] and "下次" in row["wording"] for row in failure_rows)
+    assert any("known-failures" in row["wording"] and "已知坑" in row["wording"] for row in failure_rows)
     assert any("next attempt's default path" in row["why"] for row in failure_rows)
+    assert any("before running a command" in row["why"] for row in failure_rows)
     assert any("reuse-upgrader" in row["why"] for row in failure_rows)

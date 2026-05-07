@@ -222,7 +222,7 @@ python .\skills\commander-mode\scripts\sync_current_task.py --repo . --event val
 当一次命令、工具、测试、构建或环境调用失败并找到可用替代方法后，可以把 known-bad 与 use-instead 写入 `.codex/known-failures.json`：
 
 ```powershell
-python .\skills\execution-failure-guard\scripts\known_failures.py --repo . add --id pwsh-path --match "pwsh -NoLogo" --known-bad "pwsh -NoLogo -Command ..." --fails-because "pwsh may be missing from the current tool process PATH" --use-instead "$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User'); pwsh -NoLogo -Command ..." --scope "Windows tool process"
+python .\skills\execution-failure-guard\scripts\known_failures.py --repo . add --id pwsh-path --match "pwsh -NoLogo" --known-bad "pwsh -NoLogo -Command ..." --fails-because "pwsh may be missing from the current tool process PATH" --use-instead '$env:Path = [Environment]::GetEnvironmentVariable(''Path'',''Machine'') + '';'' + [Environment]::GetEnvironmentVariable(''Path'',''User''); pwsh -NoLogo -Command ...' --scope "Windows tool process"
 ```
 
 执行相似命令前先检查：

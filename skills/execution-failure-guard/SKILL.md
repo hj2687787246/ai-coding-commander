@@ -1,6 +1,6 @@
 ---
 name: execution-failure-guard
-description: Use when a command, tool call, install, test, build, git operation, script, shell command, CLI, environment lookup, or automation failed once and a working replacement was found, so future similar attempts should reuse the learned working method instead of repeating trial-and-error.
+description: Use when a command, tool call, install, test, build, git operation, script, shell command, CLI, environment lookup, or automation failed once and a working replacement was found, or before running a command that may match a known failure in .codex/known-failures.json.
 ---
 
 # Execution Failure Guard

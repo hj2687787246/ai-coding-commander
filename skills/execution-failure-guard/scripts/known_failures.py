@@ -64,7 +64,10 @@ def record_matches(record: dict[str, Any], command: str) -> bool:
     if match_type == "exact":
         return command == match
     if match_type == "regex":
-        return re.search(match, command) is not None
+        try:
+            return re.search(match, command) is not None
+        except re.error:
+            return False
     return match in command
 
 
@@ -93,6 +96,11 @@ def add_record(
 ) -> dict[str, Any]:
     if match_type not in VALID_MATCH_TYPES:
         raise ValueError(f"Unsupported match type: {match_type}")
+    if match_type == "regex":
+        try:
+            re.compile(match)
+        except re.error as exc:
+            raise ValueError(f"Invalid regex match pattern: {exc}") from exc
 
     registry = load_registry(repo_root)
     record = {

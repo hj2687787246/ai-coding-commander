@@ -14,6 +14,7 @@ def test_execution_failure_guard_is_discoverable_and_generic() -> None:
 
     assert "name: execution-failure-guard" in skill
     assert "description: Use when a command, tool call" in skill
+    assert "before running a command that may match a known failure" in skill
     assert "Windows" in skill
     assert "D:\\Develop" not in skill
     assert "C:\\Users\\26877" not in skill
@@ -74,6 +75,8 @@ def test_commander_routes_repeated_execution_failures() -> None:
     commander = read_skill("skills/commander-mode/SKILL.md")
 
     assert "execution-failure-guard" in commander
+    assert "Before running a command that may match `.codex/known-failures.json`" in commander
+    assert "use `use_instead` on match" in commander
     assert "working replacement was found" in commander
     assert ".codex/known-failures.json" in commander
     assert "known_failures.py" in commander
@@ -86,3 +89,5 @@ def test_readme_documents_known_failures_checker() -> None:
     assert ".codex/known-failures.json" in readme
     assert "known_failures.py --repo . add" in readme
     assert "known_failures.py --repo . check" in readme
+    assert "--use-instead '$env:Path =" in readme
+    assert '--use-instead "$env:Path =' not in readme
