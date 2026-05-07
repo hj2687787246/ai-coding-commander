@@ -21,6 +21,7 @@ Use it when:
 | reuse-layer | `这个应该写进文档、脚本，还是做成 skill？` | `commander-reuse-upgrader` | Explicit markdown/script/skill decision. |
 | reuse-agent-failure | `agent 又犯同一个错了，别再靠聊天记忆` | `commander-reuse-upgrader` | Repeated agent failure needs durable reuse. |
 | skill-failure | `这个 skill 明明加载了但没有生效，debug 一下` | `identify-skill-failure` | Loaded skill failed to change behavior. |
+| commander-skill-debug | `debug 当前指挥官 skill，看它有没有问题` | `identify-skill-failure` | Commander skill self-debug should classify missed triggers and weak gates. |
 | skill-compress | `这个 SKILL.md 太长了，压缩但别丢门禁` | `compress-skill` | Skill is bloated and needs compression. |
 | skill-modulize | `这个 skill 主文件太胖，把参考内容拆到 references` | `modulize-skill` | Main skill should route heavy references out. |
 | skill-generalize | `我只是举个例子，不是只让你做这个，等等类似情况都要考虑` | `generalize` | Example wording should be generalized. |

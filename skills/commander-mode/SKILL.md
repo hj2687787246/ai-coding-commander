@@ -116,6 +116,7 @@ Route common software-workspace work like this:
 | Situation | Use |
 | --- | --- |
 | A loaded skill failed to change agent behavior | `identify-skill-failure` |
+| Debugging commander mode itself, or auditing a skill for missed triggers, weak gates, or repeated violations | `identify-skill-failure` plus `superpowers:writing-skills`; update or check `docs/skill-trigger-matrix.md` |
 | A skill is too long, repetitive, or handbook-like | `compress-skill` |
 | A skill has reference-heavy sections that should move out of the main file | `modulize-skill` |
 | A recurring problem may need markdown, script, or skill reuse | `commander-reuse-upgrader` when available; otherwise use the Reuse Upgrade Gate below |
@@ -133,6 +134,8 @@ For non-core software orchestration work, route by active skill descriptions. Co
 When a specialized skill applies, load it and follow it. Commander should not duplicate its detailed workflow.
 
 If a routed skill is not available in the active skill list, do not pretend it was loaded and do not stop the task by default. State that the skill is unavailable, then follow the closest local method or the compact rule implied by the route. Treat third-party maintenance skills as optional helpers unless the user explicitly requires them.
+
+When debugging commander mode itself, treat it as identify-skill-failure plus superpowers:writing-skills work. Keep the loop tight: capture the observed miss, classify it, add the smallest skill or routing edit, add a representative trigger-matrix or text check, then verify before claiming the skill is fixed.
 
 For optional third-party maintenance skill installation guidance, read `docs/external-skills.md` only when setup or portability is the current uncertainty.
 
@@ -183,6 +186,8 @@ Before reporting completion, committing, switching phase, or handing off:
 No validation evidence means no completion claim.
 
 For documentation, skill, or governance changes, acceptable validation evidence includes targeted text checks, duplicate-rule scans, frontmatter checks, `git diff --check`, path/privacy scans, line or word count checks, and a stated pressure scenario the edit is meant to prevent.
+
+For skill routing or skill description changes, also check `docs/skill-trigger-matrix.md` or explain why no representative trigger row changed.
 
 Do not treat "planned", "prepared", "dispatched", "spawned", "merged mentally", or "looks good" as done.
 

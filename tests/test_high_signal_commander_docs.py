@@ -116,6 +116,14 @@ def test_skill_routing_audits_discovery_failures() -> None:
     assert "broader skill is shadowing" in skill
 
 
+def test_commander_routes_skill_self_debug_to_failure_and_writing_skills() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "debugging commander mode itself" in skill
+    assert "identify-skill-failure plus superpowers:writing-skills" in skill
+    assert "skill-trigger-matrix.md" in skill
+
+
 def test_reuse_upgrade_gate_routes_to_lightest_layer() -> None:
     skill = read_text("skills/commander-mode/SKILL.md")
 

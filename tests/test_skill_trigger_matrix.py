@@ -108,3 +108,15 @@ def test_commander_mentions_trigger_discovery_failure_matrix_concepts() -> None:
     assert "broader skill is shadowing" in commander
     assert "real user wording fails to trigger" in matrix
     assert "fix commander routing or the narrower skill description" in matrix
+
+
+def test_trigger_matrix_covers_debugging_current_commander_skill_wording() -> None:
+    rows = parse_matrix_rows()
+
+    debug_rows = [
+        row
+        for row in rows
+        if row["skill"] == "identify-skill-failure" and "指挥官" in row["wording"] and "debug" in row["wording"]
+    ]
+
+    assert debug_rows
