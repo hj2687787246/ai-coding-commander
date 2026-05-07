@@ -116,6 +116,7 @@ Route common software-workspace work like this:
 | A loaded skill failed to change agent behavior | `identify-skill-failure` |
 | A skill is too long, repetitive, or handbook-like | `compress-skill` |
 | A skill has reference-heavy sections that should move out of the main file | `modulize-skill` |
+| A recurring problem may need markdown, script, or skill reuse | `commander-reuse-upgrader` when available; otherwise use the Reuse Upgrade Gate below |
 | Requirements are unclear or acceptance is missing | `clarify-requirements` or `superpowers:brainstorming` |
 | A multi-step implementation plan is needed | `superpowers:writing-plans` |
 | Editing or creating a skill | `superpowers:writing-skills` |
@@ -125,21 +126,23 @@ Route common software-workspace work like this:
 | Requesting review after meaningful implementation | `superpowers:requesting-code-review` |
 | Claiming work is complete, fixed, or passing | `superpowers:verification-before-completion` |
 
-For non-core software orchestration work, route by active skill descriptions. Common categories:
-
-| Situation | Prefer active skills such as |
-| --- | --- |
-| Documents, slides, PDFs, or spreadsheets | `docx`, `pptx`, `pdf`, `xlsx`, `doc-coauthoring` |
-| Static visual design or themed artifacts | `canvas-design`, `theme-factory`, `imagegen` |
-| Frontend testing, UI QA, style drift, or layout debugging | `webapp-testing`, `manual-frontend-qa`, `ui-style-consistency`, `frontend-debugging` |
-| Databases, caches, MCP, or agent runtimes | `mysql-connect`, `redis-read`, `mcp-builder`, `developing-agents` |
-| Windows encoding, Git worktrees, branch finishing, or atomic commits | `ps-utf8-io`, `superpowers:using-git-worktrees`, `superpowers:finishing-a-development-branch`, `atomic-git-commits` |
+For non-core software orchestration work, route by active skill descriptions. Common categories: document/data skills (`docx`, `pptx`, `pdf`, `xlsx`, `doc-coauthoring`), visual/theme skills (`canvas-design`, `theme-factory`, `imagegen`), frontend QA/debugging skills (`webapp-testing`, `manual-frontend-qa`, `ui-style-consistency`, `frontend-debugging`), integration/runtime skills (`mysql-connect`, `redis-read`, `mcp-builder`, `developing-agents`), and environment/git skills (`ps-utf8-io`, `superpowers:using-git-worktrees`, `superpowers:finishing-a-development-branch`, `atomic-git-commits`).
 
 When a specialized skill applies, load it and follow it. Commander should not duplicate its detailed workflow.
 
 If a routed skill is not available in the active skill list, do not pretend it was loaded and do not stop the task by default. State that the skill is unavailable, then follow the closest local method or the compact rule implied by the route. Treat third-party maintenance skills as optional helpers unless the user explicitly requires them.
 
 For optional third-party maintenance skill installation guidance, read `docs/external-skills.md` only when setup or portability is the current uncertainty.
+
+## Reuse Upgrade Gate
+
+At preclose, after repeated user corrections, or after a recurring workflow succeeds, ask whether the turn exposed a reusable problem. Do not wait for the user to say "沉淀成 skill". Choose the lightest layer:
+
+- Project markdown: project facts, boundaries, conventions, handoff notes, or changing status.
+- Script, test, or checker: deterministic or command-like behavior that automation can enforce better than prose.
+- Skill: cross-project workflow or judgment pattern with repeated failure, stable trigger, clear boundary, and validation evidence from real use.
+
+If skill is the right destination, route to `superpowers:writing-skills` and use skill-document TDD: capture the failing behavior first, write the smallest skill or edit that prevents it, add red flags or gates, and validate with a pressure scenario before claiming it works.
 
 ## Memory And Preference Gate
 
