@@ -45,6 +45,7 @@ def test_install_script_copies_commander_mode_into_codex_home(tmp_path: Path) ->
     assert installed_reuse_skill.exists()
     assert installed_execution_failure_skill.exists()
     assert "installed" in result.stdout
+    assert "verify_skill_install.py" in result.stdout
 
 
 def test_install_script_does_not_overwrite_existing_target_without_force(tmp_path: Path) -> None:

@@ -181,6 +181,12 @@ pwsh -NoLogo -File .\install\install-commander.ps1 -Force
 - 正式分发入口只有 `skills/commander-mode/`、`skills/commander-reuse-upgrader/` 和 `skills/execution-failure-guard/`
 - `legacy/agent-runtime/` 只是归档，不参与安装和当前使用
 
+可以用安装自检确认下一个窗口会读到最新 skill：
+
+```powershell
+python .\skills\commander-mode\scripts\verify_skill_install.py --repo . --codex-home "$env:USERPROFILE\.codex"
+```
+
 ### 首次恢复顺序
 
 进入一个项目后，推荐优先按这个顺序恢复：

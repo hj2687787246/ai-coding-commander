@@ -66,6 +66,14 @@ python <commander-mode-skill-dir>\scripts\portable_harness.py --cwd . status
 
 Resolve `<commander-mode-skill-dir>` from the active installed skill location. Do not hardcode user-specific paths.
 
+When the task depends on companion commander skills being available in a new window, verify installation before relying on them:
+
+```powershell
+python <commander-mode-skill-dir>\scripts\verify_skill_install.py --repo <ai-coding-commander-repo> --codex-home <codex-home>
+```
+
+If the verifier reports `ok: false`, reinstall or sync the reported skill before claiming the next window can use it. A clean verifier does not hot-load skills into the current window; it proves the next skill discovery pass can read the installed files.
+
 ## Intent Router
 
 Classify the current turn before reading deeply:
