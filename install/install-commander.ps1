@@ -18,7 +18,8 @@ $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 $repoRootPath = (Resolve-Path $RepoRoot).Path
 $skillNames = @(
     "commander-mode",
-    "commander-reuse-upgrader"
+    "commander-reuse-upgrader",
+    "execution-failure-guard"
 )
 $targetParent = Join-Path $CodexHome "skills"
 
@@ -67,6 +68,7 @@ $result = [ordered]@{
     nextSteps = @(
         "在新会话里使用 commander-mode",
         "重复问题沉淀时使用 commander-reuse-upgrader",
+        "命令、工具或环境执行失败并找到可用方法后使用 execution-failure-guard",
         "可用 portable_harness.py --cwd . status 检查项目状态",
         "在未初始化项目中可用 bootstrap_codex_workspace.py 创建标准 .codex 骨架"
     )

@@ -32,6 +32,7 @@ Use it when:
 | tdd-feature | `实现这个功能，先按 TDD 来` | `superpowers:test-driven-development` | Feature implementation before production code. |
 | debug-failure | `测试失败了，不要猜，系统调试一下` | `superpowers:systematic-debugging` | Bug or test failure investigation. |
 | verify-complete | `你说修好了，先拿验证证据给我` | `superpowers:verification-before-completion` | Completion claim requires evidence. |
+| execution-failure-repeat | `这个命令失败后已经找到正确写法了，下次同类操作别再先试错` | `execution-failure-guard` | Learned execution fixes should become the next attempt's default path before reuse-upgrader chooses durable storage. |
 | ps-utf8 | `PowerShell 读中文乱码，写文件要 UTF-8` | `ps-utf8-io` | Windows PowerShell UTF-8 I/O safety. |
 | docx-edit | `帮我修改这个 Word 文档` | `docx` | Word document input or output. |
 | pdf-extract | `读取这个 PDF 并提取表格` | `pdf` | PDF extraction. |

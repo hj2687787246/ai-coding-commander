@@ -60,6 +60,7 @@ def available_skill_names() -> set[str]:
             "redis-read",
             "theme-factory",
             "webapp-testing",
+            "execution-failure-guard",
             "xlsx",
             "superpowers:brainstorming",
             "superpowers:systematic-debugging",
@@ -92,6 +93,7 @@ def test_trigger_matrix_covers_commander_reuse_and_skill_maintenance() -> None:
     assert "identify-skill-failure" in skills
     assert "compress-skill" in skills
     assert "modulize-skill" in skills
+    assert "execution-failure-guard" in skills
 
     reuse_rows = [row for row in rows if row["skill"] == "commander-reuse-upgrader"]
     assert len(reuse_rows) >= 3
@@ -122,3 +124,14 @@ def test_trigger_matrix_covers_debugging_current_commander_skill_wording() -> No
     assert debug_rows
     assert "Discovery Failure Gate" in debug_rows[0]["why"]
     assert "loaded violations use identify-skill-failure" in debug_rows[0]["why"]
+
+
+def test_trigger_matrix_covers_repeated_execution_failures() -> None:
+    rows = parse_matrix_rows()
+
+    failure_rows = [row for row in rows if row["skill"] == "execution-failure-guard"]
+
+    assert failure_rows
+    assert any("失败" in row["wording"] and "下次" in row["wording"] for row in failure_rows)
+    assert any("next attempt's default path" in row["why"] for row in failure_rows)
+    assert any("reuse-upgrader" in row["why"] for row in failure_rows)

@@ -2,7 +2,7 @@
 
 高信号 AI coding 指挥 skill 的独立承接仓库。
 
-这个仓库交付的是 `commander-mode` 和 `commander-reuse-upgrader` 两个 skill，不是平台，也不是必须套用的项目模板。`commander-mode` 负责在任意代码仓库里选择有价值的上下文、恢复当前工作、自动沉淀关键检查点，并在收口前保护验证纪律；`commander-reuse-upgrader` 负责把重复问题分流到项目文档、自动化脚本/检查器或轻量 skill。
+这个仓库交付的是 `commander-mode`、`commander-reuse-upgrader` 和 `execution-failure-guard` 三个 skill，不是平台，也不是必须套用的项目模板。`commander-mode` 负责在任意代码仓库里选择有价值的上下文、恢复当前工作、自动沉淀关键检查点，并在收口前保护验证纪律；`commander-reuse-upgrader` 负责把重复问题分流到项目文档、自动化脚本/检查器或轻量 skill；`execution-failure-guard` 负责把一次执行失败后找到的可用方法变成后续同类操作的默认路径。
 
 ## 当前主线
 
@@ -10,10 +10,11 @@
 
 1. `skills/commander-mode/`
 2. `skills/commander-reuse-upgrader/`
-3. `skills/commander-mode/scripts/portable_harness.py`
-4. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
-5. `skills/commander-mode/scripts/sync_current_task.py`
-6. `skills/commander-mode/scripts/sync_preference_memory.py`
+3. `skills/execution-failure-guard/`
+4. `skills/commander-mode/scripts/portable_harness.py`
+5. `skills/commander-mode/scripts/bootstrap_codex_workspace.py`
+6. `skills/commander-mode/scripts/sync_current_task.py`
+7. `skills/commander-mode/scripts/sync_preference_memory.py`
 
 `legacy/agent-runtime/` 仅作归档参考，不参与当前实现，不作为当前安装源、恢复入口或扩展目标。
 
@@ -21,8 +22,9 @@
 
 1. 提供跨仓库可用的 `commander-mode` skill。
 2. 提供跨仓库可用的 `commander-reuse-upgrader` skill，负责复用沉淀分流。
-3. 提供最小 portable harness：状态扫描和 stop gate。
-4. 不依赖旧 Agent 仓库里的 `commander/` runtime。
+3. 提供跨仓库可用的 `execution-failure-guard` skill，负责执行失败后的可用方法复用和升级沉淀。
+4. 提供最小 portable harness：状态扫描和 stop gate。
+5. 不依赖旧 Agent 仓库里的 `commander/` runtime。
 
 ## High-Signal 使用原则
 
@@ -125,20 +127,23 @@ skill 触发回归矩阵见：
 
 - `skills/commander-mode/`
 - `skills/commander-reuse-upgrader/`
+- `skills/execution-failure-guard/`
 
 复制到本地：
 
 - `~/.codex/skills/commander-mode`
 - `~/.codex/skills/commander-reuse-upgrader`
+- `~/.codex/skills/execution-failure-guard`
 
 #### 方式 B：junction
 
 如果你希望本地 skills 始终直接指向仓库源码，可以用 junction：
 
 ```powershell
-$repo = "D:\Develop\Projects\ai-coding-commander"
+$repo = (Resolve-Path ".").Path
 cmd /c mklink /J "$env:USERPROFILE\.codex\skills\commander-mode" "$repo\skills\commander-mode"
 cmd /c mklink /J "$env:USERPROFILE\.codex\skills\commander-reuse-upgrader" "$repo\skills\commander-reuse-upgrader"
+cmd /c mklink /J "$env:USERPROFILE\.codex\skills\execution-failure-guard" "$repo\skills\execution-failure-guard"
 ```
 
 ### 普通用户
@@ -167,13 +172,13 @@ pwsh -NoLogo -File .\install\install-commander.ps1 -Force
 
 - `-BackupExisting`：先备份旧目录，再安装新版本
 - `-Force`：直接覆盖现有安装
-- 普通用户路径只安装 `skills/commander-mode/` 和 `skills/commander-reuse-upgrader/`，不会安装 `legacy/agent-runtime`
+- 普通用户路径只安装 `skills/commander-mode/`、`skills/commander-reuse-upgrader/` 和 `skills/execution-failure-guard/`，不会安装 `legacy/agent-runtime`
 
 ## 首次使用
 
 安装完成后，先记住：
 
-- 正式分发入口只有 `skills/commander-mode/` 和 `skills/commander-reuse-upgrader/`
+- 正式分发入口只有 `skills/commander-mode/`、`skills/commander-reuse-upgrader/` 和 `skills/execution-failure-guard/`
 - `legacy/agent-runtime/` 只是归档，不参与安装和当前使用
 
 ### 首次恢复顺序
