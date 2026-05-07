@@ -16,10 +16,26 @@ This skill does not decide the final durable layer. Use `commander-reuse-upgrade
 After any command/tool execution fails and a working replacement is found:
 
 1. Name the failure pattern: shell syntax, PATH lookup, dependency invocation, auth helper, test command, build command, service startup, file encoding, tool schema, or another concrete category.
-2. Capture the working method as a reusable command shape, not as a chat anecdote.
-3. Use the working method for the rest of the session before trying variants.
-4. If the pattern can recur in another window, invoke `commander-reuse-upgrader` or its decision rules to choose the narrowest durable surface.
-5. If the same pattern has recurred before, upgrade the durable surface instead of adding another note.
+2. Capture the known-bad method when it is likely to be retried: the rejected command shape, why it failed, and the boundary where it is invalid.
+3. Capture the working method as a reusable command shape, not as a chat anecdote.
+4. Use the working method for the rest of the session before trying variants.
+5. If the pattern can recur in another window, invoke `commander-reuse-upgrader` or its decision rules to choose the narrowest durable surface.
+6. If the same pattern has recurred before, upgrade the durable surface instead of adding another note.
+
+## Known-Bad Method Gate
+
+Do not persist every typo or transient outage. Persist a known-bad method when a reasonable future agent might choose it again.
+
+Record it in this shape:
+
+```text
+Known-bad: <command/tool shape that failed>
+Fails because: <portable reason, not just this run's output>
+Use instead: <verified working method>
+Scope: <repo/session/platform/tool boundary where this applies>
+```
+
+If the known-bad method is dangerous, destructive, or repeatedly tempting, prefer an automated guard such as a script, test, checker, or setup command through `commander-reuse-upgrader`.
 
 ## Before Repeating A Similar Operation
 
@@ -52,6 +68,7 @@ Do not repeat the original failing command just to rediscover the same fix unles
 
 - "It failed, but I know the right command now" without saving or reusing it.
 - Running the same failing command again after a working replacement was found.
+- Saving only the working method when the failed method is likely to be tried again.
 - Treating a recurring execution failure as isolated because the immediate retry succeeded.
 - Writing a broad preference when a script/checker would enforce the fix better.
 - Capturing the fix only in chat, where the next agent will not reliably see it.

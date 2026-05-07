@@ -23,10 +23,23 @@ def test_execution_failure_guard_requires_learned_fix_reuse() -> None:
     skill = read_skill("skills/execution-failure-guard/SKILL.md")
 
     assert "Learned Fix Gate" in skill
+    assert "Capture the known-bad method" in skill
     assert "Capture the working method as a reusable command shape" in skill
     assert "Use the working method for the rest of the session" in skill
     assert "choose the narrowest durable surface" in skill
     assert "upgrade the durable surface instead of adding another note" in skill
+
+
+def test_execution_failure_guard_records_known_bad_methods_when_retriable() -> None:
+    skill = read_skill("skills/execution-failure-guard/SKILL.md")
+
+    assert "Known-Bad Method Gate" in skill
+    assert "when a reasonable future agent might choose it again" in skill
+    assert "Known-bad:" in skill
+    assert "Fails because:" in skill
+    assert "Use instead:" in skill
+    assert "Scope:" in skill
+    assert "Saving only the working method" in skill
 
 
 def test_execution_failure_guard_defers_durable_layer_to_reuse_upgrader() -> None:
