@@ -11,6 +11,8 @@ Route recurring problems into the lightest reusable layer that will prevent the 
 
 ## Entry Contract
 
+This workflow is proactive. Do not wait for the user to request reuse, write-back, or skill creation when a reusable failure pattern is visible.
+
 Before choosing a destination:
 
 1. Rebuild the current facts from the active workspace truth sources.
@@ -19,6 +21,14 @@ Before choosing a destination:
 4. Choose markdown, automation, or skill based on the decision rules below.
 
 Do not rely on chat memory as the final truth source.
+
+## Auto Capture Gate
+
+Run this gate at preclose, after repeated user corrections, after the same workflow succeeds twice, or after a loaded skill fails to change behavior.
+
+If reuse value is clear and the destination is low-risk, make the smallest safe update without waiting for the user to name the layer. If the destination is a new skill, broad rule change, public workflow, or anything with license/security risk, propose the skill upgrade with the failure evidence and ask for confirmation before creating it.
+
+Never make the user responsible for noticing that a repeated agent failure should be preserved.
 
 ## Destination Rules
 
