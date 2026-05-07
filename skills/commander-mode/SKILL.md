@@ -116,7 +116,7 @@ Route common software-workspace work like this:
 | Situation | Use |
 | --- | --- |
 | A loaded skill failed to change agent behavior | `identify-skill-failure` |
-| Debugging commander mode itself, or auditing a skill for missed triggers, weak gates, or repeated violations | `identify-skill-failure` plus `superpowers:writing-skills`; update or check `docs/skill-trigger-matrix.md` |
+| Debugging commander mode itself, or auditing skill behavior for weak gates or repeated violations | `identify-skill-failure` plus `superpowers:writing-skills`; update or check `docs/skill-trigger-matrix.md` |
 | A skill is too long, repetitive, or handbook-like | `compress-skill` |
 | A skill has reference-heavy sections that should move out of the main file | `modulize-skill` |
 | A recurring problem may need markdown, script, or skill reuse | `commander-reuse-upgrader` when available; otherwise use the Reuse Upgrade Gate below |
@@ -135,7 +135,14 @@ When a specialized skill applies, load it and follow it. Commander should not du
 
 If a routed skill is not available in the active skill list, do not pretend it was loaded and do not stop the task by default. State that the skill is unavailable, then follow the closest local method or the compact rule implied by the route. Treat third-party maintenance skills as optional helpers unless the user explicitly requires them.
 
-When debugging commander mode itself, treat it as identify-skill-failure plus superpowers:writing-skills work. Keep the loop tight: capture the observed miss, classify it, add the smallest skill or routing edit, add a representative trigger-matrix or text check, then verify before claiming the skill is fixed.
+When debugging commander mode itself, use a skill-document TDD loop; for loaded-skill violations, use identify-skill-failure plus superpowers:writing-skills.
+
+Self-debug gate:
+
+1. Use `identify-skill-failure` only when the skill was loaded and still failed to change behavior.
+2. For missed triggers or unloaded skills, use the Discovery Failure Gate first; do not classify unloaded-skill discovery misses as loaded-skill violations.
+3. Add the smallest skill or routing edit.
+4. Add a representative trigger-matrix or text check, then verify before claiming the skill is fixed.
 
 For optional third-party maintenance skill installation guidance, read `docs/external-skills.md` only when setup or portability is the current uncertainty.
 

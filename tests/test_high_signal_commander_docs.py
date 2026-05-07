@@ -124,6 +124,14 @@ def test_commander_routes_skill_self_debug_to_failure_and_writing_skills() -> No
     assert "skill-trigger-matrix.md" in skill
 
 
+def test_commander_distinguishes_loaded_skill_failure_from_discovery_failure() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "Use `identify-skill-failure` only when the skill was loaded" in skill
+    assert "For missed triggers or unloaded skills, use the Discovery Failure Gate" in skill
+    assert "do not classify unloaded-skill discovery misses as loaded-skill violations" in skill
+
+
 def test_reuse_upgrade_gate_routes_to_lightest_layer() -> None:
     skill = read_text("skills/commander-mode/SKILL.md")
 
