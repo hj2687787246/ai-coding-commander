@@ -125,6 +125,8 @@ Route like this:
 
 When a specialized skill applies, load it and follow it. Commander should not duplicate its detailed workflow.
 
+If a routed skill is not available in the active skill list, do not pretend it was loaded and do not stop the task by default. State that the skill is unavailable, then follow the closest local method or the compact rule implied by the route. Treat third-party maintenance skills as optional helpers unless the user explicitly requires them.
+
 ## Memory And Preference Gate
 
 Memory write-back is automatic but value-gated.
