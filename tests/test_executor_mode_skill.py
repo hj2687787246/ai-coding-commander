@@ -42,6 +42,16 @@ def test_executor_mode_requires_evidence_and_isolated_task_card() -> None:
     assert "execution-failure-guard" in skill
 
 
+def test_executor_mode_continues_until_assigned_outcome() -> None:
+    skill = read_text("skills/executor-mode/SKILL.md")
+
+    assert "User-Visible Outcome Target" in skill
+    assert "Do not stop at phase completion" in skill
+    assert "continue to the assigned user-visible result" in skill
+    assert "checkpoint, then continue" in skill
+    assert "Stop only when" in skill
+
+
 def test_commander_routes_executor_mode() -> None:
     commander = read_text("skills/commander-mode/SKILL.md")
     matrix = read_text("docs/skill-trigger-matrix.md")

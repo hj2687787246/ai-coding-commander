@@ -21,6 +21,20 @@ Before editing, identify:
 
 If task source, scope, or validation is unclear enough to change the implementation, stop and ask commander/user for clarification.
 
+## User-Visible Outcome Target
+
+Do not stop at phase completion when the assigned task expects an end result.
+
+Use phases as local checkpoints, then continue to the assigned user-visible result. A phase is done only means "checkpoint, then continue" unless the task card or commander explicitly requires phase approval.
+
+Stop only when:
+
+- The task card's user-visible result is achieved and verified for handback.
+- The next step would change requirements, scope, or acceptance.
+- Required credentials, permissions, destructive actions, or user decisions are missing.
+- Validation failure changes the plan or makes continuation unsafe.
+- Another task card/window conflict blocks safe execution.
+
 ## Boundaries
 
 - Do not change requirements, acceptance criteria, product direction, or task scope.

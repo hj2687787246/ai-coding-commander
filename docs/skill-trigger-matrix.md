@@ -20,6 +20,7 @@ Use it when:
 | commander-persistent-active | `我手动启用一次指挥官后，压缩和新窗口也要继续生效` | `commander-mode` | Persistent activation should write and recover `.codex/commander-active.json`. |
 | commander-pre-implementation-research | `写代码前先判断要不要查本地知识库或联网资料` | `commander-mode` | Pre-implementation research sufficiency belongs to commander before routing implementation. |
 | commander-concurrent-task-cards | `两个窗口做不同事情时会互相受到当前任务卡影响` | `commander-mode` | Concurrent task windows need isolated `.codex/tasks/<task-id>/当前任务.md` cards. |
+| commander-user-visible-long-task | `长任务我只看最终结果，中间由指挥官持续调度推进` | `commander-mode` | Long tasks should use phase checkpoints internally while commander keeps directing roles toward the user-visible outcome unless blocked. |
 | executor-assigned-task | `你现在是执行者，按这个 task-id 执行并验证` | `executor-mode` | Executor mode owns scoped execution for a confirmed task-id and hands evidence back to commander. |
 | reuse-sediment | `这个问题以后还会遇到，自动沉淀一下` | `commander-reuse-upgrader` | Repeated problem should be routed to reuse layer. |
 | reuse-layer | `这个应该写进文档、脚本，还是做成 skill？` | `commander-reuse-upgrader` | Explicit markdown/script/skill decision. |

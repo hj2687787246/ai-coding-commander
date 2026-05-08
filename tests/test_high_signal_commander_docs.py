@@ -163,12 +163,26 @@ def test_commander_skill_defines_concurrent_task_isolation() -> None:
     assert ".codex/tasks/<task-id>/当前任务.md" in readme
 
 
+def test_commander_skill_defines_user_visible_outcome_gate() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+    readme = read_text("README.md")
+
+    assert "User-Visible Outcome Gate" in skill
+    assert "用户可见最终结果" in skill
+    assert "Commander owns the process" in skill
+    assert "Phase checkpoints are not stopping points" in skill
+    assert "Continue directing executor/reviewer roles" in skill
+    assert "Stop only when" in skill
+    assert "User-Visible Outcome" in readme
+
+
 def test_readme_presents_standard_activation_contract() -> None:
     readme = read_text("README.md")
 
     assert "Standard Activation Contract" in readme
-    assert "Entry / Research / Heartbeat / Preference Write-Back / Preclose / Recovery" in readme
+    assert "Entry / Research / User-Visible Outcome / Heartbeat / Preference Write-Back / Preclose / Recovery" in readme
     assert "Research" in readme
+    assert "User-Visible Outcome" in readme
     assert "写代码前判断项目内资料、本地知识和联网资料是否足够" in readme
     assert "不是建议清单" in readme
 

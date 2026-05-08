@@ -179,6 +179,29 @@ On recovery, if the user refers to a specific window/task, read that task-specif
 
 Only write the global `.codex/docs/当前任务.md` during parallel work when updating project-level coordination, not window-local progress.
 
+## User-Visible Outcome Gate
+
+When the user asks commander to execute a long task, the user should mainly see the 用户可见最终结果. Commander owns the process: directing roles, managing phases, writing checkpoints, running validation, and deciding the next safe action.
+
+Phase checkpoints are not stopping points. They are internal recovery and validation anchors. Do not stop after a phase just to ask the user to re-run commander or approve routine continuation.
+
+Default behavior for long tasks:
+
+1. Define the user-visible outcome and final acceptance before execution.
+2. Break work into phases only to reduce risk, route roles, and preserve recovery state.
+3. At each phase boundary, write a checkpoint, run the relevant validation, update the task card, then continue to the next phase.
+4. Continue directing executor/reviewer roles until the user-visible outcome is ready to show, or until a stop condition blocks safe progress.
+
+Stop only when:
+
+- Requirements, scope, or acceptance are missing and materially affect the next action.
+- The next step needs user permission, credentials, destructive access, payment, or external account action.
+- Validation fails in a way that changes the plan or requires a decision.
+- Repo state, merge conflicts, or another window's task card makes continuation unsafe.
+- The user explicitly requested phase-by-phase approval.
+
+Do not report a phase as the user's result. Report it as a checkpoint only when useful, then keep moving toward the user-visible outcome.
+
 ## Skill Routing
 
 Commander owns project state, intent routing, memory, checkpoints, and completion gates. Specialized skills own execution discipline.

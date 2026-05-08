@@ -170,6 +170,16 @@ def test_trigger_matrix_covers_concurrent_task_card_conflicts() -> None:
     assert ".codex/tasks/<task-id>/当前任务.md" in conflict_rows[0]["why"]
 
 
+def test_trigger_matrix_covers_user_visible_long_tasks() -> None:
+    rows = parse_matrix_rows()
+
+    outcome_rows = [row for row in rows if row["id"] == "commander-user-visible-long-task"]
+
+    assert outcome_rows
+    assert outcome_rows[0]["skill"] == "commander-mode"
+    assert "user-visible outcome" in outcome_rows[0]["why"]
+
+
 def test_trigger_matrix_covers_executor_mode() -> None:
     rows = parse_matrix_rows()
 
