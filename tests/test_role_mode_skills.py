@@ -78,3 +78,23 @@ def test_commander_routes_all_four_roles() -> None:
     assert "Doc Reviewer" in commander
     assert "Executor" in commander
     assert "Acceptance Reviewer" in commander
+
+
+def test_commander_defines_role_lifecycle_gates() -> None:
+    commander = read_text("skills/commander-mode/SKILL.md")
+
+    assert "Role Lifecycle Gate" in commander
+    assert "Before executor dispatch" in commander
+    assert "doc-reviewer-mode" in commander
+    assert "After executor handback" in commander
+    assert "acceptance-reviewer-mode" in commander
+    assert "Do not skip acceptance review" in commander
+    assert "user-visible completion" in commander
+
+
+def test_executor_hands_back_to_commander_when_dispatched() -> None:
+    executor = read_text("skills/executor-mode/SKILL.md")
+
+    assert "When dispatched by commander" in executor
+    assert "do not deliver directly to the user" in executor
+    assert "hand back to commander" in executor

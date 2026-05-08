@@ -239,6 +239,16 @@ Do not dispatch role work without naming the required skill. The packet should t
 
 The receiving role should load its own role skill, follow the packet, and hand evidence back to commander. Commander remains responsible for deciding the next safe action and whether the user-visible outcome is ready.
 
+### Role Lifecycle Gate
+
+Use role skills as gates, not decorations.
+
+- Before executor dispatch: use `doc-reviewer-mode` when the requirement, plan, task card, acceptance criteria, or handoff packet is new, broad, changed, or not recently reviewed. Skip only for tiny already-specified execution where scope and validation are explicit.
+- Executor dispatch: use `executor-mode` for scoped implementation or docs changes after the contract is clear enough to act.
+- After executor handback: use `acceptance-reviewer-mode` before claiming user-visible completion, committing a meaningful implementation, merging, releasing, or handing final results to the user.
+
+Do not skip acceptance review just because executor says tests passed. Executor evidence is input to acceptance; it is not final acceptance. Commander may perform lightweight acceptance locally only for tiny reversible changes, and must name why a separate acceptance-reviewer pass was unnecessary.
+
 Route common software-workspace work like this:
 
 | Situation | Use |

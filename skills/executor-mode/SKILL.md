@@ -21,6 +21,8 @@ Before editing, identify:
 
 If task source, scope, or validation is unclear enough to change the implementation, stop and ask commander/user for clarification.
 
+When dispatched by commander, do not deliver directly to the user. Finish the assigned implementation, gather validation evidence, then hand back to commander or the explicitly assigned reviewer.
+
 ## User-Visible Outcome Target
 
 Do not stop at phase completion when the assigned task expects an end result.

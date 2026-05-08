@@ -182,6 +182,17 @@ def test_trigger_matrix_covers_user_visible_long_tasks() -> None:
     assert "user-visible outcome" in outcome_rows[0]["why"]
 
 
+def test_trigger_matrix_covers_role_lifecycle_gates() -> None:
+    rows = parse_matrix_rows()
+
+    lifecycle_rows = [row for row in rows if row["id"] == "commander-role-lifecycle"]
+
+    assert lifecycle_rows
+    assert lifecycle_rows[0]["skill"] == "commander-mode"
+    assert "doc review before executor" in lifecycle_rows[0]["why"]
+    assert "acceptance review after executor" in lifecycle_rows[0]["why"]
+
+
 def test_trigger_matrix_covers_executor_mode() -> None:
     rows = parse_matrix_rows()
 
