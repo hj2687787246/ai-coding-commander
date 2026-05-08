@@ -228,6 +228,7 @@ task-id:
 task card / source path:
 scope:
 must-read rules:
+role-relevant preference cards / 本轮适用偏好:
 acceptance criteria:
 validation evidence required:
 forbidden actions:
@@ -235,7 +236,11 @@ report format:
 handoff target:
 ```
 
-Do not dispatch role work without naming the required skill. The packet should tell the receiving window to load that exact skill first, for example `doc-reviewer-mode`, `executor-mode`, or `acceptance-reviewer-mode`. If the required role skill is unavailable, the receiver must say so and follow the closest local method rather than silently running as generic commander or generic coder.
+Do not dispatch role work without naming the required skill, hard rules, and role-relevant preference cards. `must-read rules` should include the relevant hard rules such as `AGENTS.md`, `.codex/AGENT.md`, task-card rules, and any role-specific constraints. `role-relevant preference cards / 本轮适用偏好` should include only the selected preference cards that apply to that role and task, or state `none found` after checking the repo preference surface.
+
+Do not dump every preference into every child window. Doc Reviewer needs preferences about clarification, specs, plans, and acceptance. Executor needs preferences about implementation scope, commands, checkpoints, validation, and code style. Acceptance Reviewer needs preferences about evidence, final acceptance, risk reporting, and not self-declaring completion.
+
+The packet should tell the receiving window to load that exact skill first, for example `doc-reviewer-mode`, `executor-mode`, or `acceptance-reviewer-mode`. If the required role skill is unavailable, the receiver must say so and follow the closest local method rather than silently running as generic commander or generic coder.
 
 The receiving role should load its own role skill, follow the packet, and hand evidence back to commander. Commander remains responsible for deciding the next safe action and whether the user-visible outcome is ready.
 

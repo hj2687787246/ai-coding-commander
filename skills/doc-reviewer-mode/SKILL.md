@@ -14,12 +14,17 @@ description: Use when the user asks Codex to act as 文档评审官/Doc Reviewer
 Before reviewing, identify:
 
 - Document source: spec, plan, task card, `.codex/tasks/<task-id>/当前任务.md`, issue, README section, or explicit user text.
+- Hard rules and role-relevant preferences: `must-read rules`, repo rule files, and role-relevant preference cards / 本轮适用偏好 from the commander dispatch packet.
 - Intended executor: human, `executor-mode`, sub-agent, or next window.
 - Decision owner: commander or user.
 - Expected output: review findings, readiness verdict, or blocking questions.
 - Acceptance surface: phase acceptance, final acceptance, validation commands, screenshots, or manual review evidence.
 
 If the source document is missing, ask commander/user for the document path or paste target. Do not reconstruct the intended task from chat memory when a written source should exist.
+
+Do not import unrelated preference cards into the review. Use only preferences that affect clarification, specs, plans, task cards, acceptance criteria, or handoff quality.
+
+Do not proceed as a generic role if the dispatch packet omits hard rules or 本轮适用偏好. Ask commander for the missing packet fields, or state that no role-relevant preference surface was found after checking the repo truth sources.
 
 ## Requirement Contract Review
 

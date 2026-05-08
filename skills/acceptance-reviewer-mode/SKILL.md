@@ -15,11 +15,16 @@ Before reviewing, identify:
 
 - Requirement source: spec, task card, issue, plan, or commander packet.
 - Change source: diff, files changed, execution report, PR, or handoff.
+- Hard rules and role-relevant preferences: `must-read rules`, repo rule files, and role-relevant preference cards / 本轮适用偏好 from the commander dispatch packet.
 - Validation evidence: commands, logs, screenshots, manual QA, CI, or acceptance record.
 - Final acceptance: the criteria that must be satisfied before the user-visible outcome is ready.
 - Handoff target: commander, executor, user, or next reviewer.
 
 If requirement source or validation evidence is missing, do not infer success from implementation effort. Report the missing evidence.
+
+Do not import unrelated preference cards into acceptance review. Use only preferences that affect validation evidence, final acceptance, risk reporting, reroute decisions, or not self-declaring completion.
+
+Do not proceed as a generic role if the dispatch packet omits hard rules or 本轮适用偏好. Ask commander for the missing packet fields, or state that no role-relevant preference surface was found after checking the repo truth sources.
 
 When the verdict is ready, return to commander with evidence instead of delivering the final result directly to the user.
 

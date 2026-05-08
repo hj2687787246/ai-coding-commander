@@ -15,11 +15,16 @@ Before editing, identify:
 
 - Task source: current task card, `.codex/tasks/<task-id>/当前任务.md`, issue, plan, or explicit user instruction.
 - `task-id`: required when multiple windows, parallel tasks, or isolated task cards are in play.
+- Hard rules and role-relevant preferences: `must-read rules`, repo rule files, and role-relevant preference cards / 本轮适用偏好 from the commander dispatch packet.
 - Scope: files or behavior this execution is allowed to change.
 - Validation: commands, manual checks, screenshots, or review evidence needed.
 - Handoff target: commander, user, reviewer, or next window.
 
 If task source, scope, or validation is unclear enough to change the implementation, stop and ask commander/user for clarification.
+
+Do not import unrelated preference cards into execution. Use only preferences that affect implementation scope, command choice, checkpoints, validation, code style, or handback evidence.
+
+Do not proceed as a generic role if the dispatch packet omits hard rules or 本轮适用偏好. Ask commander for the missing packet fields, or state that no role-relevant preference surface was found after checking the repo truth sources.
 
 When dispatched by commander, do not deliver directly to the user. Finish the assigned implementation, gather validation evidence, then hand back to commander or the explicitly assigned reviewer.
 

@@ -108,3 +108,25 @@ def test_acceptance_reviewer_reports_failures_as_reroute_input() -> None:
     assert "failed criteria" in skill
     assert "suggested next role" in skill
     assert "do not rewrite acceptance" in skill
+
+
+def test_role_skills_require_hard_rules_and_preferences() -> None:
+    commander = read_text("skills/commander-mode/SKILL.md")
+    role_skills = [
+        read_text("skills/doc-reviewer-mode/SKILL.md"),
+        read_text("skills/executor-mode/SKILL.md"),
+        read_text("skills/acceptance-reviewer-mode/SKILL.md"),
+    ]
+
+    assert "must-read rules" in commander
+    assert "hard rules" in commander
+    assert "role-relevant preference cards" in commander
+    assert "本轮适用偏好" in commander
+
+    for skill in role_skills:
+        assert "Hard rules and role-relevant preferences" in skill
+        assert "must-read rules" in skill
+        assert "本轮适用偏好" in skill
+        assert "role-relevant preference cards" in skill
+        assert "Do not import unrelated preference cards" in skill
+        assert "Do not proceed as a generic role" in skill
