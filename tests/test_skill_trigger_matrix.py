@@ -147,3 +147,13 @@ def test_trigger_matrix_covers_persistent_commander_activation() -> None:
     assert persistent_rows
     assert persistent_rows[0]["skill"] == "commander-mode"
     assert ".codex/commander-active.json" in persistent_rows[0]["why"]
+
+
+def test_trigger_matrix_covers_pre_implementation_research() -> None:
+    rows = parse_matrix_rows()
+
+    research_rows = [row for row in rows if row["id"] == "commander-pre-implementation-research"]
+
+    assert research_rows
+    assert research_rows[0]["skill"] == "commander-mode"
+    assert "research sufficiency" in research_rows[0]["why"]

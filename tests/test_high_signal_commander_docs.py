@@ -141,11 +141,24 @@ def test_reuse_upgrade_gate_routes_to_lightest_layer() -> None:
     assert "skill-document TDD" in skill
 
 
+def test_commander_skill_defines_pre_implementation_research_gate() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+
+    assert "Pre-Implementation Research Gate" in skill
+    assert "资料充分性判断" in skill
+    assert "local knowledge" in skill
+    assert "web search" in skill
+    assert "Do not browse by default" in skill
+    assert "Do not edit code before this gate" in skill
+
+
 def test_readme_presents_standard_activation_contract() -> None:
     readme = read_text("README.md")
 
     assert "Standard Activation Contract" in readme
-    assert "Entry / Heartbeat / Preference Write-Back / Preclose / Recovery" in readme
+    assert "Entry / Research / Heartbeat / Preference Write-Back / Preclose / Recovery" in readme
+    assert "Research" in readme
+    assert "写代码前判断项目内资料、本地知识和联网资料是否足够" in readme
     assert "不是建议清单" in readme
 
 

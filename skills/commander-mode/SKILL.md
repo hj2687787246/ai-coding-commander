@@ -135,6 +135,28 @@ Assumption mode is allowed only for reversible, low-risk work. Do not use speed 
 
 Do not collapse unclear work into a "minimal executable plan" just because it is easy to start.
 
+## Pre-Implementation Research Gate
+
+Before editing code, writing migration scripts, changing skill behavior, or committing an implementation plan, perform a brief 资料充分性判断. This is a gate, not a long report.
+
+State one compact line when useful:
+
+```text
+资料判断：项目内资料足够 / 已查本地知识 / 需要联网 / 跳过外查，因为...
+```
+
+Check these layers in order:
+
+1. Project truth sources: repo rules, current task, README/docs, relevant code, tests, diffs, and local validation evidence.
+2. Local knowledge: use available MCP resources, repo memory, `.codex` docs, known failures, prior decisions, acceptance records, or searchable local notes when the issue may have happened before, depends on user preferences, or references previous plans.
+3. Web search: use current external sources when implementation depends on third-party APIs, dependency versions, CLI flags, platform behavior, release notes, regulations, pricing, or any fact that may have changed. Prefer official docs and primary sources for technical claims.
+
+Do not browse by default. Browse because a specific uncertainty would otherwise be guessed. Do not treat old model memory as documentation for external APIs.
+
+Skip local knowledge or web search only when the change is fully explained by current repo evidence and no external or historical fact can materially change the implementation. Name that reason briefly before editing when the risk is non-trivial.
+
+Do not edit code before this gate for broad refactors, new features, dependency/API usage, environment fixes, skill changes, or repeated failures. For tiny local edits, the gate can be a one-line conclusion.
+
 ## Skill Routing
 
 Commander owns project state, intent routing, memory, checkpoints, and completion gates. Specialized skills own execution discipline.
@@ -238,6 +260,7 @@ Stop and re-orient when any of these happens:
 
 - Proposing a plan before objective, scope, output shape, and acceptance are known.
 - Editing code before the requirement contract is either confirmed or explicitly assumed.
+- Editing code before the Pre-Implementation Research Gate has decided whether project docs, local knowledge, or web search are needed.
 - Writing preference memory before checking existing rules for same-meaning entries.
 - Reading large docs without knowing what uncertainty they reduce.
 - Treating chat memory as the truth source when repo evidence exists.
