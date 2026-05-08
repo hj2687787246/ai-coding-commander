@@ -30,6 +30,24 @@
       "use_instead": "Use repo tests that check SKILL.md frontmatter/routing, or run quick_validate.py from an environment with PyYAML installed.",
       "scope": "skill-creator quick_validate.py on local Windows Python environments",
       "last_verified": "2026-05-08"
+    },
+    {
+      "id": "repo-python-missing-pytest",
+      "match": "python -m pytest",
+      "match_type": "substring",
+      "known_bad": "python -m pytest <tests>",
+      "fails_because": "The system Python on this machine may not have the repo test dependencies installed, causing No module named pytest.",
+      "use_instead": ".\\\\.venv\\\\Scripts\\\\python.exe -m pytest <tests>",
+      "scope": "ai-coding-commander local test runs"
+    },
+    {
+      "id": "sync-current-task-no-task-name",
+      "match": "sync_current_task.py",
+      "match_type": "substring",
+      "known_bad": "sync_current_task.py --task-name <name> ...",
+      "fails_because": "sync_current_task.py does not define a --task-name argument; task name is managed by the existing task card content, not the CLI.",
+      "use_instead": "sync_current_task.py --event <checkpoint|validate> --progress <text> --validation-status <status> --validation-evidence <text> --next-step <text>",
+      "scope": "ai-coding-commander task checkpoint sync"
     }
   ]
 }
