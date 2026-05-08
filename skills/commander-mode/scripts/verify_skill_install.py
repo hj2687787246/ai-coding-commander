@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 
-REQUIRED_SKILLS = ("commander-mode", "commander-reuse-upgrader", "execution-failure-guard")
+REQUIRED_SKILLS = ("commander-mode", "commander-reuse-upgrader", "execution-failure-guard", "executor-mode")
 
 
 @dataclass(frozen=True)

@@ -196,6 +196,7 @@ Route common software-workspace work like this:
 | A skill is too long, repetitive, or handbook-like | `compress-skill` |
 | A skill has reference-heavy sections that should move out of the main file | `modulize-skill` |
 | A recurring problem may need markdown, script, or skill reuse | `commander-reuse-upgrader` when available; otherwise use the Reuse Upgrade Gate below |
+| User asks for 执行者, executor, or to execute an already-confirmed task card/plan without changing scope | `executor-mode` |
 | Requirements are unclear or acceptance is missing | `clarify-requirements` or `superpowers:brainstorming` |
 | A multi-step implementation plan is needed | `superpowers:writing-plans` |
 | Editing or creating a skill | `superpowers:writing-skills` |

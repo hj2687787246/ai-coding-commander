@@ -19,7 +19,8 @@ $repoRootPath = (Resolve-Path $RepoRoot).Path
 $skillNames = @(
     "commander-mode",
     "commander-reuse-upgrader",
-    "execution-failure-guard"
+    "execution-failure-guard",
+    "executor-mode"
 )
 $targetParent = Join-Path $CodexHome "skills"
 
@@ -67,6 +68,7 @@ $result = [ordered]@{
     backupPaths = $backupPaths
     nextSteps = @(
         "在新会话里使用 commander-mode",
+        "明确任务卡或计划后使用 executor-mode / 执行者负责落地和验证",
         "重复问题沉淀时使用 commander-reuse-upgrader",
         "命令、工具或环境执行失败并找到可用方法后使用 execution-failure-guard",
         "需要手动启用一次后跨压缩/新窗口保持 commander 时，使用 commander_activation.py activate",

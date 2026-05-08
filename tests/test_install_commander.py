@@ -41,9 +41,11 @@ def test_install_script_copies_commander_mode_into_codex_home(tmp_path: Path) ->
     installed_skill = tmp_path / "skills" / "commander-mode" / "SKILL.md"
     installed_reuse_skill = tmp_path / "skills" / "commander-reuse-upgrader" / "SKILL.md"
     installed_execution_failure_skill = tmp_path / "skills" / "execution-failure-guard" / "SKILL.md"
+    installed_executor_skill = tmp_path / "skills" / "executor-mode" / "SKILL.md"
     assert installed_skill.exists()
     assert installed_reuse_skill.exists()
     assert installed_execution_failure_skill.exists()
+    assert installed_executor_skill.exists()
     assert "installed" in result.stdout
     assert "verify_skill_install.py" in result.stdout
 
@@ -80,12 +82,15 @@ def test_install_script_uses_copy_install_not_junction(tmp_path: Path) -> None:
     target = tmp_path / "skills" / "commander-mode"
     reuse_target = tmp_path / "skills" / "commander-reuse-upgrader"
     execution_failure_target = tmp_path / "skills" / "execution-failure-guard"
+    executor_target = tmp_path / "skills" / "executor-mode"
     assert target.exists()
     assert reuse_target.exists()
     assert execution_failure_target.exists()
+    assert executor_target.exists()
     assert not target.is_symlink()
     assert not reuse_target.is_symlink()
     assert not execution_failure_target.is_symlink()
+    assert not executor_target.is_symlink()
 
 
 def test_readme_documents_developer_and_regular_user_install_paths() -> None:
@@ -97,4 +102,5 @@ def test_readme_documents_developer_and_regular_user_install_paths() -> None:
     assert "skills/commander-mode/" in readme
     assert "skills/commander-reuse-upgrader/" in readme
     assert "skills/execution-failure-guard/" in readme
+    assert "skills/executor-mode/" in readme
     assert "legacy/agent-runtime" in readme

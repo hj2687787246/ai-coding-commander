@@ -94,6 +94,7 @@ def test_trigger_matrix_covers_commander_reuse_and_skill_maintenance() -> None:
     assert "compress-skill" in skills
     assert "modulize-skill" in skills
     assert "execution-failure-guard" in skills
+    assert "executor-mode" in skills
 
     reuse_rows = [row for row in rows if row["skill"] == "commander-reuse-upgrader"]
     assert len(reuse_rows) >= 3
@@ -167,3 +168,13 @@ def test_trigger_matrix_covers_concurrent_task_card_conflicts() -> None:
     assert conflict_rows
     assert conflict_rows[0]["skill"] == "commander-mode"
     assert ".codex/tasks/<task-id>/当前任务.md" in conflict_rows[0]["why"]
+
+
+def test_trigger_matrix_covers_executor_mode() -> None:
+    rows = parse_matrix_rows()
+
+    executor_rows = [row for row in rows if row["skill"] == "executor-mode"]
+
+    assert executor_rows
+    assert any("执行者" in row["wording"] for row in executor_rows)
+    assert any("task-id" in row["why"] for row in executor_rows)

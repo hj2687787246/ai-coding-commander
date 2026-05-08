@@ -20,6 +20,16 @@
       "use_instead": "known_failures.py add --match=--flag=value ...",
       "scope": "Python argparse CLI calls where an option value starts with --",
       "last_verified": "2026-05-07"
+    },
+    {
+      "id": "skill-creator-quick-validate-missing-yaml",
+      "match": "quick_validate.py",
+      "match_type": "substring",
+      "known_bad": "python C:\\Users\\26877\\.codex\\skills\\.system\\skill-creator\\scripts\\quick_validate.py <skill>",
+      "fails_because": "The current default Python environment may not have PyYAML installed, causing ModuleNotFoundError: No module named 'yaml'.",
+      "use_instead": "Use repo tests that check SKILL.md frontmatter/routing, or run quick_validate.py from an environment with PyYAML installed.",
+      "scope": "skill-creator quick_validate.py on local Windows Python environments",
+      "last_verified": "2026-05-08"
     }
   ]
 }
