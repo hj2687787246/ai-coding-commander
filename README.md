@@ -239,6 +239,15 @@ python .\skills\commander-mode\scripts\portable_harness.py --cwd . stop-gate
 python .\skills\commander-mode\scripts\sync_current_task.py --repo . --event validate --validation-status "已验证" --validation-evidence "python -m pytest passed"
 ```
 
+如果同一个仓库开了多个窗口做不同事情，不要共用全局当前任务卡。给每个窗口或任务分配稳定 `task-id`，写入 `.codex/tasks/<task-id>/当前任务.md`：
+
+```powershell
+python .\skills\commander-mode\scripts\sync_current_task.py --repo . --task-id window-a --event checkpoint --progress "窗口 A 进度"
+python .\skills\commander-mode\scripts\sync_current_task.py --repo . --task-id window-b --event checkpoint --progress "窗口 B 进度"
+```
+
+并发时 `.codex/docs/当前任务.md` 只作为全局入口或协调摘要，不记录某个窗口的局部进度。
+
 ### 执行失败检查器
 
 当一次命令、工具、测试、构建或环境调用失败并找到可用替代方法后，可以把 known-bad 与 use-instead 写入 `.codex/known-failures.json`：

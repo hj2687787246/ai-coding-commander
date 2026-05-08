@@ -236,3 +236,79 @@ def test_checkpoint_cli_accepts_focus_files(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["updated"] is True
     assert "正在关注的文件" in payload["changed_fields"]
+
+
+def test_task_id_writes_isolated_task_card_without_touching_global(tmp_path: Path) -> None:
+    sync = load_module(
+        "skills/commander-mode/scripts/sync_current_task.py",
+        "sync_current_task_task_id",
+    )
+    repo = make_bootstrapped_repo(tmp_path)
+    global_task = repo / ".codex" / "docs" / "当前任务.md"
+    original_global = global_task.read_text(encoding="utf-8")
+
+    result = sync.sync_current_task(
+        repo_root=repo,
+        event="checkpoint",
+        task_id="window-a",
+        progress="窗口 A：实现登录",
+        next_step="运行登录测试",
+    )
+
+    isolated_task = repo / ".codex" / "tasks" / "window-a" / "当前任务.md"
+    assert result.updated is True
+    assert Path(result.target) == isolated_task
+    assert global_task.read_text(encoding="utf-8") == original_global
+    assert "当前任务名称：window-a" in isolated_task.read_text(encoding="utf-8")
+    assert "当前进度：窗口 A：实现登录" in isolated_task.read_text(encoding="utf-8")
+    assert "下一步：运行登录测试" in isolated_task.read_text(encoding="utf-8")
+
+
+def test_task_id_cli_writes_separate_cards_for_parallel_windows(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    script = repo_root / "skills" / "commander-mode" / "scripts" / "sync_current_task.py"
+    repo = make_bootstrapped_repo(tmp_path)
+
+    first = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--repo",
+            str(repo),
+            "--event",
+            "checkpoint",
+            "--task-id",
+            "window-a",
+            "--progress",
+            "窗口 A 进度",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    second = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--repo",
+            str(repo),
+            "--event",
+            "checkpoint",
+            "--task-id",
+            "window-b",
+            "--progress",
+            "窗口 B 进度",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+
+    assert first.returncode == 0
+    assert second.returncode == 0
+    assert "window-a" in json.loads(first.stdout)["target"]
+    assert "window-b" in json.loads(second.stdout)["target"]
+    assert "窗口 A 进度" in (repo / ".codex" / "tasks" / "window-a" / "当前任务.md").read_text(encoding="utf-8")
+    assert "窗口 B 进度" in (repo / ".codex" / "tasks" / "window-b" / "当前任务.md").read_text(encoding="utf-8")

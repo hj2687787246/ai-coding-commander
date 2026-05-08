@@ -82,6 +82,8 @@ If the workspace has no `.codex` memory surface, commander still works from READ
 
 If `.codex/commander-active.json` exists and `active` is `true`, treat this as a durable recovery signal. Read it alongside the repo truth sources, then continue commander mode even when the current chat summary does not mention commander.
 
+When multiple windows or agents work in the same repo, read `.codex/docs/当前任务.md` only as the default/global entry. If a task-specific card exists under `.codex/tasks/<task-id>/当前任务.md`, use that card for the current window's task state.
+
 If no repo-local commander docs exist, use the portable harness only as a fallback:
 
 ```powershell
@@ -156,6 +158,26 @@ Do not browse by default. Browse because a specific uncertainty would otherwise 
 Skip local knowledge or web search only when the change is fully explained by current repo evidence and no external or historical fact can materially change the implementation. Name that reason briefly before editing when the risk is non-trivial.
 
 Do not edit code before this gate for broad refactors, new features, dependency/API usage, environment fixes, skill changes, or repeated failures. For tiny local edits, the gate can be a one-line conclusion.
+
+## Concurrent Task Isolation Gate
+
+Do not let two windows overwrite the same task card when they are doing different work.
+
+Before writing task progress, decide the task-card scope:
+
+- Single active task in one window: use `.codex/docs/当前任务.md`.
+- Multiple windows, parallel tasks, or different objectives in one repo: choose a stable `task-id` and use `.codex/tasks/<task-id>/当前任务.md`.
+- Batch/epic work: keep the global card as an index or coordinator summary; each independent execution lane gets its own task card.
+
+Use the sync script with `--task-id` for isolated task checkpoints:
+
+```powershell
+python <commander-mode-skill-dir>\scripts\sync_current_task.py --repo . --task-id <task-id> --event checkpoint --progress "..." --next-step "..."
+```
+
+On recovery, if the user refers to a specific window/task, read that task-specific card first. If the user says "当前任务" while multiple task cards exist, ask which task or list the available task ids instead of guessing from the global card.
+
+Only write the global `.codex/docs/当前任务.md` during parallel work when updating project-level coordination, not window-local progress.
 
 ## Skill Routing
 

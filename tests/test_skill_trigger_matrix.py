@@ -157,3 +157,13 @@ def test_trigger_matrix_covers_pre_implementation_research() -> None:
     assert research_rows
     assert research_rows[0]["skill"] == "commander-mode"
     assert "research sufficiency" in research_rows[0]["why"]
+
+
+def test_trigger_matrix_covers_concurrent_task_card_conflicts() -> None:
+    rows = parse_matrix_rows()
+
+    conflict_rows = [row for row in rows if row["id"] == "commander-concurrent-task-cards"]
+
+    assert conflict_rows
+    assert conflict_rows[0]["skill"] == "commander-mode"
+    assert ".codex/tasks/<task-id>/当前任务.md" in conflict_rows[0]["why"]

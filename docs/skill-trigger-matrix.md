@@ -19,6 +19,7 @@ Use it when:
 | commander-handoff | `帮我把这个长任务交接给下一个窗口` | `commander-mode` | Handoff and recovery context. |
 | commander-persistent-active | `我手动启用一次指挥官后，压缩和新窗口也要继续生效` | `commander-mode` | Persistent activation should write and recover `.codex/commander-active.json`. |
 | commander-pre-implementation-research | `写代码前先判断要不要查本地知识库或联网资料` | `commander-mode` | Pre-implementation research sufficiency belongs to commander before routing implementation. |
+| commander-concurrent-task-cards | `两个窗口做不同事情时会互相受到当前任务卡影响` | `commander-mode` | Concurrent task windows need isolated `.codex/tasks/<task-id>/当前任务.md` cards. |
 | reuse-sediment | `这个问题以后还会遇到，自动沉淀一下` | `commander-reuse-upgrader` | Repeated problem should be routed to reuse layer. |
 | reuse-layer | `这个应该写进文档、脚本，还是做成 skill？` | `commander-reuse-upgrader` | Explicit markdown/script/skill decision. |
 | reuse-agent-failure | `agent 又犯同一个错了，别再靠聊天记忆` | `commander-reuse-upgrader` | Repeated agent failure needs durable reuse. |

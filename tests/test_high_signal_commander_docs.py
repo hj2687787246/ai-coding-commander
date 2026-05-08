@@ -152,6 +152,17 @@ def test_commander_skill_defines_pre_implementation_research_gate() -> None:
     assert "Do not edit code before this gate" in skill
 
 
+def test_commander_skill_defines_concurrent_task_isolation() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+    readme = read_text("README.md")
+
+    assert "Concurrent Task Isolation Gate" in skill
+    assert ".codex/tasks/<task-id>/当前任务.md" in skill
+    assert "--task-id" in skill
+    assert "Do not let two windows overwrite" in skill
+    assert ".codex/tasks/<task-id>/当前任务.md" in readme
+
+
 def test_readme_presents_standard_activation_contract() -> None:
     readme = read_text("README.md")
 
