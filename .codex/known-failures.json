@@ -48,6 +48,15 @@
       "fails_because": "sync_current_task.py does not define a --task-name argument; task name is managed by the existing task card content, not the CLI.",
       "use_instead": "sync_current_task.py --event <checkpoint|validate> --progress <text> --validation-status <status> --validation-evidence <text> --next-step <text>",
       "scope": "ai-coding-commander task checkpoint sync"
+    },
+    {
+      "id": "git-push-origin-master-timeout",
+      "match": "git push origin master",
+      "match_type": "substring",
+      "known_bad": "git push origin master",
+      "fails_because": "Plain git push can hang in this desktop tool process waiting for credential or network handling until timeout.",
+      "use_instead": "Use GitHub CLI token as a temporary credential helper with GIT_TERMINAL_PROMPT=0, then run git push origin master.",
+      "scope": "pushing ai-coding-commander to GitHub from Codex desktop"
     }
   ]
 }
