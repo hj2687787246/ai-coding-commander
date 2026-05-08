@@ -42,8 +42,8 @@
     },
     {
       "id": "sync-current-task-no-task-name",
-      "match": "sync_current_task.py",
-      "match_type": "substring",
+      "match": "sync_current_task\\.py.*--task-name\\b",
+      "match_type": "regex",
       "known_bad": "sync_current_task.py --task-name <name> ...",
       "fails_because": "sync_current_task.py does not define a --task-name argument; task name is managed by the existing task card content, not the CLI.",
       "use_instead": "sync_current_task.py --event <checkpoint|validate> --progress <text> --validation-status <status> --validation-evidence <text> --next-step <text>",

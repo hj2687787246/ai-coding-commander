@@ -173,3 +173,21 @@ def test_known_failures_check_does_not_crash_on_legacy_invalid_regex(tmp_path: P
     result = known_failures.check_command(tmp_path, "tool [")
 
     assert result.matched is False
+
+
+def test_repo_sync_current_task_known_failure_does_not_block_valid_usage() -> None:
+    known_failures = load_module()
+
+    valid_command = (
+        "sync_current_task.py --repo . --event validate --progress done "
+        "--validation-status 已验证 --validation-evidence passed --next-step commit"
+    )
+    invalid_command = "sync_current_task.py --repo . --event validate --task-name demo"
+
+    valid_result = known_failures.check_command(repo_root(), valid_command)
+    invalid_result = known_failures.check_command(repo_root(), invalid_command)
+
+    assert valid_result.matched is False
+    assert invalid_result.matched is True
+    assert invalid_result.record is not None
+    assert invalid_result.record["id"] == "sync-current-task-no-task-name"
