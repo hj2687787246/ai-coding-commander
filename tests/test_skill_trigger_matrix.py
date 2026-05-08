@@ -193,6 +193,18 @@ def test_trigger_matrix_covers_role_lifecycle_gates() -> None:
     assert "acceptance review after executor" in lifecycle_rows[0]["why"]
 
 
+def test_trigger_matrix_covers_commander_closed_loop() -> None:
+    rows = parse_matrix_rows()
+
+    closed_loop_rows = [row for row in rows if row["id"] == "commander-closed-loop"]
+
+    assert closed_loop_rows
+    assert closed_loop_rows[0]["skill"] == "commander-mode"
+    assert "闭环" in closed_loop_rows[0]["wording"]
+    assert "failure reroute" in closed_loop_rows[0]["why"]
+    assert "reuse sediment" in closed_loop_rows[0]["why"]
+
+
 def test_trigger_matrix_covers_executor_mode() -> None:
     rows = parse_matrix_rows()
 

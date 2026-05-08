@@ -176,13 +176,33 @@ def test_commander_skill_defines_user_visible_outcome_gate() -> None:
     assert "User-Visible Outcome" in readme
 
 
+def test_commander_skill_defines_closed_loop_gate() -> None:
+    skill = read_text("skills/commander-mode/SKILL.md")
+    readme = read_text("README.md")
+
+    assert "Closed Loop Gate" in skill
+    assert "Acceptance `Fail`" in skill
+    assert "route back to `executor-mode`" in skill
+    assert "route back to `doc-reviewer-mode`" in skill
+    assert "Acceptance `Pass`" in skill
+    assert "acceptance record" in skill
+    assert "commander-reuse-upgrader" in skill
+    assert "execution-failure-guard" in skill
+    assert "Closed Loop" in readme
+    assert "验收失败回流" in readme
+
+
 def test_readme_presents_standard_activation_contract() -> None:
     readme = read_text("README.md")
 
     assert "Standard Activation Contract" in readme
-    assert "Entry / Research / User-Visible Outcome / Heartbeat / Preference Write-Back / Preclose / Recovery" in readme
+    assert (
+        "Entry / Research / User-Visible Outcome / Closed Loop / Heartbeat / Preference Write-Back / Preclose / Recovery"
+        in readme
+    )
     assert "Research" in readme
     assert "User-Visible Outcome" in readme
+    assert "Closed Loop" in readme
     assert "写代码前判断项目内资料、本地知识和联网资料是否足够" in readme
     assert "不是建议清单" in readme
 

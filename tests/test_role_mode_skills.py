@@ -98,3 +98,13 @@ def test_executor_hands_back_to_commander_when_dispatched() -> None:
     assert "When dispatched by commander" in executor
     assert "do not deliver directly to the user" in executor
     assert "hand back to commander" in executor
+
+
+def test_acceptance_reviewer_reports_failures_as_reroute_input() -> None:
+    skill = read_text("skills/acceptance-reviewer-mode/SKILL.md")
+
+    assert "If the verdict is `Fail`" in skill
+    assert "reroute input" in skill
+    assert "failed criteria" in skill
+    assert "suggested next role" in skill
+    assert "do not rewrite acceptance" in skill

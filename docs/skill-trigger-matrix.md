@@ -21,6 +21,7 @@ Use it when:
 | commander-pre-implementation-research | `写代码前先判断要不要查本地知识库或联网资料` | `commander-mode` | Pre-implementation research sufficiency belongs to commander before routing implementation. |
 | commander-concurrent-task-cards | `两个窗口做不同事情时会互相受到当前任务卡影响` | `commander-mode` | Concurrent task windows need isolated `.codex/tasks/<task-id>/当前任务.md` cards. |
 | commander-user-visible-long-task | `长任务我只看最终结果，中间由指挥官持续调度推进` | `commander-mode` | Long tasks should use phase checkpoints internally while commander keeps directing roles toward the user-visible outcome unless blocked. |
+| commander-closed-loop | `看一下指挥官系统是不是已经形成闭环，验收失败能不能回流并沉淀` | `commander-mode` | Commander owns the closed loop from contract review to executor, acceptance review, failure reroute, reuse sediment, checkpoint, and user-visible delivery. |
 | commander-role-lifecycle | `指挥官调度执行者前要不要先评审文档，执行后要不要验收官再看一遍？` | `commander-mode` | Commander owns role lifecycle gates: doc review before executor when contract risk exists, acceptance review after executor before user-visible completion. |
 | doc-reviewer-role | `你现在是文档评审官，先审一下这张任务卡和验收标准能不能交给执行者` | `doc-reviewer-mode` | 文档评审官 reviews requirement, plan, task-card, and 验收标准 clarity before execution. |
 | executor-assigned-task | `你现在是执行者，按这个 task-id 执行并验证` | `executor-mode` | Executor mode owns scoped execution for a confirmed task-id and hands evidence back to commander. |

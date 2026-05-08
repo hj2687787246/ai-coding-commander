@@ -47,15 +47,16 @@
 
 ### Standard Activation Contract
 
-`commander-mode` 的自动执行不是建议清单，而是标准运行契约。skill 一旦触发，就按 Entry / Research / User-Visible Outcome / Heartbeat / Preference Write-Back / Preclose / Recovery 七个 hook 执行：
+`commander-mode` 的自动执行不是建议清单，而是标准运行契约。skill 一旦触发，就按 Entry / Research / User-Visible Outcome / Closed Loop / Heartbeat / Preference Write-Back / Preclose / Recovery 八个 hook 执行：
 
 1. Entry：进入任务前恢复规则、状态和本轮适用偏好。
 2. Research：写代码前判断项目内资料、本地知识和联网资料是否足够。
 3. User-Visible Outcome：长任务由指挥官托管过程，用户主要看最终结果，阶段只是 checkpoint，不是默认停止点。
-4. Heartbeat：长命令、等待、中断风险或阶段切换前写 checkpoint。
-5. Preference Write-Back：用户明确或反复表达长期习惯时写入偏好卡。
-6. Preclose：完成、提交、切换阶段或交接前执行 Preference Gate 和验证 gate。
-7. Recovery：中断或继续时先读磁盘真相源，再恢复下一步。
+4. Closed Loop：执行前评审契约，执行后验收证据；验收失败回流到执行者或文档评审官，验收通过才交付用户可见结果。
+5. Heartbeat：长命令、等待、中断风险或阶段切换前写 checkpoint。
+6. Preference Write-Back：用户明确或反复表达长期习惯时写入偏好卡。
+7. Preclose：完成、提交、切换阶段或交接前执行 Preference Gate 和验证 gate。
+8. Recovery：中断或继续时先读磁盘真相源，再恢复下一步。
 
 ### Persistent Activation
 

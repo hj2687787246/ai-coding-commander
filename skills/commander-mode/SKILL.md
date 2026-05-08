@@ -249,6 +249,19 @@ Use role skills as gates, not decorations.
 
 Do not skip acceptance review just because executor says tests passed. Executor evidence is input to acceptance; it is not final acceptance. Commander may perform lightweight acceptance locally only for tiny reversible changes, and must name why a separate acceptance-reviewer pass was unnecessary.
 
+### Closed Loop Gate
+
+Commander is closed-loop only when every role output has a next route and every completion claim has evidence.
+
+- Contract unclear: route to `doc-reviewer-mode`, `clarify-requirements`, or commander decision before execution.
+- Document review ready: route to `executor-mode` with a Role Dispatch Packet.
+- Executor handback received: route to `acceptance-reviewer-mode` unless the change is tiny, reversible, and explicitly accepted as lightweight local review.
+- Acceptance `Fail`: route back to `executor-mode` when implementation is incomplete or validation is wrong; route back to `doc-reviewer-mode` when requirements, scope, non-goals, or acceptance are unclear. Keep the original acceptance criteria stable unless commander/user changes them.
+- Acceptance `Pass` or `Pass with residual risk`: update the task checkpoint, write an acceptance record when the repo has that surface, run the Reuse Upgrade Gate for repeated lessons, then deliver the user-visible result.
+- Execution failure solved: use `execution-failure-guard` for the immediate known-bad/use-instead record. If the same failure can recur or needs a stronger layer, route to `commander-reuse-upgrader`.
+
+Do not end the loop at "executor finished", "tests passed", "review spawned", or "known failure recorded". The loop ends only when the user-visible outcome is accepted, blocked with a named decision, or intentionally handed off with a current checkpoint.
+
 Route common software-workspace work like this:
 
 | Situation | Use |

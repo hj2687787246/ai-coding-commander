@@ -37,6 +37,8 @@ Check:
 
 Use `Pass` only when evidence covers the requirement contract. Use `Fail` when required behavior, scope, or evidence is missing. Use `Pass with residual risk` only when the remaining risk is explicit and acceptable for commander to decide.
 
+If the verdict is `Fail`, shape the report as reroute input for commander. Name the failed criteria, evidence gap, likely owner, and suggested next role. Use `executor-mode` for implementation or validation fixes, and `doc-reviewer-mode` for unclear requirements or acceptance; do not rewrite acceptance to fit the result.
+
 ## Boundaries
 
 - Do not implement fixes.
