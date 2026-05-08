@@ -210,6 +210,35 @@ Before choosing a specialized skill, inspect the active skill list available in 
 
 When an expected skill does not trigger, treat it as a discovery failure, not user error: check whether the skill is active or needs restart/install, whether its description matches the user's wording including Chinese synonyms, whether a broader skill is shadowing it, and whether to fix commander routing or the skill description.
 
+### Role Dispatch Packet
+
+Commander can route work across four role skills:
+
+- `commander-mode` / Commander: direction, requirements, routing, memory, checkpoints, and final user-facing delivery.
+- `doc-reviewer-mode` / Doc Reviewer: pre-execution review of requirements, plans, task cards, handoff packets, and acceptance clarity.
+- `executor-mode` / Executor: scoped implementation and validation for a confirmed task card or plan.
+- `acceptance-reviewer-mode` / Acceptance Reviewer: post-execution pass/fail review against requirements and validation evidence.
+
+Do not ask a child window or sub-agent to "run commander again" when a narrower role is enough. Give the role a compact dispatch packet:
+
+```text
+role:
+required skill:
+task-id:
+task card / source path:
+scope:
+must-read rules:
+acceptance criteria:
+validation evidence required:
+forbidden actions:
+report format:
+handoff target:
+```
+
+Do not dispatch role work without naming the required skill. The packet should tell the receiving window to load that exact skill first, for example `doc-reviewer-mode`, `executor-mode`, or `acceptance-reviewer-mode`. If the required role skill is unavailable, the receiver must say so and follow the closest local method rather than silently running as generic commander or generic coder.
+
+The receiving role should load its own role skill, follow the packet, and hand evidence back to commander. Commander remains responsible for deciding the next safe action and whether the user-visible outcome is ready.
+
 Route common software-workspace work like this:
 
 | Situation | Use |
@@ -219,7 +248,9 @@ Route common software-workspace work like this:
 | A skill is too long, repetitive, or handbook-like | `compress-skill` |
 | A skill has reference-heavy sections that should move out of the main file | `modulize-skill` |
 | A recurring problem may need markdown, script, or skill reuse | `commander-reuse-upgrader` when available; otherwise use the Reuse Upgrade Gate below |
+| User asks for 文档评审官, Doc Reviewer, or to review a requirement/spec/plan/task card before execution | `doc-reviewer-mode` |
 | User asks for 执行者, executor, or to execute an already-confirmed task card/plan without changing scope | `executor-mode` |
+| User asks for 验收官, Acceptance Reviewer, or to judge completed work against requirements and validation evidence | `acceptance-reviewer-mode` |
 | Requirements are unclear or acceptance is missing | `clarify-requirements` or `superpowers:brainstorming` |
 | A multi-step implementation plan is needed | `superpowers:writing-plans` |
 | Editing or creating a skill | `superpowers:writing-skills` |

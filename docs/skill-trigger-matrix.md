@@ -21,7 +21,9 @@ Use it when:
 | commander-pre-implementation-research | `写代码前先判断要不要查本地知识库或联网资料` | `commander-mode` | Pre-implementation research sufficiency belongs to commander before routing implementation. |
 | commander-concurrent-task-cards | `两个窗口做不同事情时会互相受到当前任务卡影响` | `commander-mode` | Concurrent task windows need isolated `.codex/tasks/<task-id>/当前任务.md` cards. |
 | commander-user-visible-long-task | `长任务我只看最终结果，中间由指挥官持续调度推进` | `commander-mode` | Long tasks should use phase checkpoints internally while commander keeps directing roles toward the user-visible outcome unless blocked. |
+| doc-reviewer-role | `你现在是文档评审官，先审一下这张任务卡和验收标准能不能交给执行者` | `doc-reviewer-mode` | 文档评审官 reviews requirement, plan, task-card, and 验收标准 clarity before execution. |
 | executor-assigned-task | `你现在是执行者，按这个 task-id 执行并验证` | `executor-mode` | Executor mode owns scoped execution for a confirmed task-id and hands evidence back to commander. |
+| acceptance-reviewer-role | `你现在是验收官，按需求和验证证据判断这次改动能不能通过` | `acceptance-reviewer-mode` | 验收官 reviews completed work against requirements and 验证证据 before commander delivers the result. |
 | reuse-sediment | `这个问题以后还会遇到，自动沉淀一下` | `commander-reuse-upgrader` | Repeated problem should be routed to reuse layer. |
 | reuse-layer | `这个应该写进文档、脚本，还是做成 skill？` | `commander-reuse-upgrader` | Explicit markdown/script/skill decision. |
 | reuse-agent-failure | `agent 又犯同一个错了，别再靠聊天记忆` | `commander-reuse-upgrader` | Repeated agent failure needs durable reuse. |

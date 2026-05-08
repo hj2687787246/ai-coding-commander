@@ -20,7 +20,9 @@ $skillNames = @(
     "commander-mode",
     "commander-reuse-upgrader",
     "execution-failure-guard",
-    "executor-mode"
+    "doc-reviewer-mode",
+    "executor-mode",
+    "acceptance-reviewer-mode"
 )
 $targetParent = Join-Path $CodexHome "skills"
 
@@ -68,7 +70,9 @@ $result = [ordered]@{
     backupPaths = $backupPaths
     nextSteps = @(
         "在新会话里使用 commander-mode",
+        "执行前审查需求/计划/任务卡时使用 doc-reviewer-mode / 文档评审官",
         "明确任务卡或计划后使用 executor-mode / 执行者负责落地和验证",
+        "执行后按需求和验证证据验收时使用 acceptance-reviewer-mode / 验收官",
         "重复问题沉淀时使用 commander-reuse-upgrader",
         "命令、工具或环境执行失败并找到可用方法后使用 execution-failure-guard",
         "需要手动启用一次后跨压缩/新窗口保持 commander 时，使用 commander_activation.py activate",

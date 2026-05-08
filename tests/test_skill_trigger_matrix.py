@@ -94,7 +94,9 @@ def test_trigger_matrix_covers_commander_reuse_and_skill_maintenance() -> None:
     assert "compress-skill" in skills
     assert "modulize-skill" in skills
     assert "execution-failure-guard" in skills
+    assert "doc-reviewer-mode" in skills
     assert "executor-mode" in skills
+    assert "acceptance-reviewer-mode" in skills
 
     reuse_rows = [row for row in rows if row["skill"] == "commander-reuse-upgrader"]
     assert len(reuse_rows) >= 3
@@ -188,3 +190,17 @@ def test_trigger_matrix_covers_executor_mode() -> None:
     assert executor_rows
     assert any("执行者" in row["wording"] for row in executor_rows)
     assert any("task-id" in row["why"] for row in executor_rows)
+
+
+def test_trigger_matrix_covers_reviewer_role_modes() -> None:
+    rows = parse_matrix_rows()
+
+    doc_reviewer_rows = [row for row in rows if row["skill"] == "doc-reviewer-mode"]
+    acceptance_rows = [row for row in rows if row["skill"] == "acceptance-reviewer-mode"]
+
+    assert doc_reviewer_rows
+    assert any("文档评审官" in row["wording"] for row in doc_reviewer_rows)
+    assert any("验收标准" in row["why"] for row in doc_reviewer_rows)
+    assert acceptance_rows
+    assert any("验收官" in row["wording"] for row in acceptance_rows)
+    assert any("验证证据" in row["why"] for row in acceptance_rows)

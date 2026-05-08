@@ -24,7 +24,14 @@ def copy_required_skills(target_home: Path) -> None:
     source_root = repo_root() / "skills"
     target_root = target_home / "skills"
     target_root.mkdir(parents=True)
-    for skill_name in ("commander-mode", "commander-reuse-upgrader", "execution-failure-guard", "executor-mode"):
+    for skill_name in (
+        "commander-mode",
+        "commander-reuse-upgrader",
+        "execution-failure-guard",
+        "doc-reviewer-mode",
+        "executor-mode",
+        "acceptance-reviewer-mode",
+    ):
         shutil.copytree(source_root / skill_name, target_root / skill_name)
 
 
@@ -39,7 +46,9 @@ def test_verify_skill_install_passes_when_required_skills_match(tmp_path: Path) 
         "commander-mode",
         "commander-reuse-upgrader",
         "execution-failure-guard",
+        "doc-reviewer-mode",
         "executor-mode",
+        "acceptance-reviewer-mode",
     }
     assert all(skill["content_matches"] for skill in result["skills"])
     assert all(skill["files_match"] for skill in result["skills"])
